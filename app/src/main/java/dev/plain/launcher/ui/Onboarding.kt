@@ -28,7 +28,7 @@ import androidx.tv.material3.Text
 
 private val tour = listOf(
     "Welcome to Plain" to "A quieter home for your TV. Keep favourite apps within reach and make the screen feel like yours. Use the direction buttons to move and OK to select.",
-    "Your apps, your order" to "Hold OK on an app to open its menu. Add it to favourites, remove it, or open App info. In Favourites, choose Move, then use Left and Right to reorder. Press OK when done or Back to stop moving.",
+    "Your apps, your order" to "Hold OK on an app, then release to open its menu. Add it to favourites, remove it, or open App info. In Favourites, choose Move, then use Left and Right to reorder. Press OK when done or Back to stop moving.",
     "Make it yours" to "Open Customise at the top right, or press Menu on your remote. Choose a theme, font, tile size and icon style. Remote & controller lets you assign shortcuts while Plain is open. Back closes the panel. Weather stays off until you choose a city in Settings.",
     "Pick up where you left off" to "Continue watching shows programs that participating apps share with Plain. Availability depends on your TV: some devices keep this private to their built-in home screen. You can hide the row in Settings.",
     "Ready when you are" to "You can launch Plain like any other app. To make it your home screen, choose it in your TV's Home app settings if your device supports that choice. You can replay this tour from Settings at any time.",

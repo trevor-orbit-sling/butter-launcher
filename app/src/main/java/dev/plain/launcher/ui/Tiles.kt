@@ -19,11 +19,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.input.key.Key
-import androidx.compose.ui.input.key.KeyEventType
-import androidx.compose.ui.input.key.key
-import androidx.compose.ui.input.key.type
-import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -68,28 +63,11 @@ fun FocusSurface(
     content: @Composable () -> Unit,
 ) {
     val look = LocalLook.current
-    var gamepadDown by remember { mutableStateOf(false) }
-    var gamepadLong by remember { mutableStateOf(false) }
     val border = if (selected) BorderStroke(2.dp, look.accent) else BorderStroke(look.borderWidth, look.border)
     Surface(
         onClick = onClick,
         onLongClick = onLongClick,
-        modifier = modifier.onPreviewKeyEvent { event ->
-            if (event.key != Key.ButtonA) return@onPreviewKeyEvent false
-            if (event.type == KeyEventType.KeyDown) {
-                if (event.nativeKeyEvent.repeatCount == 0) {
-                    gamepadDown = true
-                    gamepadLong = false
-                } else if (gamepadDown && !gamepadLong && onLongClick != null) {
-                    gamepadLong = true
-                    onLongClick()
-                }
-            } else if (gamepadDown) {
-                gamepadDown = false
-                if (!gamepadLong) onClick()
-            }
-            true
-        },
+        modifier = modifier.releaseActivationKeys(onClick, onLongClick),
         shape = ClickableSurfaceDefaults.shape(shape),
         colors = ClickableSurfaceDefaults.colors(
             containerColor = look.surface,

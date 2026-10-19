@@ -84,6 +84,8 @@ fun HomeScreen(
     var menuApp by remember { mutableStateOf<App?>(null) }
     var focusedRow by remember { mutableStateOf("all") }
     var focusedApp by remember { mutableStateOf<App?>(null) }
+    val windowFocused = androidx.compose.ui.platform.LocalWindowInfo.current.isWindowFocused
+    val shortcutGesture = remember { dev.plain.launcher.ReleaseGesture(android.view.ViewConfiguration.getLongPressTimeout().toLong()) }
     var homeShortcut by remember { androidx.compose.runtime.mutableIntStateOf(0) }
     val tileFocus = remember { mutableMapOf<String, FocusRequester>() }
     fun focusKey(row: String, app: App) = "$row:${app.packageName}"
@@ -148,6 +150,9 @@ fun HomeScreen(
             }
         }
     }
+    LaunchedEffect(focusedApp, settingsOpen, tutorialOpen, menuApp, settings.remoteBindings, windowFocused) {
+        shortcutGesture.cancel()
+    }
     LaunchedEffect(menuPresses) { if (menuPresses > 0) settingsOpen = true }
     BackHandler {
         when {
@@ -160,7 +165,12 @@ fun HomeScreen(
     Box(Modifier.fillMaxSize().backdrop(look).onPreviewKeyEvent { event ->
         if (settingsOpen || tutorialOpen || !settings.tutorialComplete || menuApp != null) return@onPreviewKeyEvent false
         val action = settings.remoteBindings.action(event.nativeKeyEvent.keyCode) ?: return@onPreviewKeyEvent false
-        if (event.type == KeyEventType.KeyDown && event.nativeKeyEvent.repeatCount == 0) {
+        val key = event.nativeKeyEvent
+        if (key.action == android.view.KeyEvent.ACTION_DOWN) {
+            shortcutGesture.down(key.keyCode, key.eventTime, key.repeatCount, key.isLongPress)
+        }
+        if (key.action == android.view.KeyEvent.ACTION_UP &&
+            shortcutGesture.up(key.keyCode, key.eventTime, key.isCanceled, allowLongClick = false) == dev.plain.launcher.ReleaseGesture.Decision.Click) {
             when (action) {
                 RemoteAction.Customise -> settingsOpen = true
                 RemoteAction.AppOptions -> focusedApp?.let { showMenu(it, if (it.packageName == held) "favourite" else focusedRow) }
