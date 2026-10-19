@@ -50,13 +50,21 @@ val LocalSettings = staticCompositionLocalOf { LauncherSettings() }
 @Composable
 fun PlainTheme(settings: LauncherSettings, content: @Composable () -> Unit) {
     val look = remember(settings.theme, settings.accent) { look(settings.theme, settings.accent.color) }
-    val type = remember(settings.font, settings.textSize) { type(family(settings.font), settings.textSize.scale) }
+    val type = remember(settings.font, settings.textSize, settings.theme) { type(family(settings.font), settings.textSize.scale, settings.theme) }
     CompositionLocalProvider(LocalLook provides look, LocalType provides type, LocalSettings provides settings, content = content)
 }
 
 
 fun tileShape(settings: LauncherSettings, look: Look): Shape = when (settings.tileShape) {
-    TileShape.Rounded -> if (settings.theme == Theme.Cyberpunk) CutCornerShape(topEnd = 14.dp, bottomStart = 14.dp) else RoundedCornerShape(look.corner)
+    TileShape.Rounded -> when (settings.theme) {
+        Theme.Cyberpunk -> CutCornerShape(topEnd = 14.dp, bottomStart = 14.dp)
+        Theme.Phosphor -> RoundedCornerShape(2.dp)
+        Theme.Orbital -> RoundedCornerShape(topStart = 28.dp, topEnd = 6.dp, bottomEnd = 28.dp, bottomStart = 6.dp)
+        Theme.AfterHours -> RoundedCornerShape(topStart = 26.dp, topEnd = 26.dp, bottomEnd = 8.dp, bottomStart = 8.dp)
+        Theme.DeepSea -> RoundedCornerShape(topStart = 24.dp, topEnd = 12.dp, bottomEnd = 28.dp, bottomStart = 12.dp)
+        Theme.Canopy -> RoundedCornerShape(topStart = 36.dp, topEnd = 10.dp, bottomEnd = 36.dp, bottomStart = 10.dp)
+        else -> RoundedCornerShape(look.corner)
+    }
     TileShape.Square -> RoundedCornerShape(3.dp)
     TileShape.Pill -> RoundedCornerShape(percent = 50)
 }
@@ -145,6 +153,36 @@ internal fun look(theme: Theme, accent: Color): Look = when (theme) {
         text = Color(0xFFF3F8FA), textDim = Color(0xFFADC5D1), accent = accent,
         panel = Color(0xFF0A111B), corner = 3.dp, zoom = 1.04f,
     )
+    Theme.Phosphor -> flat(
+        Color(0xFF0D1210), Color(0xFF040806), Color(0xFF111B15), Color(0xFF203025),
+        tone(accent, 0.83f, 0.69f), Color(0xFFFFE9BC), Color(0xFFC2BE9E), tone(accent, 0.83f, 0.69f), 3.dp,
+        Color(0xFF83C99B).copy(alpha = 0.45f),
+    )
+    Theme.Orbital -> flat(
+        Color(0xFFF4ECD8), Color(0xFFE8DCC3), Color(0xFFFFF8E7), Color(0xFFEBDDCA),
+        tone(accent, 0.72f, 0.30f), Color(0xFF142C3F), Color(0xFF4F5A5D), tone(accent, 0.72f, 0.30f), 20.dp,
+        Color(0xFF142C3F).copy(alpha = 0.24f),
+    ).copy(focusBorderWidth = 3.dp)
+    Theme.AfterHours -> flat(
+        Color(0xFF160D2B), Color(0xFF090816), Color(0xFF261537), Color(0xFF3D214C),
+        tone(accent, 0.85f, 0.76f), Color(0xFFFFF3FC), Color(0xFFD3B7D5), tone(accent, 0.85f, 0.76f), 18.dp,
+        Color(0xFFB76CCF).copy(alpha = 0.30f),
+    ).copy(blobs = listOf(Color(0xFFFF3E96).copy(alpha = 0.20f), Color(0xFF4870FF).copy(alpha = 0.19f)))
+    Theme.DeepSea -> flat(
+        Color(0xFF02151C), Color(0xFF01090F), Color(0xFF09252D), Color(0xFF123C45),
+        tone(accent, 0.78f, 0.68f), Color(0xFFE0FAF5), Color(0xFFA3C8C9), tone(accent, 0.78f, 0.68f), 24.dp,
+        Color(0xFF63DECA).copy(alpha = 0.25f),
+    ).copy(blobs = listOf(Color(0xFF00CEB5).copy(alpha = 0.20f), Color(0xFF157AA0).copy(alpha = 0.19f), Color(0xFF42AF84).copy(alpha = 0.13f)))
+    Theme.Butter -> flat(
+        Color(0xFFFFF6DA), Color(0xFFF1E0B3), Color(0xFFFFFAEC), Color(0xFFF3E4BE),
+        tone(accent, 0.80f, 0.27f), Color(0xFF45301D), Color(0xFF6B5640), tone(accent, 0.80f, 0.27f), 26.dp,
+        Color(0xFF986A18).copy(alpha = 0.23f),
+    ).copy(focusBorderWidth = 3.dp)
+    Theme.Canopy -> flat(
+        Color(0xFF071D14), Color(0xFF030E0A), Color(0xFF112A1E), Color(0xFF203D2B),
+        tone(accent, 0.65f, 0.72f), Color(0xFFE6F4DE), Color(0xFFADCAA7), tone(accent, 0.65f, 0.72f), 24.dp,
+        Color(0xFF90B58A).copy(alpha = 0.34f),
+    )
 }
 
 private fun flat(
@@ -166,10 +204,10 @@ private fun family(font: FontFace) = when (font) {
     FontFace.PlexMono -> FontFamily(Font(R.font.ibm_plex_mono_400), Font(R.font.ibm_plex_mono_600, FontWeight.SemiBold))
 }
 
-private fun type(family: FontFamily, scale: Float) = Type(
-    hero = TextStyle(fontFamily = family, fontWeight = FontWeight.SemiBold, fontSize = (88 * scale).sp, letterSpacing = (-2).sp),
-    title = TextStyle(fontFamily = family, fontWeight = FontWeight.SemiBold, fontSize = (22 * scale).sp),
+internal fun type(family: FontFamily, scale: Float, theme: Theme) = Type(
+    hero = TextStyle(fontFamily = family, fontWeight = FontWeight.SemiBold, fontSize = ((if (theme == Theme.Butter) 94 else 88) * scale).sp, letterSpacing = (if (theme == Theme.Phosphor) 0.5 else -2.0).sp),
+    title = TextStyle(fontFamily = family, fontWeight = FontWeight.SemiBold, fontSize = ((if (theme == Theme.Orbital) 24 else 22) * scale).sp, letterSpacing = (if (theme == Theme.Phosphor) 1.0 else 0.0).sp),
     body = TextStyle(fontFamily = family, fontSize = (17 * scale).sp),
-    label = TextStyle(fontFamily = family, fontWeight = FontWeight.SemiBold, fontSize = (14 * scale).sp),
+    label = TextStyle(fontFamily = family, fontWeight = FontWeight.SemiBold, fontSize = (14 * scale).sp, letterSpacing = (if (theme == Theme.Phosphor) 0.9 else if (theme == Theme.Orbital) 0.5 else 0.0).sp),
     caption = TextStyle(fontFamily = family, fontSize = (13 * scale).sp),
 )

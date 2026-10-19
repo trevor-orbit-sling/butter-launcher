@@ -43,7 +43,8 @@ internal fun shouldMoveBackground(style: BackgroundStyle, resumed: Boolean, dura
 /** Three cached radial shaders; animation state is read only in the draw phase, never by home content. */
 @Composable
 fun Modifier.backdrop(look: Look, style: BackgroundStyle, accent: Color): Modifier {
-    val cyberpunk = LocalSettings.current.theme == Theme.Cyberpunk
+    val theme = LocalSettings.current.theme
+    val cyberpunk = theme == Theme.Cyberpunk
     val phase = if (style == BackgroundStyle.Moving) rememberBlobPhase() else null
     val colors = remember(look, style, accent) {
         if (style == BackgroundStyle.Theme) look.blobs
@@ -87,6 +88,7 @@ fun Modifier.backdrop(look: Look, style: BackgroundStyle, accent: Color): Modifi
         }
         val hairline = Stroke(width = 1.dp.toPx())
         val edgeStroke = Stroke(width = 2.dp.toPx())
+        val marks = themeMarks(theme, look, size, 1.dp.toPx())
         onDrawBehind {
             drawRect(background)
             val cycle = phase?.floatValue ?: 0f
@@ -105,6 +107,7 @@ fun Modifier.backdrop(look: Look, style: BackgroundStyle, accent: Color): Modifi
                 drawPath(edgeMarks, accent.copy(alpha = 0.6f), style = edgeStroke)
                 drawLine(Color(0xFFFF2A8D).copy(alpha = 0.5f), Offset(size.width * 0.66f, size.height - 14.dp.toPx()), Offset(size.width * 0.83f, size.height - 14.dp.toPx()), strokeWidth = 2.dp.toPx())
             }
+            marks.forEach { drawPath(it.path, it.color, style = it.style) }
         }
     }
 }

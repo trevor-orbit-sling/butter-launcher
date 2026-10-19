@@ -24,7 +24,7 @@ Make it yours. Contributions to icons, themes and the launcher itself are welcom
 
 - **Favourites you arrange.** Hold OK on an app, then release to open its menu. Add or remove a favourite, choose Move to reorder it, or open Android's App info.
 - **All your apps in one place.** Browse your installed apps, including favourites, with a menu on every tile. Choose **Hide from All apps** to tidy this row without removing a favourite; restore individual apps in **Settings → Hidden apps**. Butter Launcher also hides its own installation and previous Plain home-screen installations.
-- **Eleven looks.** Frosted Glass, Material You, Ink, Paper, Slate, Sand, Catppuccin Mocha, Catppuccin Latte, Dracula, Nord and Cyberpunk. Changing theme picks a matching accent, which you can edit afterward. Six fonts, text sizes, spacing and tile shapes are also available.
+- **Seventeen looks.** Choose familiar palettes, Cyberpunk neon or six new presets: Phosphor, Orbital, After Hours, Deep Sea, Butter and Canopy. Changing theme picks a matching accent. The six new presets also apply a matching font when selected; both remain editable. Text sizes, spacing and tile shapes are also available.
 - **Backgrounds with optional motion.** Keep the theme background, add soft gradient blobs, or let them move slowly while the launcher is open.
 - **Your choice of icons.** Open **Customise → Icons → Choose icons** for a visible list with previews. **Lawnicons** is recommended for its clear, consistent artwork at TV distance; **Original**, **Arcticons**, **Minimal mono** and **Desaturated** are also included. Compatible installed packs join the same list. The old hand-drawn Line choice is replaced by Lawnicons automatically. See the [icon guide](docs/icons.md) for coverage and licenses.
 - **A clock and optional weather.** Weather starts off. Choose a city to enable it; there is no location permission or automatic IP lookup.
@@ -80,6 +80,20 @@ Use **Inputs** at the top of Home to open external sources exposed by your TV, s
 In **Customise**, choose **Theme**, **Gradient blobs** or **Moving blobs** for the background. Theme keeps the theme's usual background. Gradient blobs adds soft colour shapes, and Moving blobs animates them slowly. Motion runs only while the launcher is in the foreground and stops when system animations are disabled.
 
 **Cyberpunk** adds near-black panels, neon yellow focus, cyan and magenta details, and cut-corner tiles with a faint static grid. Movement remains optional through Background. It is original styling, with no game artwork, fonts or logos.
+
+The six new presets add their own static details, from Phosphor's amber terminal lines to Canopy's fern leaves. Compare them in the [theme gallery](docs/theme-gallery.html), or see the [appearance guide](wiki/Appearance.md) for their font and accent defaults. Loading saved settings preserves your choices.
+
+| Phosphor | Orbital |
+| --- | --- |
+| ![Charcoal and amber with terminal type and a waveform detail](docs/screenshots/20-phosphor.png) | ![Ivory, navy and orange framed by orbit lines](docs/screenshots/21-orbital.png) |
+
+| After Hours | Deep Sea |
+| --- | --- |
+| ![A striped sunset above a purple, pink and blue horizon](docs/screenshots/22-after-hours.png) | ![Teal currents and bioluminescent bubbles on a dark screen](docs/screenshots/23-deep-sea.png) |
+
+| Butter | Canopy |
+| --- | --- |
+| ![Cream, gold and cocoa with soft melting curves](docs/screenshots/24-butter.png) | ![Sage and moss greens with a branching fern](docs/screenshots/25-canopy.png) |
 
 ## Optional screen saver
 

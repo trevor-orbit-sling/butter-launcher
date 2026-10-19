@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Butter Launcher · Theme gallery</title>
+<style>
+  :root { color-scheme: dark; font-family: system-ui, sans-serif; background: #17191c; color: #f4f1e9; }
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+  main { width: min(1280px, 100%); margin: auto; padding: clamp(20px, 4vw, 56px); }
+  .eyebrow { color: #b5b1a9; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; }
+  h1 { font-size: clamp(30px, 5vw, 48px); letter-spacing: -.04em; margin: 12px 0; }
+  .intro { color: #b5b1a9; line-height: 1.6; margin: 0 0 28px; }
+  nav { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 24px; }
+  button { appearance: none; background: #23262b; color: inherit; border: 1px solid #373b42;
+    border-radius: 12px; padding: 16px 10px; font: inherit; cursor: pointer; text-align: left; }
+  button:hover { background: #2b2f35; }
+  button[aria-pressed="true"] { border-color: #f2d37b; box-shadow: 0 0 0 1px #f2d37b; }
+  button:focus-visible { outline: 3px solid #f2d37b; outline-offset: 4px; }
+  .swatch { display: block; width: 28px; height: 6px; border-radius: 9px; background: var(--swatch); margin-bottom: 14px; }
+  figure { margin: 0; border: 1px solid #373b42; border-radius: 16px; overflow: hidden; background: #101114; }
+  .screen { position: relative; aspect-ratio: 16 / 9; display: grid; place-items: center; }
+  img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  img[hidden], .pending[hidden] { display: none; }
+  .pending { padding: 24px; color: #b5b1a9; }
+  figcaption { padding: 22px 24px; border-top: 1px solid #373b42; }
+  h2 { font-size: 22px; margin: 0 0 8px; }
+  #caption { margin: 0; color: #b5b1a9; line-height: 1.5; }
+  @media (max-width: 900px) { nav { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 480px) { nav { grid-template-columns: repeat(2, 1fr); } button { padding: 13px; } }
+</style>
+<main>
+  <div class="eyebrow">Butter Launcher</div>
+  <h1>Find your look.</h1>
+  <p class="intro">Six new looks, captured on Android TV. Choose a theme to compare.</p>
+  <nav aria-label="Choose a theme">
+    <button type="button" data-theme="0" aria-pressed="true"><span class="swatch" style="--swatch:#FFB300"></span>Phosphor</button>
+    <button type="button" data-theme="1" aria-pressed="false"><span class="swatch" style="--swatch:#C85A28"></span>Orbital</button>
+    <button type="button" data-theme="2" aria-pressed="false"><span class="swatch" style="--swatch:#FF4FA3"></span>After Hours</button>
+    <button type="button" data-theme="3" aria-pressed="false"><span class="swatch" style="--swatch:#26A69A"></span>Deep Sea</button>
+    <button type="button" data-theme="4" aria-pressed="false"><span class="swatch" style="--swatch:#FFB300"></span>Butter</button>
+    <button type="button" data-theme="5" aria-pressed="false"><span class="swatch" style="--swatch:#A5D64B"></span>Canopy</button>
+  </nav>
+  <figure>
+    <div class="screen">
+      <img id="screenshot" alt="Phosphor theme on the TV">
+      <p class="pending" hidden>Screenshot coming soon.</p>
+    </div>
+    <figcaption aria-live="polite">
+      <h2 id="name">Phosphor</h2>
+      <p id="caption">Charcoal and amber, with terminal type and a waveform detail.</p>
+    </figcaption>
+  </figure>
+</main>
+<script>
+  const themes = [
+    { name: 'Phosphor', image: 'screenshots/20-phosphor.png', caption: 'Charcoal and amber, with terminal type and a waveform detail.' },
+    { name: 'Orbital', image: 'screenshots/21-orbital.png', caption: 'Ivory, navy and orange, framed by orbit lines.' },
+    { name: 'After Hours', image: 'screenshots/22-after-hours.png', caption: 'A striped sunset above a purple, pink and blue horizon.' },
+    { name: 'Deep Sea', image: 'screenshots/23-deep-sea.png', caption: 'Teal currents and bioluminescent bubbles on a dark screen.' },
+    { name: 'Butter', image: 'screenshots/24-butter.png', caption: 'Cream, gold and cocoa with soft melting curves.' },
+    { name: 'Canopy', image: 'screenshots/25-canopy.png', caption: 'Sage and moss greens with a branching fern.' }
+  ];
+  const buttons = [...document.querySelectorAll('button')];
+  const screenshot = document.querySelector('#screenshot');
+  const pending = document.querySelector('.pending');
+  screenshot.addEventListener('load', () => { screenshot.hidden = false; pending.hidden = true; });
+  screenshot.addEventListener('error', () => { screenshot.hidden = true; pending.hidden = false; });
+  function select(index) {
+    const theme = themes[index];
+    buttons.forEach((button, i) => button.setAttribute('aria-pressed', String(i === index)));
+    document.querySelector('#name').textContent = theme.name;
+    document.querySelector('#caption').textContent = theme.caption;
+    screenshot.alt = `${theme.name} theme on the TV`;
+    screenshot.src = theme.image;
+  }
+  buttons.forEach((button, index) => {
+    button.addEventListener('click', () => select(index));
+    button.addEventListener('keydown', event => {
+      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      const next = event.key === 'Home' ? 0 : event.key === 'End' ? buttons.length - 1
+        : (index + (event.key === 'ArrowRight' ? 1 : -1) + buttons.length) % buttons.length;
+      buttons[next].focus();
+      select(next);
+    });
+  });
+  select(0);
+</script>
+</html>

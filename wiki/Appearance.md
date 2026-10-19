@@ -2,7 +2,32 @@
 
 Open **Customise** with the top-right control or Menu on your remote.
 
-Choose from eleven themes: Frosted Glass, Material You, Ink, Paper, Slate, Sand, Catppuccin Mocha, Catppuccin Latte, Dracula, Nord and Cyberpunk. Changing theme chooses a matching accent. You can then choose a different accent yourself.
+Choose from seventeen themes: Frosted Glass, Material You, Ink, Paper, Slate, Sand, Catppuccin Mocha, Catppuccin Latte, Dracula, Nord, Cyberpunk, Phosphor, Orbital, After Hours, Deep Sea, Butter and Canopy. Changing theme chooses a matching accent. You can then choose a different accent yourself.
+
+The six new presets also apply a matching font when you switch to them. You can change that font afterward. Loading saved settings or selecting the current theme again keeps your custom font and accent; the earlier eleven themes keep your font when selected.
+
+| Theme | Look | Font | Accent |
+| --- | --- | --- | --- |
+| Phosphor | Charcoal and amber terminal lines | Plex Mono | Amber |
+| Orbital | Ivory, navy and orange with orbit details | Space Grotesk | Copper |
+| After Hours | Purple, pink and blue with a striped sunset | Outfit | Hot pink |
+| Deep Sea | Dark teal contours and bioluminescent dots | Manrope | Teal |
+| Butter | Cream, gold and cocoa with melting curves | Outfit | Amber |
+| Canopy | Sage and moss with fern leaves | Manrope | Lime |
+
+Their details are static. Background movement stays optional through **Background → Moving blobs**.
+
+| Phosphor | Orbital |
+| --- | --- |
+| ![Charcoal and amber with terminal type and a waveform detail](images/20-phosphor.png) | ![Ivory, navy and orange framed by orbit lines](images/21-orbital.png) |
+
+| After Hours | Deep Sea |
+| --- | --- |
+| ![A striped sunset above a purple, pink and blue horizon](images/22-after-hours.png) | ![Teal currents and bioluminescent bubbles on a dark screen](images/23-deep-sea.png) |
+
+| Butter | Canopy |
+| --- | --- |
+| ![Cream, gold and cocoa with soft melting curves](images/24-butter.png) | ![Sage and moss greens with a branching fern](images/25-canopy.png) |
 
 ![Dracula with a matching Lavender accent](images/07-appearance.png)
 

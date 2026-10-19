@@ -20,6 +20,8 @@ enum class Theme(override val label: String) : Choice {
     CatppuccinMocha("Catppuccin Mocha"), CatppuccinLatte("Catppuccin Latte"),
     Dracula("Dracula"), Nord("Nord"),
     Cyberpunk("Cyberpunk"),
+    Phosphor("Phosphor"), Orbital("Orbital"), AfterHours("After Hours"),
+    DeepSea("Deep Sea"), Butter("Butter"), Canopy("Canopy"),
 }
 
 enum class BackgroundStyle(override val label: String) : Choice {
@@ -30,6 +32,7 @@ enum class Accent(override val label: String, val color: Color) : Choice {
     Blue("Blue", Color(0xFF4F8DFD)), Teal("Teal", Color(0xFF26A69A)), Green("Green", Color(0xFF66BB6A)),
     Amber("Amber", Color(0xFFFFB300)), Rose("Rose", Color(0xFFEC5F8A)), Lavender("Lavender", Color(0xFF9C7CF4)),
     NeonYellow("Neon yellow", Color(0xFFFCEE0A)),
+    Copper("Copper", Color(0xFFC85A28)), HotPink("Hot pink", Color(0xFFFF4FA3)), Lime("Lime", Color(0xFFA5D64B)),
 }
 
 enum class FontFace(override val label: String) : Choice {
@@ -132,9 +135,9 @@ internal fun validCoordinates(lat: String, lon: String): Boolean {
     return latitude.isFinite() && longitude.isFinite() && latitude in -90.0..90.0 && longitude in -180.0..180.0
 }
 
-/** Apply palette defaults only for an explicit theme change, preserving all other preferences. */
+/** Apply defaults only for explicit selection; saved or manually edited choices are left alone. */
 internal fun LauncherSettings.changeTheme(theme: Theme): LauncherSettings =
-    if (theme == this.theme) this else copy(theme = theme, accent = theme.defaultAccent)
+    if (theme == this.theme) this else copy(theme = theme, accent = theme.defaultAccent, font = theme.defaultFont ?: font)
 
 internal fun LauncherSettings.hideApp(packageName: String): LauncherSettings =
     if (packageName in hiddenApps) this else copy(hiddenApps = hiddenApps + packageName)
@@ -153,4 +156,17 @@ internal val Theme.defaultAccent: Accent get() = when (this) {
     Theme.Paper, Theme.Nord -> Accent.Teal
     Theme.Sand -> Accent.Amber
     Theme.Cyberpunk -> Accent.NeonYellow
+    Theme.Phosphor, Theme.Butter -> Accent.Amber
+    Theme.Orbital -> Accent.Copper
+    Theme.AfterHours -> Accent.HotPink
+    Theme.DeepSea -> Accent.Teal
+    Theme.Canopy -> Accent.Lime
+}
+
+internal val Theme.defaultFont: FontFace? get() = when (this) {
+    Theme.Phosphor -> FontFace.PlexMono
+    Theme.Orbital -> FontFace.SpaceGrotesk
+    Theme.AfterHours, Theme.Butter -> FontFace.Outfit
+    Theme.DeepSea, Theme.Canopy -> FontFace.Manrope
+    else -> null
 }

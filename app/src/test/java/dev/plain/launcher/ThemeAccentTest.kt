@@ -14,7 +14,7 @@ class ThemeAccentTest {
                 showWeather = Toggle.On, place = "London", lat = "51.5", lon = "-0.1",
                 tutorialComplete = true,
             )
-            assertEquals(before.copy(theme = theme, accent = theme.defaultAccent), before.changeTheme(theme))
+            assertEquals(before.copy(theme = theme, accent = theme.defaultAccent, font = theme.defaultFont ?: before.font), before.changeTheme(theme))
         }
         assertEquals(Accent.Lavender, LauncherSettings().changeTheme(Theme.CatppuccinMocha).accent)
         assertEquals(Accent.Lavender, LauncherSettings().changeTheme(Theme.CatppuccinLatte).accent)
