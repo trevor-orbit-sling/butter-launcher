@@ -54,7 +54,7 @@ def exports():
     ]
     docs = [
         "# Bundled icon sources", "",
-        "Generated from `icons/bundled/catalog.json`. SVG files are unchanged upstream originals; the launcher maps packages and applies a theme foreground tint at runtime. Original line artwork supplies the explicitly listed fallbacks.", "",
+        "Generated from `icons/bundled/catalog.json`. SVG files are unchanged upstream originals; the launcher maps packages and applies a theme foreground tint at runtime. Missing brands use clearly identified standard generic drawings from the same upstream pack.", "",
     ]
     sections = []
     expected_assets = set()
@@ -78,7 +78,7 @@ def exports():
         by_id = {icon["id"]: icon for icon in pack["icons"]}
         for glyph_id, glyph in glyphs.items():
             item = by_id.get(glyph_id)
-            fallback = item is None
+            fallback = glyph_id in pack.get("genericMappings", [])
             if item:
                 assert item["asset"] == f'icons/{pack_id}/{glyph_id}.svg', "Unsafe asset path"
                 assert item["source"].startswith(pack["sourceDirectory"] + "/"), "Unexpected upstream path"
@@ -93,30 +93,46 @@ def exports():
                 asset_url = f'../../app/src/main/assets/{item["asset"]}'
                 docs.append(f'| {glyph["name"]} | [{item["asset"]}]({asset_url}) | [{item["source"]}]({url}) | `{item["sha256"]}` |')
             else:
-                data = (ROOT / f'docs/icons/svg/{glyph_id}.svg').read_bytes()
+                raise ValueError(f"Missing standard artwork for {pack_id}/{glyph_id}")
             encoded = base64.b64encode(data).decode("ascii")
             name = html.escape(glyph["name"])
-            hint = "Butter line fallback" if fallback else pack["label"]
+            hint = "Standard generic symbol" if fallback else pack["label"]
             search = html.escape(" ".join([pack["label"], glyph["name"], *glyph["packages"]]).lower(), quote=True)
             items.append(
                 f'<article data-search="{search}" title="{hint}"><div class="tile">'
                 f'<div class="art" role="img" aria-label="{name}" style="--svg:url(data:image/svg+xml;base64,{encoded})"></div></div>'
-                f'<p>{name}{" <small>Line fallback</small>" if fallback else ""}</p></article>'
+                f'<p>{name}{" <small>Generic symbol</small>" if fallback else ""}</p></article>'
             )
         kotlin.append("    ),")
-        fallback_names = ", ".join(glyphs[id]["name"] for id in pack["fallbacks"])
-        docs += ["", f'**Butter line fallback:** {fallback_names}.', ""]
+        fallback_names = ", ".join(glyphs[id]["name"] for id in pack.get("genericMappings", []))
+        docs += ["", f'**Standard generic symbols:** {fallback_names}. Unknown packages use Other app.', ""]
         sections.append(f'<section data-pack="{pack_id}"><h2>{pack["label"]}</h2><p class="about">{len(pack["icons"])} bundled SVG files · {pack["license"]} · {pack["attribution"]}</p><div class="grid">' + "\n".join(items) + "</div></section>")
     actual_assets = set((ASSETS / "icons/arcticons").glob("*.svg")) | set((ASSETS / "icons/lawnicons").glob("*.svg"))
     assert actual_assets == expected_assets, "Untracked or missing imported SVG files"
     kotlin += [
         ")", "",
-        "// Reuse the explicit TV/mobile aliases from our line catalog. Null uses the original line fallback.",
-        "internal fun bundledIconAsset(style: IconStyle, packageName: String): String? =",
-        "    linePackageAliases[packageName]?.let { bundledIconAssets[style]?.get(it) }", "",
+        "// Line is a legacy serialized value. Its replacement is the established Lawnicons set.",
+        "internal fun bundledIconAsset(style: IconStyle, packageName: String): String? {",
+        "    val effective = if (style == IconStyle.Line) IconStyle.Lawnicons else style",
+        "    val icons = bundledIconAssets[effective] ?: return null",
+        '    return icons[appIconAliases[packageName] ?: "app"] ?: icons.getValue("app")',
+        "}", "",
+        "internal val appIconAliases: Map<String, String> = mapOf(",
     ]
+    kotlin += [f'    {quote(package)} to {quote(id)},' for package, id in aliases.items()]
+    kotlin += [")", ""]
+    generic = ET.fromstring((ASSETS / "icons/lawnicons/app.svg").read_text())
+    path = list(generic)[0]
+    assert len(list(generic)) == 1 and path.tag.endswith("}path")
+    assert generic.get("width") == "192" and generic.get("height") == "192" and generic.get("fill") == "none"
+    assert path.get("stroke-width") == "12" and path.get("stroke-linecap") == "round" and path.get("stroke-linejoin") == "round"
+    kotlin += ["// Exact pinned Lawnicons generic_grid_2x2.svg path/style for loading or decode errors.", f'internal const val standardAppPath = {quote(path.get("d"))}', ""]
     apk_manifest = dict(catalog, packageMappings=aliases)
     manifest_text = json.dumps(apk_manifest, indent=2) + "\n"
+    package_table = ["# Exact icon package aliases", "", "Generated from `icons/packages.json`. Matching uses exact package names, never label or prefix guessing.", "", "| App / category | Exact package aliases |", "| --- | --- |"]
+    for icon in glyphs.values():
+        packages = "<br>".join(f'`{package}`' for package in icon["packages"]) or "Standard generic symbol for unknown packages"
+        package_table.append(f'| {icon["name"]} | {packages} |')
     gallery = """<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Butter Launcher · Bundled icon packs</title><style>
 *{box-sizing:border-box}body{margin:0;font:14px/1.5 system-ui,sans-serif;background:#111419;color:#f3f4f6}
@@ -133,24 +149,25 @@ article{text-align:center;min-width:0}article p{font-size:12px;margin:7px 0 0}sm
 [hidden]{display:none}footer{border-top:1px solid var(--line);padding-top:12px;margin-top:24px;color:var(--muted);font-size:12px}
 @media(max-width:440px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 10px}}
 </style><main data-mode="dark"><h1>Bundled icon packs</h1><p>Butter Launcher · Pinned upstream SVGs, themed at display time</p>
-<div class="controls"><select aria-label="Icon pack"><option value="arcticons">Arcticons</option><option value="lawnicons">Lawnicons</option></select>
+<div class="controls"><select aria-label="Icon pack"><option value="lawnicons">Lawnicons</option><option value="arcticons">Arcticons</option></select>
 <button data-mode="dark" aria-pressed="true">Dark</button><button data-mode="light" aria-pressed="false">Light</button><button data-mode="tint" aria-pressed="false">Tint</button>
 <input type="color" value="#c3b4fa" aria-label="Preview tint"><input type="search" placeholder="Find app or package…" aria-label="Find app or package"></div>
 SECTIONS
-<footer>Arcticons artwork © Arcticons Team and contributors, CC BY-SA 4.0. Lawnicons artwork © Lawnchair and contributors, Apache 2.0. Complete SVG files are embedded without altering their shapes or transforms. Labelled fallbacks are Butter Launcher's original line art. Bundled sources, full licenses and exact file hashes accompany the app and repository. Brand names identify their owners; inclusion does not imply endorsement.</footer></main>
+<footer>Arcticons artwork © Arcticons Team and contributors, CC BY-SA 4.0. Lawnicons artwork © Lawnchair and contributors, Apache 2.0. Complete SVG files are embedded without altering their shapes or transforms. Labelled generic symbols come from the selected upstream pack. Bundled sources, full licenses and exact file hashes accompany the app and repository. Brand names identify their owners; inclusion does not imply endorsement.</footer></main>
 <script>
 const main=document.querySelector('main'),buttons=[...document.querySelectorAll('button[data-mode]')];
 function mode(value){main.dataset.mode=value;buttons.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===value)))}
 buttons.forEach(b=>b.onclick=()=>mode(b.dataset.mode));document.querySelector('input[type=color]').oninput=e=>{main.style.setProperty('--tint',e.target.value);mode('tint')};
 function pack(value){document.querySelectorAll('section').forEach(s=>s.hidden=s.dataset.pack!==value)}
-document.querySelector('select').onchange=e=>pack(e.target.value);pack('arcticons');
+document.querySelector('select').onchange=e=>pack(e.target.value);pack('lawnicons');
 document.querySelector('input[type=search]').oninput=e=>{const q=e.target.value.trim().toLowerCase();document.querySelectorAll('article').forEach(a=>a.hidden=!a.dataset.search.includes(q))};
 </script></html>
 """.replace("SECTIONS", "\n".join(sections))
     return {
         ROOT / "app/src/main/java/dev/plain/launcher/BundledIcons.kt": "\n".join(kotlin),
         ASSETS / "icons/bundled-sources.json": manifest_text,
-        ROOT / "docs/icons/bundled-sources.md": "\n".join(docs) + "\n",
+        ROOT / "docs/icons/bundled-sources.md": "\n".join(docs).rstrip() + "\n",
+        ROOT / "docs/icons/packages.md": "\n".join(package_table) + "\n",
         ROOT / "docs/icons/bundled-preview.html": gallery,
     }
 
@@ -170,7 +187,8 @@ def main():
             path.write_text(data)
     if stale:
         raise SystemExit("Stale bundled icon exports:\n" + "\n".join(stale))
-    print(f'{"Checked" if args.check else "Generated"} {len(files)} bundled icon exports; 77 SVGs passed hash and safety checks')
+    count = sum(len(pack["icons"]) for pack in json.loads(CATALOG.read_text())["packs"])
+    print(f'{"Checked" if args.check else "Generated"} {len(files)} bundled icon exports; {count} SVGs passed hash and safety checks')
 
 
 if __name__ == "__main__":

@@ -1,6 +1,7 @@
 package dev.plain.launcher.ui
 
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
@@ -55,7 +56,7 @@ fun PlainTheme(settings: LauncherSettings, content: @Composable () -> Unit) {
 
 
 fun tileShape(settings: LauncherSettings, look: Look): Shape = when (settings.tileShape) {
-    TileShape.Rounded -> RoundedCornerShape(look.corner)
+    TileShape.Rounded -> if (settings.theme == Theme.Cyberpunk) CutCornerShape(topEnd = 14.dp, bottomStart = 14.dp) else RoundedCornerShape(look.corner)
     TileShape.Square -> RoundedCornerShape(3.dp)
     TileShape.Pill -> RoundedCornerShape(percent = 50)
 }
@@ -69,7 +70,7 @@ internal fun tone(seed: Color, saturation: Float, lightness: Float, hueShift: Fl
     return Color(ColorUtils.HSLToColor(hsl))
 }
 
-private fun look(theme: Theme, accent: Color): Look = when (theme) {
+internal fun look(theme: Theme, accent: Color): Look = when (theme) {
     Theme.Glass -> Look(
         top = tone(accent, 0.45f, 0.10f),
         bottom = tone(accent, 0.35f, 0.05f, 30f),
@@ -133,6 +134,16 @@ private fun look(theme: Theme, accent: Color): Look = when (theme) {
     Theme.Nord -> flat(
         Color(0xFF2E3440), Color(0xFF2E3440), Color(0xFF3B4252), Color(0xFF434C5E),
         Color(0xFF88C0D0), Color(0xFFECEFF4), Color(0xFFD8DEE9), tone(accent, 0.65f, 0.82f), 12.dp,
+    )
+    // Original neon-terminal styling; no game artwork, logos or fonts are used.
+    Theme.Cyberpunk -> Look(
+        top = Color(0xFF080D16), bottom = Color(0xFF03060B),
+        blobs = listOf(Color(0xFF00F0FF).copy(alpha = 0.13f), Color(0xFFFF2A8D).copy(alpha = 0.12f)),
+        surface = Color(0xFF101A24), surfaceFocused = Color(0xFF203440),
+        border = Color(0xFF00F0FF).copy(alpha = 0.45f), borderWidth = 1.dp,
+        focusBorder = accent, focusBorderWidth = 2.5.dp,
+        text = Color(0xFFF3F8FA), textDim = Color(0xFFADC5D1), accent = accent,
+        panel = Color(0xFF0A111B), corner = 3.dp, zoom = 1.04f,
     )
 }
 

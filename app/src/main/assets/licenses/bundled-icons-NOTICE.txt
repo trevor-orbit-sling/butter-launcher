@@ -4,7 +4,7 @@ ARCTICONS
 Artwork by Arcticons Team and contributors.
 Source: https://github.com/Arcticons-Team/Arcticons
 Pinned revision: 917baa2b8b1c304e7a45de48d35e97b7a774c251
-Imported directory: icons/white (40 selected SVG files only)
+Imported directory: icons/white (41 selected SVG files only)
 License: Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0).
 https://creativecommons.org/licenses/by-sa/4.0/
 The complete legal code is included in arcticons-artwork-CC-BY-SA-4.0.txt.
@@ -25,7 +25,7 @@ LAWNICONS
 Artwork by Lawnchair and Lawnicons contributors.
 Source: https://github.com/LawnchairLauncher/lawnicons
 Pinned revision: fbbdb222d05a203c7405acff80bf5a883d806038
-Imported directory: svgs (37 selected SVG files)
+Imported directory: svgs (41 selected SVG files)
 License: Apache License, Version 2.0.
 The complete upstream license is included in lawnicons-Apache-2.0.txt.
 https://github.com/LawnchairLauncher/lawnicons/blob/fbbdb222d05a203c7405acff80bf5a883d806038/LICENSE
@@ -40,11 +40,14 @@ The APK includes icons/bundled-sources.json with every original source path,
 pinned revision, bundled asset path, SHA-256 hash, exact package mapping and
 explicit fallback list. The repository mirrors this in icons/bundled/catalog.json
 and docs/icons/bundled-sources.md. All SVGs are self-contained local drawings.
-Unsupported package aliases, absent upstream artwork, and loading/decode errors
-use Butter Launcher's own Line icons, not artwork attributed to either upstream.
-Unknown packages use the original Other app glyph.
+The retired hand-drawn Line set is not included. Unknown packages use the
+selected pack's standard apps/grid symbol. Lawnicons uses its own standard
+generic-player symbol for ITVX, SmartTube and Live TV, where this pinned subset
+has no exact brand drawing. These generic mappings are identified in the
+source manifest. Loading or decode errors use the exact Lawnicons generic grid
+path and stroke styling, under the same Apache 2.0 license.
 
 The third-party licenses above cover their respective artwork. Importing these
 assets does not select a license for Butter Launcher's own application source
-or original Line icons. Brands and identifying designs remain subject to their
+or other original project material. Brands and identifying designs remain subject to their
 owners' trademark rights; inclusion does not imply endorsement or affiliation.

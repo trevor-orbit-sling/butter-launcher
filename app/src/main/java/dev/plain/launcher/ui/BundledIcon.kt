@@ -14,15 +14,13 @@ import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 import dev.plain.launcher.IconStyle
 import dev.plain.launcher.bundledIconAsset
-import dev.plain.launcher.lineGlyphFor
 
 /** Decode the complete upstream SVG, including its CSS, shapes and transforms. */
 @Composable
 internal fun BundledIcon(packageName: String, style: IconStyle, tint: Color, size: Dp) {
     val asset = bundledIconAsset(style, packageName)
-    val fallback = lineGlyphFor(packageName)
     if (asset == null) {
-        LineIcon(fallback, tint, size)
+        StandardAppIcon(tint, size)
         return
     }
     val context = LocalContext.current
@@ -38,7 +36,7 @@ internal fun BundledIcon(packageName: String, style: IconStyle, tint: Color, siz
         contentScale = ContentScale.Fit,
         colorFilter = ColorFilter.tint(tint),
         modifier = Modifier.size(size),
-        loading = { LineIcon(fallback, tint, size) },
-        error = { LineIcon(fallback, tint, size) },
+        loading = { StandardAppIcon(tint, size) },
+        error = { StandardAppIcon(tint, size) },
     )
 }

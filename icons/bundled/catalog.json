@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "packageAliases": "icons/line/catalog.json",
+  "packageAliases": "icons/packages.json",
   "packs": [
     {
       "id": "arcticons",
@@ -11,9 +11,7 @@
       "license": "CC-BY-SA-4.0",
       "attribution": "Arcticons Team and contributors",
       "modifications": "SVG files are byte-for-byte upstream originals. Butter Launcher adds package aliases and applies foreground tint at runtime; no paths, strokes, fills or transforms are edited.",
-      "fallbacks": [
-        "app"
-      ],
+      "fallbacks": [],
       "icons": [
         {
           "id": "netflix",
@@ -254,7 +252,16 @@
           "source": "icons/white/mx.svg",
           "asset": "icons/arcticons/mx-player.svg",
           "sha256": "3481c9f4bf7e261b8576696dfd672ccfaa78dd0f4586c5dab176aba887cdc61d"
+        },
+        {
+          "id": "app",
+          "source": "icons/white/apps.svg",
+          "asset": "icons/arcticons/app.svg",
+          "sha256": "0c7d4ccb7636284b588362aa8eb7ecee07662a8ef2a384a3cb323575660cf852"
         }
+      ],
+      "genericMappings": [
+        "app"
       ]
     },
     {
@@ -266,12 +273,7 @@
       "license": "Apache-2.0",
       "attribution": "Lawnchair and Lawnicons contributors",
       "modifications": "SVG files are byte-for-byte upstream originals. Butter Launcher adds package aliases and applies foreground tint at runtime; no paths, strokes, fills or transforms are edited.",
-      "fallbacks": [
-        "itvx",
-        "smarttube",
-        "live-tv",
-        "app"
-      ],
+      "fallbacks": [],
       "icons": [
         {
           "id": "netflix",
@@ -494,7 +496,37 @@
           "source": "svgs/generic_player.svg",
           "asset": "icons/lawnicons/mx-player.svg",
           "sha256": "59dc3d6046c6f99d8c626bd067403c6fdaa5a043269a04834bcecde4ebaa8fca"
+        },
+        {
+          "id": "itvx",
+          "source": "svgs/generic_player.svg",
+          "asset": "icons/lawnicons/itvx.svg",
+          "sha256": "59dc3d6046c6f99d8c626bd067403c6fdaa5a043269a04834bcecde4ebaa8fca"
+        },
+        {
+          "id": "smarttube",
+          "source": "svgs/generic_player.svg",
+          "asset": "icons/lawnicons/smarttube.svg",
+          "sha256": "59dc3d6046c6f99d8c626bd067403c6fdaa5a043269a04834bcecde4ebaa8fca"
+        },
+        {
+          "id": "live-tv",
+          "source": "svgs/generic_player.svg",
+          "asset": "icons/lawnicons/live-tv.svg",
+          "sha256": "59dc3d6046c6f99d8c626bd067403c6fdaa5a043269a04834bcecde4ebaa8fca"
+        },
+        {
+          "id": "app",
+          "source": "svgs/generic_grid_2x2.svg",
+          "asset": "icons/lawnicons/app.svg",
+          "sha256": "ea4fb71efd7f413705038c95fef857339f8b279c35c49ea024ede02f79a38e96"
         }
+      ],
+      "genericMappings": [
+        "itvx",
+        "smarttube",
+        "live-tv",
+        "app"
       ]
     }
   ]

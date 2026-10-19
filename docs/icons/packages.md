@@ -1,48 +1,47 @@
-# Line icon package coverage
+# Exact icon package aliases
 
-Generated from `icons/line/catalog.json` by `tools/generate_line_icons.py`.
-These are exact aliases, including TV, mobile and legacy variants where listed. This is artwork mapping, not a claim that a service is available on every device or in every region.
+Generated from `icons/packages.json`. Matching uses exact package names, never label or prefix guessing.
 
-| Drawing | Exact package aliases |
+| App / category | Exact package aliases |
 | --- | --- |
-| [Netflix](svg/netflix.svg) | `com.netflix.ninja`<br>`com.netflix.mediaclient` |
-| [YouTube](svg/youtube.svg) | `com.google.android.youtube.tv`<br>`com.google.android.youtube` |
-| [Disney+](svg/disney-plus.svg) | `com.disney.disneyplus` |
-| [Prime Video](svg/prime-video.svg) | `com.amazon.amazonvideo.livingroom`<br>`com.amazon.avod.thirdpartyclient` |
-| [Hulu](svg/hulu.svg) | `com.hulu.livingroomplus`<br>`com.hulu.plus` |
-| [Max / HBO Max](svg/max.svg) | `com.wbd.stream`<br>`com.hbo.hbomax`<br>`com.hbo.hbonow` |
-| [Apple TV](svg/apple-tv.svg) | `com.apple.atve.androidtv`<br>`com.apple.atve.sony.appletv`<br>`com.apple.atve.android` |
-| [Peacock](svg/peacock.svg) | `com.peacocktv.peacockandroid` |
-| [Paramount+](svg/paramount-plus.svg) | `com.cbs.ott`<br>`com.cbs.app`<br>`com.cbs.ca` |
-| [Tubi](svg/tubi.svg) | `com.tubitv` |
-| [Pluto TV](svg/pluto-tv.svg) | `tv.pluto.android` |
-| [Crunchyroll](svg/crunchyroll.svg) | `com.crunchyroll.crunchyroid` |
-| [Plex](svg/plex.svg) | `com.plexapp.android` |
-| [Jellyfin](svg/jellyfin.svg) | `org.jellyfin.androidtv`<br>`org.jellyfin.mobile` |
-| [Kodi](svg/kodi.svg) | `org.xbmc.kodi` |
-| [VLC](svg/vlc.svg) | `org.videolan.vlc` |
-| [Spotify](svg/spotify.svg) | `com.spotify.tv.android`<br>`com.spotify.music` |
-| [Twitch](svg/twitch.svg) | `tv.twitch.android.viewer`<br>`tv.twitch.android.app` |
-| [Stremio](svg/stremio.svg) | `com.stremio.one`<br>`com.stremio.two` |
-| [BBC iPlayer](svg/bbc-iplayer.svg) | `bbc.iplayer.android`<br>`bbc.mobile.iplayer.android` |
-| [ITVX](svg/itvx.svg) | `com.itv.tv`<br>`air.ITVMobilePlayer` |
-| [DAZN](svg/dazn.svg) | `com.dazn` |
-| [ESPN](svg/espn.svg) | `com.espn.score_center`<br>`com.espn.gtv` |
-| [Steam Link](svg/steam-link.svg) | `com.valvesoftware.steamlink` |
-| [YouTube Music](svg/youtube-music.svg) | `com.google.android.youtube.tvmusic`<br>`com.google.android.apps.youtube.music` |
-| [Emby](svg/emby.svg) | `com.mb.android.tv`<br>`com.mb.android` |
-| [SmartTube](svg/smarttube.svg) | `com.teamsmart.videomanager.tv`<br>`com.teamsmart.videomanager.tv.beta` |
-| [Moonlight](svg/moonlight.svg) | `com.limelight` |
-| [RetroArch](svg/retroarch.svg) | `com.retroarch`<br>`com.retroarch.aarch64`<br>`com.retroarch.ra32` |
-| [Downloader](svg/downloader.svg) | `com.esaba.downloader` |
-| [Files](svg/file-manager.svg) | `com.google.android.documentsui`<br>`com.android.documentsui`<br>`com.lonelycatgames.Xplore`<br>`com.estrongs.android.pop` |
-| [Browser](svg/browser.svg) | `com.android.chrome`<br>`com.google.android.apps.chrome`<br>`com.amazon.cloud9`<br>`org.mozilla.tv.firefox`<br>`com.tcl.browser` |
-| [Play Store](svg/play-store.svg) | `com.android.vending` |
-| [Settings](svg/settings.svg) | `com.android.tv.settings`<br>`com.android.settings`<br>`com.google.android.tv.settings` |
-| [Google TV](svg/google-tv.svg) | `com.google.android.videos`<br>`com.google.android.tv` |
-| [Photos](svg/photos.svg) | `com.google.android.apps.photos`<br>`com.google.android.apps.tv.gallery`<br>`com.android.gallery3d` |
-| [Music](svg/music.svg) | `com.google.android.music`<br>`org.lineageos.eleven` |
-| [Live TV](svg/live-tv.svg) | `com.google.android.tv.livechannels`<br>`com.android.tv` |
-| [F-Droid](svg/f-droid.svg) | `org.fdroid.fdroid` |
-| [MX Player](svg/mx-player.svg) | `com.mxtech.videoplayer.ad`<br>`com.mxtech.videoplayer.pro` |
-| [Other app](svg/app.svg) | Fallback for all unmapped packages |
+| Netflix | `com.netflix.ninja`<br>`com.netflix.mediaclient` |
+| YouTube | `com.google.android.youtube.tv`<br>`com.google.android.youtube` |
+| Disney+ | `com.disney.disneyplus` |
+| Prime Video | `com.amazon.amazonvideo.livingroom`<br>`com.amazon.avod.thirdpartyclient` |
+| Hulu | `com.hulu.livingroomplus`<br>`com.hulu.plus` |
+| Max / HBO Max | `com.wbd.stream`<br>`com.hbo.hbomax`<br>`com.hbo.hbonow` |
+| Apple TV | `com.apple.atve.androidtv`<br>`com.apple.atve.sony.appletv`<br>`com.apple.atve.android` |
+| Peacock | `com.peacocktv.peacockandroid` |
+| Paramount+ | `com.cbs.ott`<br>`com.cbs.app`<br>`com.cbs.ca` |
+| Tubi | `com.tubitv` |
+| Pluto TV | `tv.pluto.android` |
+| Crunchyroll | `com.crunchyroll.crunchyroid` |
+| Plex | `com.plexapp.android` |
+| Jellyfin | `org.jellyfin.androidtv`<br>`org.jellyfin.mobile` |
+| Kodi | `org.xbmc.kodi` |
+| VLC | `org.videolan.vlc` |
+| Spotify | `com.spotify.tv.android`<br>`com.spotify.music` |
+| Twitch | `tv.twitch.android.viewer`<br>`tv.twitch.android.app` |
+| Stremio | `com.stremio.one`<br>`com.stremio.two` |
+| BBC iPlayer | `bbc.iplayer.android`<br>`bbc.mobile.iplayer.android` |
+| ITVX | `com.itv.tv`<br>`air.ITVMobilePlayer` |
+| DAZN | `com.dazn` |
+| ESPN | `com.espn.score_center`<br>`com.espn.gtv` |
+| Steam Link | `com.valvesoftware.steamlink` |
+| YouTube Music | `com.google.android.youtube.tvmusic`<br>`com.google.android.apps.youtube.music` |
+| Emby | `com.mb.android.tv`<br>`com.mb.android` |
+| SmartTube | `com.teamsmart.videomanager.tv`<br>`com.teamsmart.videomanager.tv.beta` |
+| Moonlight | `com.limelight` |
+| RetroArch | `com.retroarch`<br>`com.retroarch.aarch64`<br>`com.retroarch.ra32` |
+| Downloader | `com.esaba.downloader` |
+| Files | `com.google.android.documentsui`<br>`com.android.documentsui`<br>`com.lonelycatgames.Xplore`<br>`com.estrongs.android.pop` |
+| Browser | `com.android.chrome`<br>`com.google.android.apps.chrome`<br>`com.amazon.cloud9`<br>`org.mozilla.tv.firefox`<br>`com.tcl.browser` |
+| Play Store | `com.android.vending` |
+| Settings | `com.android.tv.settings`<br>`com.android.settings`<br>`com.google.android.tv.settings` |
+| Google TV | `com.google.android.videos`<br>`com.google.android.tv` |
+| Photos | `com.google.android.apps.photos`<br>`com.google.android.apps.tv.gallery`<br>`com.android.gallery3d` |
+| Music | `com.google.android.music`<br>`org.lineageos.eleven` |
+| Live TV | `com.google.android.tv.livechannels`<br>`com.android.tv` |
+| F-Droid | `org.fdroid.fdroid` |
+| MX Player | `com.mxtech.videoplayer.ad`<br>`com.mxtech.videoplayer.pro` |
+| Other app | Standard generic symbol for unknown packages |

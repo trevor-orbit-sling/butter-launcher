@@ -26,14 +26,14 @@ import javax.xml.parsers.DocumentBuilderFactory
 class BundledIconsTest {
     private val context: Application get() = RuntimeEnvironment.getApplication()
 
-    @Test fun `both bundled styles persist alongside original and line preferences`() {
-        for (style in listOf(IconStyle.Original, IconStyle.Mono, IconStyle.Line, IconStyle.Arcticons, IconStyle.Lawnicons)) {
+    @Test fun `both bundled styles persist alongside original preferences`() {
+        for (style in listOf(IconStyle.Original, IconStyle.Mono, IconStyle.Arcticons, IconStyle.Lawnicons)) {
             val settings = LauncherSettings(iconStyle = style)
             assertEquals(settings, decodeSettings(settingsJson.encodeToString(settings)))
         }
     }
 
-    @Test fun `common TV aliases select the requested source and unsupported art uses line fallback`() {
+    @Test fun `common TV aliases select upstream artwork and unknown apps use standard generic symbols`() {
         for (style in listOf(IconStyle.Arcticons, IconStyle.Lawnicons)) {
             for (packageName in listOf(
                 "com.netflix.ninja", "com.amazon.amazonvideo.livingroom", "com.hulu.livingroomplus",
@@ -41,13 +41,13 @@ class BundledIconsTest {
                 "com.apple.atve.androidtv", "com.valvesoftware.steamlink",
             )) assertNotNull("$style: $packageName", bundledIconAsset(style, packageName))
             assertEquals(bundledIconAsset(style, "com.netflix.ninja"), bundledIconAsset(style, "com.netflix.mediaclient"))
-            assertNull(bundledIconAsset(style, "com.netflix.ninja.unrelated"))
-            assertNull(bundledIconAsset(style, "tv.example.unknown"))
+            assertEquals(bundledIconAssets.getValue(style)["app"], bundledIconAsset(style, "com.netflix.ninja.unrelated"))
+            assertEquals(bundledIconAssets.getValue(style)["app"], bundledIconAsset(style, "tv.example.unknown"))
         }
         assertNotNull(bundledIconAsset(IconStyle.Arcticons, "air.ITVMobilePlayer"))
-        assertNull(bundledIconAsset(IconStyle.Lawnicons, "air.ITVMobilePlayer"))
-        assertEquals("itvx", lineGlyphFor("air.ITVMobilePlayer").id)
-        assertEquals("app", lineGlyphFor("tv.example.unknown").id)
+        assertNotNull(bundledIconAsset(IconStyle.Lawnicons, "air.ITVMobilePlayer"))
+        assertEquals("itvx", appIconAliases["air.ITVMobilePlayer"])
+        assertEquals(bundledIconAsset(IconStyle.Lawnicons, "org.jellyfin.androidtv"), bundledIconAsset(IconStyle.Line, "org.jellyfin.androidtv"))
         assertNull(bundledIconAsset(IconStyle.Original, "com.netflix.ninja"))
     }
 
@@ -60,7 +60,7 @@ class BundledIconsTest {
             val style = IconStyle.valueOf(data.getValue("label").jsonPrimitive.content)
             val importedIds = data.getValue("icons").jsonArray.map { it.jsonObject.getValue("id").jsonPrimitive.content }.toSet()
             val fallbacks = data.getValue("fallbacks").jsonArray.map { it.jsonPrimitive.content }.toSet()
-            assertEquals(lineGlyphs.keys, importedIds + fallbacks)
+            assertEquals(appIconAliases.values.toSet() + "app", importedIds + fallbacks)
             assertTrue(importedIds.intersect(fallbacks).isEmpty())
             for (icon in data.getValue("icons").jsonArray) {
                 val entry = icon.jsonObject

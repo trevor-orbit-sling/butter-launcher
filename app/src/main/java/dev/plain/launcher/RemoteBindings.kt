@@ -3,21 +3,23 @@ package dev.plain.launcher
 import android.view.KeyEvent
 import kotlinx.serialization.Serializable
 
-enum class RemoteAction(val label: String) { Customise("Customise"), AppOptions("App options"), FirstRow("First row") }
+enum class RemoteAction(val label: String) { Customise("Customise"), AppOptions("App options"), FirstRow("First row"), Inputs("Inputs") }
 
 @Serializable
 data class RemoteBindings(
     val customise: Int = KeyEvent.KEYCODE_MENU,
     val appOptions: Int = KeyEvent.KEYCODE_BUTTON_Y,
     val firstRow: Int = KeyEvent.KEYCODE_BUTTON_START,
+    val inputs: Int = KeyEvent.KEYCODE_UNKNOWN,
 ) {
     fun key(action: RemoteAction) = when (action) {
         RemoteAction.Customise -> customise
         RemoteAction.AppOptions -> appOptions
         RemoteAction.FirstRow -> firstRow
+        RemoteAction.Inputs -> inputs
     }
 
-    fun action(key: Int) = RemoteAction.entries.firstOrNull { key(it) == key }
+    fun action(key: Int) = RemoteAction.entries.firstOrNull { key != KeyEvent.KEYCODE_UNKNOWN && key(it) == key }
 
     fun problem(action: RemoteAction, key: Int): String? {
         if (key !in assignableKeys) return "Keep navigation, OK, Back, Home, Power and volume available. Try a menu, coloured, media or gamepad button."
@@ -30,6 +32,7 @@ data class RemoteBindings(
             RemoteAction.Customise -> copy(customise = key)
             RemoteAction.AppOptions -> copy(appOptions = key)
             RemoteAction.FirstRow -> copy(firstRow = key)
+            RemoteAction.Inputs -> copy(inputs = key)
         }
     }
 

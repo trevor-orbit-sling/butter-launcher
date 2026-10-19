@@ -19,6 +19,7 @@ enum class Theme(override val label: String) : Choice {
     Paper("Minimal paper"), Slate("Minimal slate"), Sand("Minimal sand"),
     CatppuccinMocha("Catppuccin Mocha"), CatppuccinLatte("Catppuccin Latte"),
     Dracula("Dracula"), Nord("Nord"),
+    Cyberpunk("Cyberpunk"),
 }
 
 enum class BackgroundStyle(override val label: String) : Choice {
@@ -28,6 +29,7 @@ enum class BackgroundStyle(override val label: String) : Choice {
 enum class Accent(override val label: String, val color: Color) : Choice {
     Blue("Blue", Color(0xFF4F8DFD)), Teal("Teal", Color(0xFF26A69A)), Green("Green", Color(0xFF66BB6A)),
     Amber("Amber", Color(0xFFFFB300)), Rose("Rose", Color(0xFFEC5F8A)), Lavender("Lavender", Color(0xFF9C7CF4)),
+    NeonYellow("Neon yellow", Color(0xFFFCEE0A)),
 }
 
 enum class FontFace(override val label: String) : Choice {
@@ -60,7 +62,7 @@ enum class RowOrder(override val label: String) : Choice {
 }
 
 enum class IconStyle(override val label: String) : Choice {
-    Original("Original"), Mono("Minimal mono"), Line("Line icons"), Arcticons("Arcticons"), Lawnicons("Lawnicons"),
+    Original("Original"), Mono("Minimal mono"), Line("Lawnicons"), Arcticons("Arcticons"), Lawnicons("Lawnicons"),
     Desaturated("Desaturated"), Pack("Icon pack"),
 }
 
@@ -94,6 +96,7 @@ data class LauncherSettings(
     val iconStyle: IconStyle = IconStyle.Original,
     val iconPack: String = "",
     val favourites: List<String> = emptyList(),
+    val hiddenApps: List<String> = emptyList(),
     val showWeather: Toggle = Toggle.Off,
     val tempUnit: TempUnit = TempUnit.Celsius,
     val place: String = "",
@@ -118,7 +121,8 @@ class SettingsStore(private val context: Context) {
 }
 
 internal fun decodeSettings(text: String?) =
-    text?.let { runCatching { settingsJson.decodeFromString<LauncherSettings>(it) }.getOrNull() } ?: LauncherSettings()
+    (text?.let { runCatching { settingsJson.decodeFromString<LauncherSettings>(it) }.getOrNull() } ?: LauncherSettings())
+        .let { if (it.iconStyle == IconStyle.Line) it.copy(iconStyle = IconStyle.Lawnicons) else it }
 
 inline fun <reified E : Enum<E>> E.cycle(step: Int): E = enumValues<E>().let { it[(ordinal + step).mod(it.size)] }
 
@@ -132,9 +136,21 @@ internal fun validCoordinates(lat: String, lon: String): Boolean {
 internal fun LauncherSettings.changeTheme(theme: Theme): LauncherSettings =
     if (theme == this.theme) this else copy(theme = theme, accent = theme.defaultAccent)
 
+internal fun LauncherSettings.hideApp(packageName: String): LauncherSettings =
+    if (packageName in hiddenApps) this else copy(hiddenApps = hiddenApps + packageName)
+
+internal fun LauncherSettings.restoreApp(packageName: String): LauncherSettings =
+    copy(hiddenApps = hiddenApps.filterNot { it == packageName })
+
+internal fun visibleApps(installed: List<App>, hiddenApps: List<String>): List<App> {
+    val hidden = hiddenApps.toHashSet()
+    return installed.filterNot { it.packageName in hidden }
+}
+
 internal val Theme.defaultAccent: Accent get() = when (this) {
     Theme.Glass, Theme.Ink, Theme.Slate -> Accent.Blue
     Theme.MaterialYou, Theme.CatppuccinMocha, Theme.CatppuccinLatte, Theme.Dracula -> Accent.Lavender
     Theme.Paper, Theme.Nord -> Accent.Teal
     Theme.Sand -> Accent.Amber
+    Theme.Cyberpunk -> Accent.NeonYellow
 }

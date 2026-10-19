@@ -51,6 +51,7 @@ import dev.plain.launcher.Place
 import dev.plain.launcher.Weather
 import dev.plain.launcher.cycle
 import dev.plain.launcher.changeTheme
+import dev.plain.launcher.restoreApp
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.CancellationException
@@ -67,20 +68,26 @@ private inline fun <reified E> option(
 ): Option where E : Enum<E>, E : Choice = Option(label, value.label) { step -> onChange { it.set(value.cycle(step)) } }
 
 @Composable
-fun SettingsPanel(apps: Apps, onChange: (Change) -> Unit, onTutorial: () -> Unit) {
+fun SettingsPanel(apps: Apps, installed: List<App>, onChange: (Change) -> Unit, onTutorial: () -> Unit) {
     val s = LocalSettings.current
     val look = LocalLook.current
     val type = LocalType.current
     val context = LocalContext.current
-    val packs = remember { listOf("" to "None") + apps.iconPacks() }
     val first = remember { FocusRequester() }
+    val hiddenButton = remember { FocusRequester() }
+    var choosingHidden by remember { mutableStateOf(false) }
+    if (choosingHidden) HiddenAppsDialog(installed, onChange) {
+        choosingHidden = false
+        runCatching { hiddenButton.requestFocus() }
+    }
     var choosingRemote by remember { mutableStateOf(false) }
     if (choosingRemote) RemoteDialog(onChange) { choosingRemote = false }
     var choosingPlace by remember { mutableStateOf(false) }
+    var choosingIcons by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) { runCatching { first.requestFocus() } }
     if (choosingPlace) PlaceDialog(onChange) { choosingPlace = false }
+    if (choosingIcons) IconChooser(apps, onChange) { choosingIcons = false }
 
-    val pack = packs.indexOfFirst { it.first == s.iconPack }.coerceAtLeast(0)
     val sections = listOf(
         "Theme" to listOf(
             option("Theme", s.theme, onChange) { changeTheme(it) },
@@ -106,20 +113,20 @@ fun SettingsPanel(apps: Apps, onChange: (Change) -> Unit, onTutorial: () -> Unit
             option("Units", s.tempUnit, onChange) { copy(tempUnit = it) },
             Option("Location", s.place.ifBlank { "Choose a city" }, open = { choosingPlace = true }),
         ),
-        "Icons" to listOfNotNull(
-            option("Icon style", s.iconStyle, onChange) { copy(iconStyle = it) },
-            if (s.iconStyle != IconStyle.Pack) null
-            else Option("Icon pack", packs[pack].second) { step -> onChange { it.copy(iconPack = packs[(pack + step).mod(packs.size)].first) } },
+        "Icons" to listOf(
+            Option("Choose icons", if (s.iconStyle == IconStyle.Pack) "Installed pack" else s.iconStyle.label,
+                open = { choosingIcons = true }) { choosingIcons = true },
         ),
     )
 
     Column(Modifier.fillMaxHeight().width(440.dp).background(look.panel).padding(vertical = 28.dp)) {
         Text("Settings", style = type.title, color = look.text, modifier = Modifier.padding(horizontal = 28.dp))
-        Text("◀ ▶ to change · Back to close", style = type.caption, color = look.textDim, modifier = Modifier.padding(start = 28.dp, top = 4.dp, bottom = 12.dp))
+        Text("◀ ▶ to change · OK to open · Back to close", style = type.caption, color = look.textDim, modifier = Modifier.padding(start = 28.dp, top = 4.dp, bottom = 12.dp))
         LazyColumn(contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             item { MenuButton("Quick tour", onClick = onTutorial) }
             item { MenuButton("Remote & controller") { choosingRemote = true } }
             item { MenuButton("Screen saver") { openScreenSaverSettings(context) } }
+            item { MenuButton("Hidden apps", Modifier.focusRequester(hiddenButton)) { choosingHidden = true } }
             sections.forEachIndexed { i, (title, options) ->
                 item { Text(title, style = type.caption, color = look.accent, modifier = Modifier.padding(start = 8.dp, top = 14.dp, bottom = 4.dp)) }
                 options.forEachIndexed { j, o ->
@@ -182,7 +189,7 @@ private fun MenuButton(text: String, modifier: Modifier = Modifier, onClick: () 
 }
 
 @Composable
-fun AppMenu(app: App, favourite: Boolean, canMove: Boolean, onMove: () -> Unit, onInfo: () -> Unit, onDismiss: () -> Unit, onChange: (Change) -> Unit) {
+fun AppMenu(app: App, favourite: Boolean, canMove: Boolean, onMove: () -> Unit, onInfo: () -> Unit, onHide: (() -> Unit)?, onDismiss: () -> Unit, onChange: (Change) -> Unit) {
     val first = remember { FocusRequester() }
     Dialog(onDismissRequest = onDismiss) {
         LaunchedEffect(Unit) { runCatching { first.requestFocus() } }
@@ -194,7 +201,43 @@ fun AppMenu(app: App, favourite: Boolean, canMove: Boolean, onMove: () -> Unit, 
             } else {
                 MenuButton("Add to favourites", Modifier.focusRequester(first)) { onChange { it.copy(favourites = it.favourites + app.packageName) }; onDismiss() }
             }
+            if (onHide != null) MenuButton("Hide from All apps", onClick = onHide)
             MenuButton("App info", onClick = onInfo)
+        }
+    }
+}
+
+@Composable
+private fun HiddenAppsDialog(installed: List<App>, onChange: (Change) -> Unit, onDismiss: () -> Unit) {
+    val hidden = LocalSettings.current.hiddenApps.distinct()
+    val labels = installed.associate { it.packageName to it.label }
+    val duplicateLabels = installed.groupingBy { it.label }.eachCount().filterValues { it > 1 }.keys
+    val look = LocalLook.current
+    val type = LocalType.current
+    val first = remember { FocusRequester() }
+    val done = remember { FocusRequester() }
+    val list = androidx.compose.foundation.lazy.rememberLazyListState()
+    Dialog(onDismissRequest = onDismiss) {
+        LaunchedEffect(hidden) {
+            list.scrollToItem(0)
+            androidx.compose.runtime.withFrameNanos { }
+            runCatching { (if (hidden.isEmpty()) done else first).requestFocus() }
+        }
+        PopupCard(520) {
+            Text("Hidden apps", style = type.title, color = look.text)
+            Text("Hidden apps stay in your favourites. Restore an app to show it in All apps again.", style = type.caption, color = look.textDim)
+            if (hidden.isEmpty()) Text("No hidden apps.", style = type.body, color = look.textDim, modifier = Modifier.padding(vertical = 12.dp))
+            LazyColumn(state = list, modifier = Modifier.heightIn(max = 300.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                itemsIndexed(hidden, key = { _, pkg -> pkg }) { index, pkg ->
+                    Column {
+                        MenuButton("Restore ${labels[pkg] ?: pkg}", if (index == 0) Modifier.focusRequester(first) else Modifier) {
+                            onChange { it.restoreApp(pkg) }
+                        }
+                        if (labels[pkg] in duplicateLabels) Text(pkg, style = type.caption, color = look.textDim, modifier = Modifier.padding(horizontal = 16.dp, vertical = 2.dp))
+                    }
+                }
+            }
+            MenuButton("Done", Modifier.focusRequester(done), onDismiss)
         }
     }
 }

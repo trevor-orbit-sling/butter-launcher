@@ -1,0 +1,326 @@
+{
+  "icons": [
+    {
+      "id": "netflix",
+      "name": "Netflix",
+      "packages": [
+        "com.netflix.ninja",
+        "com.netflix.mediaclient"
+      ]
+    },
+    {
+      "id": "youtube",
+      "name": "YouTube",
+      "packages": [
+        "com.google.android.youtube.tv",
+        "com.google.android.youtube"
+      ]
+    },
+    {
+      "id": "disney-plus",
+      "name": "Disney+",
+      "packages": [
+        "com.disney.disneyplus"
+      ]
+    },
+    {
+      "id": "prime-video",
+      "name": "Prime Video",
+      "packages": [
+        "com.amazon.amazonvideo.livingroom",
+        "com.amazon.avod.thirdpartyclient"
+      ]
+    },
+    {
+      "id": "hulu",
+      "name": "Hulu",
+      "packages": [
+        "com.hulu.livingroomplus",
+        "com.hulu.plus"
+      ]
+    },
+    {
+      "id": "max",
+      "name": "Max / HBO Max",
+      "packages": [
+        "com.wbd.stream",
+        "com.hbo.hbomax",
+        "com.hbo.hbonow"
+      ]
+    },
+    {
+      "id": "apple-tv",
+      "name": "Apple TV",
+      "packages": [
+        "com.apple.atve.androidtv",
+        "com.apple.atve.sony.appletv",
+        "com.apple.atve.android"
+      ]
+    },
+    {
+      "id": "peacock",
+      "name": "Peacock",
+      "packages": [
+        "com.peacocktv.peacockandroid"
+      ]
+    },
+    {
+      "id": "paramount-plus",
+      "name": "Paramount+",
+      "packages": [
+        "com.cbs.ott",
+        "com.cbs.app",
+        "com.cbs.ca"
+      ]
+    },
+    {
+      "id": "tubi",
+      "name": "Tubi",
+      "packages": [
+        "com.tubitv"
+      ]
+    },
+    {
+      "id": "pluto-tv",
+      "name": "Pluto TV",
+      "packages": [
+        "tv.pluto.android"
+      ]
+    },
+    {
+      "id": "crunchyroll",
+      "name": "Crunchyroll",
+      "packages": [
+        "com.crunchyroll.crunchyroid"
+      ]
+    },
+    {
+      "id": "plex",
+      "name": "Plex",
+      "packages": [
+        "com.plexapp.android"
+      ]
+    },
+    {
+      "id": "jellyfin",
+      "name": "Jellyfin",
+      "packages": [
+        "org.jellyfin.androidtv",
+        "org.jellyfin.mobile"
+      ]
+    },
+    {
+      "id": "kodi",
+      "name": "Kodi",
+      "packages": [
+        "org.xbmc.kodi"
+      ]
+    },
+    {
+      "id": "vlc",
+      "name": "VLC",
+      "packages": [
+        "org.videolan.vlc"
+      ]
+    },
+    {
+      "id": "spotify",
+      "name": "Spotify",
+      "packages": [
+        "com.spotify.tv.android",
+        "com.spotify.music"
+      ]
+    },
+    {
+      "id": "twitch",
+      "name": "Twitch",
+      "packages": [
+        "tv.twitch.android.viewer",
+        "tv.twitch.android.app"
+      ]
+    },
+    {
+      "id": "stremio",
+      "name": "Stremio",
+      "packages": [
+        "com.stremio.one",
+        "com.stremio.two"
+      ]
+    },
+    {
+      "id": "bbc-iplayer",
+      "name": "BBC iPlayer",
+      "packages": [
+        "bbc.iplayer.android",
+        "bbc.mobile.iplayer.android"
+      ]
+    },
+    {
+      "id": "itvx",
+      "name": "ITVX",
+      "packages": [
+        "com.itv.tv",
+        "air.ITVMobilePlayer"
+      ]
+    },
+    {
+      "id": "dazn",
+      "name": "DAZN",
+      "packages": [
+        "com.dazn"
+      ]
+    },
+    {
+      "id": "espn",
+      "name": "ESPN",
+      "packages": [
+        "com.espn.score_center",
+        "com.espn.gtv"
+      ]
+    },
+    {
+      "id": "steam-link",
+      "name": "Steam Link",
+      "packages": [
+        "com.valvesoftware.steamlink"
+      ]
+    },
+    {
+      "id": "youtube-music",
+      "name": "YouTube Music",
+      "packages": [
+        "com.google.android.youtube.tvmusic",
+        "com.google.android.apps.youtube.music"
+      ]
+    },
+    {
+      "id": "emby",
+      "name": "Emby",
+      "packages": [
+        "com.mb.android.tv",
+        "com.mb.android"
+      ]
+    },
+    {
+      "id": "smarttube",
+      "name": "SmartTube",
+      "packages": [
+        "com.teamsmart.videomanager.tv",
+        "com.teamsmart.videomanager.tv.beta"
+      ]
+    },
+    {
+      "id": "moonlight",
+      "name": "Moonlight",
+      "packages": [
+        "com.limelight"
+      ]
+    },
+    {
+      "id": "retroarch",
+      "name": "RetroArch",
+      "packages": [
+        "com.retroarch",
+        "com.retroarch.aarch64",
+        "com.retroarch.ra32"
+      ]
+    },
+    {
+      "id": "downloader",
+      "name": "Downloader",
+      "packages": [
+        "com.esaba.downloader"
+      ]
+    },
+    {
+      "id": "file-manager",
+      "name": "Files",
+      "packages": [
+        "com.google.android.documentsui",
+        "com.android.documentsui",
+        "com.lonelycatgames.Xplore",
+        "com.estrongs.android.pop"
+      ]
+    },
+    {
+      "id": "browser",
+      "name": "Browser",
+      "packages": [
+        "com.android.chrome",
+        "com.google.android.apps.chrome",
+        "com.amazon.cloud9",
+        "org.mozilla.tv.firefox",
+        "com.tcl.browser"
+      ]
+    },
+    {
+      "id": "play-store",
+      "name": "Play Store",
+      "packages": [
+        "com.android.vending"
+      ]
+    },
+    {
+      "id": "settings",
+      "name": "Settings",
+      "packages": [
+        "com.android.tv.settings",
+        "com.android.settings",
+        "com.google.android.tv.settings"
+      ]
+    },
+    {
+      "id": "google-tv",
+      "name": "Google TV",
+      "packages": [
+        "com.google.android.videos",
+        "com.google.android.tv"
+      ]
+    },
+    {
+      "id": "photos",
+      "name": "Photos",
+      "packages": [
+        "com.google.android.apps.photos",
+        "com.google.android.apps.tv.gallery",
+        "com.android.gallery3d"
+      ]
+    },
+    {
+      "id": "music",
+      "name": "Music",
+      "packages": [
+        "com.google.android.music",
+        "org.lineageos.eleven"
+      ]
+    },
+    {
+      "id": "live-tv",
+      "name": "Live TV",
+      "packages": [
+        "com.google.android.tv.livechannels",
+        "com.android.tv"
+      ]
+    },
+    {
+      "id": "f-droid",
+      "name": "F-Droid",
+      "packages": [
+        "org.fdroid.fdroid"
+      ]
+    },
+    {
+      "id": "mx-player",
+      "name": "MX Player",
+      "packages": [
+        "com.mxtech.videoplayer.ad",
+        "com.mxtech.videoplayer.pro"
+      ]
+    },
+    {
+      "id": "app",
+      "name": "Other app",
+      "packages": []
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Bundled icon sources
 
-Generated from `icons/bundled/catalog.json`. SVG files are unchanged upstream originals; the launcher maps packages and applies a theme foreground tint at runtime. Original line artwork supplies the explicitly listed fallbacks.
+Generated from `icons/bundled/catalog.json`. SVG files are unchanged upstream originals; the launcher maps packages and applies a theme foreground tint at runtime. Missing brands use clearly identified standard generic drawings from the same upstream pack.
 
 ## Arcticons
 
@@ -52,8 +52,9 @@ SVG files are byte-for-byte upstream originals. Butter Launcher adds package ali
 | Live TV | [icons/arcticons/live-tv.svg](../../app/src/main/assets/icons/arcticons/live-tv.svg) | [icons/white/tv.svg](https://github.com/Arcticons-Team/Arcticons/blob/917baa2b8b1c304e7a45de48d35e97b7a774c251/icons/white/tv.svg) | `e7f445fd922940d02336d347a7a0b32c9cb7fc7e001ab620b8970ec6b173799b` |
 | F-Droid | [icons/arcticons/f-droid.svg](../../app/src/main/assets/icons/arcticons/f-droid.svg) | [icons/white/fdroid.svg](https://github.com/Arcticons-Team/Arcticons/blob/917baa2b8b1c304e7a45de48d35e97b7a774c251/icons/white/fdroid.svg) | `aadf37786165b7021505399bb78a744f7002fd4a94e1430f8776695c8a82b476` |
 | MX Player | [icons/arcticons/mx-player.svg](../../app/src/main/assets/icons/arcticons/mx-player.svg) | [icons/white/mx.svg](https://github.com/Arcticons-Team/Arcticons/blob/917baa2b8b1c304e7a45de48d35e97b7a774c251/icons/white/mx.svg) | `3481c9f4bf7e261b8576696dfd672ccfaa78dd0f4586c5dab176aba887cdc61d` |
+| Other app | [icons/arcticons/app.svg](../../app/src/main/assets/icons/arcticons/app.svg) | [icons/white/apps.svg](https://github.com/Arcticons-Team/Arcticons/blob/917baa2b8b1c304e7a45de48d35e97b7a774c251/icons/white/apps.svg) | `0c7d4ccb7636284b588362aa8eb7ecee07662a8ef2a384a3cb323575660cf852` |
 
-**Butter line fallback:** Other app.
+**Standard generic symbols:** Other app. Unknown packages use Other app.
 
 ## Lawnicons
 
@@ -85,11 +86,13 @@ SVG files are byte-for-byte upstream originals. Butter Launcher adds package ali
 | Twitch | [icons/lawnicons/twitch.svg](../../app/src/main/assets/icons/lawnicons/twitch.svg) | [svgs/twitch.svg](https://github.com/LawnchairLauncher/lawnicons/blob/fbbdb222d05a203c7405acff80bf5a883d806038/svgs/twitch.svg) | `e591f2c7b9f67a19d47f2ad53e7c707c7d75041222d098c8e56fb0b4db4b37e5` |
 | Stremio | [icons/lawnicons/stremio.svg](../../app/src/main/assets/icons/lawnicons/stremio.svg) | [svgs/stremio.svg](https://github.com/LawnchairLauncher/lawnicons/blob/fbbdb222d05a203c7405acff80bf5a883d806038/svgs/stremio.svg) | `b8c1dcc0c39ce576672ec99d63d705a1bfe9434f236025ce51f7f31bffca0f19` |
 | BBC iPlayer | [icons/lawnicons/bbc-iplayer.svg](../../app/src/main/assets/icons/lawnicons/bbc-iplayer.svg) | [svgs/bbc_iplayer.svg](https://github.com/LawnchairLauncher/lawnicons/blob/fbbdb222d05a203c7405acff80bf5a883d806038/svgs/bbc_iplayer.svg) | `3c5442821b4c9b7e1b4de792a2846e78e9de59b334145b104763ec1296e2ef2c` |
+| ITVX | [icons/lawnicons/itvx.svg](../../app/src/main/assets/icons/lawnicons/itvx.svg) | [svgs/generic_player.svg](https://github.com/LawnchairLauncher/lawnicons/blob/fbbdb222d05a203c7405acff80bf5a883d806038/svgs/generic_player.svg) | `59dc3d6046c6f99d8c626bd067403c6fdaa5a043269a04834bcecde4ebaa8fca` |
 | DAZN | [icons/lawnicons/dazn.svg](../../app/src/main/assets/icons/lawnicons/dazn.svg) | [svgs/dazn.svg](https://github.com/LawnchairLauncher/lawnicons/blob/fbbdb222d05a203c7405acff80bf5a883d806038/svgs/dazn.svg) | `7d015dabccff3a0778304bc1b0d10fbce9129d7c705c54dc16c52d796f167565` |
 | ESPN | [icons/lawnicons/espn.svg](../../app/src/main/assets/icons/lawnicons/espn.svg) | [svgs/espn.svg](https://github.com/LawnchairLauncher/lawnicons/blob/fbbdb222d05a203c7405acff80bf5a883d806038/svgs/espn.svg) | `ed103956a2b9d7f5ab5282163c6c5b872ccad51e5ceaabfbcb3a355dc65066b5` |
 | Steam Link | [icons/lawnicons/steam-link.svg](../../app/src/main/assets/icons/lawnicons/steam-link.svg) | [svgs/steam_link.svg](https://github.com/LawnchairLauncher/lawnicons/blob/fbbdb222d05a203c7405acff80bf5a883d806038/svgs/steam_link.svg) | `861a48a274d04d30244b76974fc0175abd97d0bb6c0974740e46897fc0eb49e9` |
 | YouTube Music | [icons/lawnicons/youtube-music.svg](../../app/src/main/assets/icons/lawnicons/youtube-music.svg) | [svgs/generic_player.svg](https://github.com/LawnchairLauncher/lawnicons/blob/fbbdb222d05a203c7405acff80bf5a883d806038/svgs/generic_player.svg) | `59dc3d6046c6f99d8c626bd067403c6fdaa5a043269a04834bcecde4ebaa8fca` |
 | Emby | [icons/lawnicons/emby.svg](../../app/src/main/assets/icons/lawnicons/emby.svg) | [svgs/emby.svg](https://github.com/LawnchairLauncher/lawnicons/blob/fbbdb222d05a203c7405acff80bf5a883d806038/svgs/emby.svg) | `0e8334e4c31fccd4db34c4bb9bec788ea8cd459657ec8c614f9ad80235434615` |
+| SmartTube | [icons/lawnicons/smarttube.svg](../../app/src/main/assets/icons/lawnicons/smarttube.svg) | [svgs/generic_player.svg](https://github.com/LawnchairLauncher/lawnicons/blob/fbbdb222d05a203c7405acff80bf5a883d806038/svgs/generic_player.svg) | `59dc3d6046c6f99d8c626bd067403c6fdaa5a043269a04834bcecde4ebaa8fca` |
 | Moonlight | [icons/lawnicons/moonlight.svg](../../app/src/main/assets/icons/lawnicons/moonlight.svg) | [svgs/moonlight.svg](https://github.com/LawnchairLauncher/lawnicons/blob/fbbdb222d05a203c7405acff80bf5a883d806038/svgs/moonlight.svg) | `1c6e67ec456001c3a6bbce77b442c1eb37da851ec2f0515a9d9d2790bba5ad33` |
 | RetroArch | [icons/lawnicons/retroarch.svg](../../app/src/main/assets/icons/lawnicons/retroarch.svg) | [svgs/retroarch.svg](https://github.com/LawnchairLauncher/lawnicons/blob/fbbdb222d05a203c7405acff80bf5a883d806038/svgs/retroarch.svg) | `16b470f0fbf3a23cda10688516b62aee147957bd84e9848c226f4e288980b3c1` |
 | Downloader | [icons/lawnicons/downloader.svg](../../app/src/main/assets/icons/lawnicons/downloader.svg) | [svgs/downloader.svg](https://github.com/LawnchairLauncher/lawnicons/blob/fbbdb222d05a203c7405acff80bf5a883d806038/svgs/downloader.svg) | `74105f6a3cde51c98b839c5f4f2b1985973aa20e2e087a0725ce3cc378bb02ca` |
@@ -100,7 +103,9 @@ SVG files are byte-for-byte upstream originals. Butter Launcher adds package ali
 | Google TV | [icons/lawnicons/google-tv.svg](../../app/src/main/assets/icons/lawnicons/google-tv.svg) | [svgs/google_tv.svg](https://github.com/LawnchairLauncher/lawnicons/blob/fbbdb222d05a203c7405acff80bf5a883d806038/svgs/google_tv.svg) | `ba782022fb4cb3a0b2d720dda929fe94ec91b22b147ace2c5505b93569e1be15` |
 | Photos | [icons/lawnicons/photos.svg](../../app/src/main/assets/icons/lawnicons/photos.svg) | [svgs/generic_gallery.svg](https://github.com/LawnchairLauncher/lawnicons/blob/fbbdb222d05a203c7405acff80bf5a883d806038/svgs/generic_gallery.svg) | `88055b4e2efd9a1ee75522bc7f657b07cffa917dcdd400f1e48f3ed85a318d73` |
 | Music | [icons/lawnicons/music.svg](../../app/src/main/assets/icons/lawnicons/music.svg) | [svgs/lineageos_music_11.svg](https://github.com/LawnchairLauncher/lawnicons/blob/fbbdb222d05a203c7405acff80bf5a883d806038/svgs/lineageos_music_11.svg) | `b406d057ffd2f81b5f4c7e55b986c3675dd3fef76fa0eef0dfa84328837c8b34` |
+| Live TV | [icons/lawnicons/live-tv.svg](../../app/src/main/assets/icons/lawnicons/live-tv.svg) | [svgs/generic_player.svg](https://github.com/LawnchairLauncher/lawnicons/blob/fbbdb222d05a203c7405acff80bf5a883d806038/svgs/generic_player.svg) | `59dc3d6046c6f99d8c626bd067403c6fdaa5a043269a04834bcecde4ebaa8fca` |
 | F-Droid | [icons/lawnicons/f-droid.svg](../../app/src/main/assets/icons/lawnicons/f-droid.svg) | [svgs/f_droid.svg](https://github.com/LawnchairLauncher/lawnicons/blob/fbbdb222d05a203c7405acff80bf5a883d806038/svgs/f_droid.svg) | `1c205758dee28bf7f35a1b35a2668260f059d7daaac8753ab220d1c79da109c1` |
 | MX Player | [icons/lawnicons/mx-player.svg](../../app/src/main/assets/icons/lawnicons/mx-player.svg) | [svgs/generic_player.svg](https://github.com/LawnchairLauncher/lawnicons/blob/fbbdb222d05a203c7405acff80bf5a883d806038/svgs/generic_player.svg) | `59dc3d6046c6f99d8c626bd067403c6fdaa5a043269a04834bcecde4ebaa8fca` |
+| Other app | [icons/lawnicons/app.svg](../../app/src/main/assets/icons/lawnicons/app.svg) | [svgs/generic_grid_2x2.svg](https://github.com/LawnchairLauncher/lawnicons/blob/fbbdb222d05a203c7405acff80bf5a883d806038/svgs/generic_grid_2x2.svg) | `ea4fb71efd7f413705038c95fef857339f8b279c35c49ea024ede02f79a38e96` |
 
-**Butter line fallback:** ITVX, SmartTube, Live TV, Other app.
+**Standard generic symbols:** ITVX, SmartTube, Live TV, Other app. Unknown packages use Other app.

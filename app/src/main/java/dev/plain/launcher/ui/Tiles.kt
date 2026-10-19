@@ -49,7 +49,6 @@ import dev.plain.launcher.IconStyle
 import dev.plain.launcher.TileShape
 import dev.plain.launcher.WatchItem
 import dev.plain.launcher.brandGlyphs
-import dev.plain.launcher.lineGlyphFor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -136,14 +135,13 @@ fun AppTile(
 private val grayscale = ColorFilter.colorMatrix(ColorMatrix().apply { setToSaturation(0f) })
 
 @Composable
-private fun TileArt(app: App, art: AppArt?, style: IconStyle, width: Int) {
+internal fun TileArt(app: App, art: AppArt?, style: IconStyle, width: Int) {
     val glyph = brandGlyphs[app.packageName]
     val filter = if (style == IconStyle.Desaturated) grayscale else null
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         when {
-            style == IconStyle.Arcticons || style == IconStyle.Lawnicons ->
+            style == IconStyle.Arcticons || style == IconStyle.Lawnicons || style == IconStyle.Line ->
                 BundledIcon(app.packageName, style, LocalLook.current.text, (width * 0.32f).dp)
-            style == IconStyle.Line -> LineIcon(lineGlyphFor(app.packageName), LocalLook.current.text, (width * 0.32f).dp)
             style == IconStyle.Mono || (style == IconStyle.Pack && art?.icon == null) ->
                 if (glyph != null) PathIcon(glyph, 24f, 0f, LocalLook.current.text, (width * 0.22f).dp) else Monogram(app.label)
             art == null -> Unit

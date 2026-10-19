@@ -1,0 +1,13 @@
+Inputs button artwork: Google Material Icons contributors.
+Icon: settings_input_composite, outlined, 24px.
+License: Apache License, Version 2.0.
+Full license: material-symbols-Apache-2.0.txt in this directory.
+
+Pinned upstream revision: 49d4db35df873165d6bd6ba09b063c7dafbac2f4
+Source:
+https://github.com/google/material-design-icons/blob/49d4db35df873165d6bd6ba09b063c7dafbac2f4/src/action/settings_input_composite/materialiconsoutlined/24px.svg
+
+Conversion: the unchanged visible SVG path and 24x24 viewport are stored
+as an Android vector drawable, app/src/main/res/drawable/ic_inputs.xml.
+The transparent SVG background path is omitted. Butter applies its theme
+foreground tint at runtime. No icon drawing instructions were redrawn.

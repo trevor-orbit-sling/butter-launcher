@@ -52,6 +52,7 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.Text
@@ -60,9 +61,12 @@ import dev.plain.launcher.Apps
 import dev.plain.launcher.Clock
 import dev.plain.launcher.RowOrder
 import dev.plain.launcher.RemoteAction
+import dev.plain.launcher.R
 import dev.plain.launcher.WatchItem
 import dev.plain.launcher.WatchState
 import dev.plain.launcher.WeatherNow
+import dev.plain.launcher.visibleApps
+import dev.plain.launcher.hideApp
 import kotlinx.coroutines.delay
 import java.util.Date
 
@@ -81,6 +85,8 @@ fun HomeScreen(
     val look = LocalLook.current
     var settingsOpen by remember { mutableStateOf(false) }
     var tutorialOpen by remember { mutableStateOf(false) }
+    var inputsOpen by remember { mutableStateOf(false) }
+    var restoreInputsFocus by remember { mutableStateOf(false) }
     var menuApp by remember { mutableStateOf<App?>(null) }
     var focusedRow by remember { mutableStateOf("all") }
     var focusedApp by remember { mutableStateOf<App?>(null) }
@@ -104,11 +110,12 @@ fun HomeScreen(
     val page = rememberLazyListState()
     val favouriteRow = rememberLazyListState()
     val customiseFocus = remember { FocusRequester() }
+    val inputsFocus = remember { FocusRequester() }
     val allAppsRow = rememberLazyListState()
 
     val byPackage = installed.associateBy { it.packageName }
     val favourites = settings.favourites.mapNotNull { byPackage[it] }
-    val others = installed
+    val others = visibleApps(installed, settings.hiddenApps)
     val gap = settings.spacing.gap.dp
     val width = settings.tileSize.width
     val edge = 56.dp
@@ -128,6 +135,8 @@ fun HomeScreen(
     }
     LaunchedEffect(homePresses, homeShortcut, installed) {
         settingsOpen = false
+        restoreInputsFocus = false
+        inputsOpen = false
         menuApp = null
         held = null
         page.scrollToItem(0)
@@ -135,22 +144,48 @@ fun HomeScreen(
         allAppsRow.scrollToItem(0)
         androidx.compose.runtime.withFrameNanos { }
         runCatching {
-            (favourites.firstOrNull()?.let { tileFocus[focusKey("favourite", it)] } ?: installed.firstOrNull()?.let { tileFocus[focusKey("all", it)] } ?: customiseFocus).requestFocus()
+            (favourites.firstOrNull()?.let { tileFocus[focusKey("favourite", it)] } ?: others.firstOrNull()?.let { tileFocus[focusKey("all", it)] } ?: customiseFocus).requestFocus()
         }
     }
-    LaunchedEffect(menuApp, settings.favourites) {
+    LaunchedEffect(menuApp, settings.favourites, settings.hiddenApps) {
         if (menuApp == null) {
             kotlinx.coroutines.delay(80)
-            val target = if (originRow == "favourite" && originApp?.packageName !in settings.favourites) {
-                originApp?.let { tileFocus[focusKey("all", it)] }
-            } else originFocus
+            val originHidden = originApp?.packageName in settings.hiddenApps
+            val target = when {
+                originRow == "all" && originHidden -> {
+                    allAppsRow.scrollToItem(0)
+                    androidx.compose.runtime.withFrameNanos { }
+                    others.firstOrNull()?.let { tileFocus[focusKey("all", it)] }
+                }
+                originRow == "favourite" && originApp?.packageName !in settings.favourites ->
+                    originApp?.takeUnless { originHidden }?.let { tileFocus[focusKey("all", it)] }
+                else -> originFocus
+            }
             if (originApp != null) {
-                runCatching { (target ?: favourites.firstOrNull()?.let { tileFocus[focusKey("favourite", it)] } ?: customiseFocus).requestFocus() }
-                    .onFailure { customiseFocus.requestFocus() }
+                val tile = target ?: favourites.firstOrNull()?.let { tileFocus[focusKey("favourite", it)] }
+                if (tile == null || runCatching { tile.requestFocus() }.isFailure) {
+                    // The header can be outside LazyColumn's composed viewport.
+                    page.scrollToItem(0)
+                    androidx.compose.runtime.withFrameNanos { }
+                    runCatching { customiseFocus.requestFocus() }
+                }
             }
         }
     }
-    LaunchedEffect(focusedApp, settingsOpen, tutorialOpen, menuApp, settings.remoteBindings, windowFocused) {
+    LaunchedEffect(inputsOpen) {
+        if (!inputsOpen && restoreInputsFocus) {
+            restoreInputsFocus = false
+            page.scrollToItem(0)
+            androidx.compose.runtime.withFrameNanos { }
+            runCatching { inputsFocus.requestFocus() }
+        }
+    }
+    fun openInputs() {
+        held = null
+        restoreInputsFocus = true
+        inputsOpen = true
+    }
+    LaunchedEffect(focusedApp, settingsOpen, tutorialOpen, inputsOpen, menuApp, settings.remoteBindings, windowFocused) {
         shortcutGesture.cancel()
     }
     LaunchedEffect(menuPresses) { if (menuPresses > 0) settingsOpen = true }
@@ -163,7 +198,7 @@ fun HomeScreen(
     }
 
     Box(Modifier.fillMaxSize().backdrop(look, settings.background, settings.accent.color).onPreviewKeyEvent { event ->
-        if (settingsOpen || tutorialOpen || !settings.tutorialComplete || menuApp != null) return@onPreviewKeyEvent false
+        if (settingsOpen || tutorialOpen || inputsOpen || !settings.tutorialComplete || menuApp != null) return@onPreviewKeyEvent false
         val action = settings.remoteBindings.action(event.nativeKeyEvent.keyCode) ?: return@onPreviewKeyEvent false
         val key = event.nativeKeyEvent
         if (key.action == android.view.KeyEvent.ACTION_DOWN) {
@@ -175,6 +210,7 @@ fun HomeScreen(
                 RemoteAction.Customise -> settingsOpen = true
                 RemoteAction.AppOptions -> focusedApp?.let { showMenu(it, if (it.packageName == held) "favourite" else focusedRow) }
                 RemoteAction.FirstRow -> homeShortcut++
+                RemoteAction.Inputs -> openInputs()
             }
         }
         true
@@ -185,7 +221,7 @@ fun HomeScreen(
             verticalArrangement = Arrangement.spacedBy(gap * 1.6f),
             modifier = Modifier.fillMaxSize(),
         ) {
-            item { Header(edge, weather, customiseFocus) { settingsOpen = true } }
+            item { Header(edge, weather, customiseFocus, inputsFocus, onInputs = { openInputs() }, onCustomise = { settingsOpen = true }) }
 
             fun watchingRow() {
                 if (!settings.showWatching.on) return
@@ -206,8 +242,8 @@ fun HomeScreen(
             }
 
             fun appRows() {
-                if (favourites.isEmpty()) item {
-                    Text("Make this home yours. Hold OK on an app below to add a favourite.", style = LocalType.current.body, color = look.textDim, modifier = Modifier.padding(horizontal = edge))
+                if (favourites.isEmpty() && others.isNotEmpty()) item {
+                    Text("Make this home yours. Hold OK, then release on an app below to add a favourite.", style = LocalType.current.body, color = look.textDim, modifier = Modifier.padding(horizontal = edge))
                 }
                 if (favourites.isNotEmpty()) item {
                     Shelf("Favourites", edge, gap, favouriteRow) {
@@ -250,6 +286,9 @@ fun HomeScreen(
                         }
                     }
                 }
+                if ((settings.showAllApps.on || favourites.isEmpty()) && others.isEmpty() && settings.hiddenApps.isNotEmpty()) item {
+                    Text("All apps are hidden. Restore them in Settings → Hidden apps.", style = LocalType.current.body, color = look.textDim, modifier = Modifier.padding(horizontal = edge))
+                }
             }
 
             if (settings.rowOrder == RowOrder.WatchingFirst) {
@@ -276,13 +315,14 @@ fun HomeScreen(
             slideInHorizontally { it } + fadeIn(),
             slideOutHorizontally { it } + fadeOut(),
         ) {
-            SettingsPanel(apps, onChange) { settingsOpen = false; tutorialOpen = true }
+            SettingsPanel(apps, installed, onChange) { settingsOpen = false; tutorialOpen = true }
         }
     }
 
     if (!settings.tutorialComplete || tutorialOpen) {
         Onboarding(onFinish = { tutorialOpen = false; onChange { it.copy(tutorialComplete = true) } })
     }
+    if (inputsOpen) InputsDialog { inputsOpen = false }
 
     menuApp?.let { app ->
         AppMenu(
@@ -291,6 +331,7 @@ fun HomeScreen(
             canMove = menuCanMove,
             onMove = { menuApp = null; held = app.packageName },
             onInfo = { menuApp = null; apps.openInfo(app) },
+            onHide = if (originRow == "all") ({ onChange { it.hideApp(app.packageName) }; menuApp = null }) else null,
             onDismiss = { menuApp = null },
             onChange = onChange,
         )
@@ -306,7 +347,7 @@ private fun Shelf(title: String, edge: Dp, gap: Dp, state: LazyListState = remem
 }
 
 @Composable
-private fun Header(edge: Dp, weather: WeatherNow?, customiseFocus: FocusRequester, onCustomise: () -> Unit) {
+private fun Header(edge: Dp, weather: WeatherNow?, customiseFocus: FocusRequester, inputsFocus: FocusRequester, onInputs: () -> Unit, onCustomise: () -> Unit) {
     val settings = LocalSettings.current
     val look = LocalLook.current
     val type = LocalType.current
@@ -350,6 +391,11 @@ private fun Header(edge: Dp, weather: WeatherNow?, customiseFocus: FocusRequeste
             }
             Spacer(Modifier.weight(1f))
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                FocusSurface(onClick = onInputs, shape = CircleShape, modifier = Modifier.focusRequester(inputsFocus).size(44.dp)) {
+                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Image(painterResource(R.drawable.ic_inputs), "Inputs", colorFilter = ColorFilter.tint(look.text), modifier = Modifier.size(22.dp))
+                    }
+                }
                 RoundButton(Icons.Filled.Edit, "Customise", Modifier.focusRequester(customiseFocus), onCustomise)
                 RoundButton(Icons.Filled.Settings, "System settings") {
                     runCatching { context.startActivity(Intent(Settings.ACTION_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }

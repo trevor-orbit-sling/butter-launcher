@@ -2,10 +2,13 @@ package dev.plain.launcher.ui
 
 import android.view.KeyEvent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -15,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.key.onPreviewKeyEvent
@@ -32,10 +36,12 @@ fun RemoteDialog(onChange: (Change) -> Unit, onDismiss: () -> Unit) {
     var learning by remember { mutableStateOf<RemoteAction?>(null) }
     var message by remember { mutableStateOf("Choose an action, then press the button you want to use.") }
     val first = remember { FocusRequester() }
+    val maxHeight = (LocalConfiguration.current.screenHeightDp * 0.9f).dp
     Dialog(onDismissRequest = { if (learning != null) { learning = null; message = "Mapping cancelled." } else onDismiss() }) {
         LaunchedEffect(Unit) { first.requestFocus() }
         Column(
-            Modifier.width(640.dp).background(look.panel, RoundedCornerShape(look.corner)).padding(28.dp)
+            Modifier.width(640.dp).heightIn(max = maxHeight).background(look.panel, RoundedCornerShape(look.corner))
+                .verticalScroll(rememberScrollState()).padding(28.dp)
                 .onPreviewKeyEvent { event ->
                     val action = learning ?: return@onPreviewKeyEvent false
                     val key = event.nativeKeyEvent
@@ -57,7 +63,7 @@ fun RemoteDialog(onChange: (Change) -> Unit, onDismiss: () -> Unit) {
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             Text("Remote & controller", style = type.title, color = look.text)
-            Text("Shortcuts work while Butter Launcher is open. D-pad, OK and Back stay available. Home and Power are usually handled by your TV.", style = type.body, color = look.textDim)
+            Text("Shortcuts work while Butter Launcher is open. D-pad, OK and Back stay available. Home, Power and Input/Source may be handled by your TV before Butter receives them.", style = type.body, color = look.textDim)
             RemoteAction.entries.forEachIndexed { index, action ->
                 FocusSurface(
                     onClick = { learning = action; message = "Press a button for ${action.label}. Back cancels." },
@@ -80,4 +86,4 @@ fun RemoteDialog(onChange: (Change) -> Unit, onDismiss: () -> Unit) {
     }
 }
 
-private fun buttonLabel(code: Int) = KeyEvent.keyCodeToString(code).removePrefix("KEYCODE_").replace('_', ' ')
+private fun buttonLabel(code: Int) = if (code == KeyEvent.KEYCODE_UNKNOWN) "Not assigned" else KeyEvent.keyCodeToString(code).removePrefix("KEYCODE_").replace('_', ' ')

@@ -19,13 +19,17 @@ import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.withTransform
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import dev.plain.launcher.BackgroundStyle
+import dev.plain.launcher.Theme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlin.math.PI
@@ -39,6 +43,7 @@ internal fun shouldMoveBackground(style: BackgroundStyle, resumed: Boolean, dura
 /** Three cached radial shaders; animation state is read only in the draw phase, never by home content. */
 @Composable
 fun Modifier.backdrop(look: Look, style: BackgroundStyle, accent: Color): Modifier {
+    val cyberpunk = LocalSettings.current.theme == Theme.Cyberpunk
     val phase = if (style == BackgroundStyle.Moving) rememberBlobPhase() else null
     val colors = remember(look, style, accent) {
         if (style == BackgroundStyle.Theme) look.blobs
@@ -56,6 +61,32 @@ fun Modifier.backdrop(look: Look, style: BackgroundStyle, accent: Color): Modifi
         val shaders = colors.map { color ->
             Brush.radialGradient(listOf(color, color.copy(alpha = 0f)), Offset.Zero, radius)
         }
+        // Static paths are built once per size/theme, not once per animation frame.
+        val grid = Path()
+        val scanlines = Path()
+        val edgeMarks = Path()
+        if (cyberpunk) {
+            val gridStep = 48.dp.toPx()
+            var x = 0f
+            while (x <= size.width) { grid.moveTo(x, 0f); grid.lineTo(x, size.height); x += gridStep }
+            var y = 0f
+            while (y <= size.height) { grid.moveTo(0f, y); grid.lineTo(size.width, y); y += gridStep }
+            y = 0f
+            val scanStep = 4.dp.toPx()
+            while (y <= size.height) { scanlines.moveTo(0f, y); scanlines.lineTo(size.width, y); y += scanStep }
+            val inset = 14.dp.toPx()
+            val length = 70.dp.toPx()
+            edgeMarks.moveTo(inset, inset + length)
+            edgeMarks.lineTo(inset, inset + 12.dp.toPx())
+            edgeMarks.lineTo(inset + 12.dp.toPx(), inset)
+            edgeMarks.lineTo(inset + length, inset)
+            edgeMarks.moveTo(size.width - inset - length, size.height - inset)
+            edgeMarks.lineTo(size.width - inset - 12.dp.toPx(), size.height - inset)
+            edgeMarks.lineTo(size.width - inset, size.height - inset - 12.dp.toPx())
+            edgeMarks.lineTo(size.width - inset, size.height - inset - length)
+        }
+        val hairline = Stroke(width = 1.dp.toPx())
+        val edgeStroke = Stroke(width = 2.dp.toPx())
         onDrawBehind {
             drawRect(background)
             val cycle = phase?.floatValue ?: 0f
@@ -67,6 +98,12 @@ fun Modifier.backdrop(look: Look, style: BackgroundStyle, accent: Color): Modifi
                 withTransform({ translate(size.width * (spot.x + dx), size.height * (spot.y + dy)) }) {
                     drawCircle(shader, radius, Offset.Zero)
                 }
+            }
+            if (cyberpunk) {
+                drawPath(grid, Color(0xFF00F0FF).copy(alpha = 0.045f), style = hairline)
+                drawPath(scanlines, Color.White.copy(alpha = 0.018f), style = hairline)
+                drawPath(edgeMarks, accent.copy(alpha = 0.6f), style = edgeStroke)
+                drawLine(Color(0xFFFF2A8D).copy(alpha = 0.5f), Offset(size.width * 0.66f, size.height - 14.dp.toPx()), Offset(size.width * 0.83f, size.height - 14.dp.toPx()), strokeWidth = 2.dp.toPx())
             }
         }
     }
