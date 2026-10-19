@@ -10,6 +10,18 @@ The service set covers Netflix, YouTube, Disney+, Prime Video, Hulu, Max/HBO Max
 
 Package matching is exact. For example, `com.netflix.ninja` and `com.netflix.mediaclient` share Netflix's drawing; Prime Video's `com.amazon.amazonvideo.livingroom` and Hulu's `com.hulu.livingroomplus` are explicitly mapped. A similar app label or a matching package prefix never assigns a brand. Coverage describes artwork aliases, not service availability or device certification. Installed ADW/Nova-style packs remain a separate icon option with their own mappings.
 
+## Open-source alternatives
+
+These are candidates for a future bundled set or compatible installed pack, reviewed on 19 October 2026. Arcticons is the closest visual fit to thin white line art; Lawnicons is a strong alternative when permissive licensing matters for bundling.
+
+| Source | Style and fit | License |
+| --- | --- | --- |
+| [Arcticons](https://github.com/Arcticons-Team/Arcticons) | Thin monochrome outlines, with over 15,000 icons and broad app coverage. Closest to Plain's quiet line style. | Artwork: [CC BY-SA 4.0](https://github.com/Arcticons-Team/Arcticons#license). Android app code: [GPL 3.0](https://github.com/Arcticons-Team/Arcticons/blob/main/LICENSE). Preserve artwork attribution and share-alike terms when adapting it. |
+| [Lawnicons](https://github.com/LawnchairLauncher/lawnicons) | Monochrome app icons with many outline designs and media-service drawings, including Netflix, YouTube, Disney+, Prime Video, Plex and Jellyfin. A strong candidate for a bundled themed set. | [Apache 2.0](https://github.com/LawnchairLauncher/lawnicons/blob/develop/LICENSE); retain the applicable license and notices. |
+| [Simple Icons](https://github.com/simple-icons/simple-icons) | Solid monochrome brand SVGs; a source library rather than an Android icon-pack app. Plain already uses a small subset in **Minimal mono**. | Project: [CC0](https://github.com/simple-icons/simple-icons/blob/develop/LICENSE.md). Check the [individual-icon licensing and trademark disclaimer](https://github.com/simple-icons/simple-icons/blob/develop/DISCLAIMER.md) for each selected brand. |
+
+Artwork availability does not guarantee Android TV package coverage. A bundled subset still needs explicit TV aliases, such as Netflix's `com.netflix.ninja`, Prime Video's living-room package and Hulu's TV package. Installed pack mappings also vary. Arcticons and Lawnicons have not been imported into Plain; the current **Line icons** set remains Plain's original artwork.
+
 ## Design and source
 
 Every icon in this set was drawn manually as vector path commands for Plain. Arcticons informed the request for a quiet outline style; no Arcticons paths, assets or application code were copied. Simple Icons remains in its separate older mode. These are interpretations of identifying shapes for a TV launcher, not official brand artwork.
