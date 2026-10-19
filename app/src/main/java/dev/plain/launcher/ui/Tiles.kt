@@ -141,6 +141,8 @@ private fun TileArt(app: App, art: AppArt?, style: IconStyle, width: Int) {
     val filter = if (style == IconStyle.Desaturated) grayscale else null
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         when {
+            style == IconStyle.Arcticons || style == IconStyle.Lawnicons ->
+                BundledIcon(app.packageName, style, LocalLook.current.text, (width * 0.32f).dp)
             style == IconStyle.Line -> LineIcon(lineGlyphFor(app.packageName), LocalLook.current.text, (width * 0.32f).dp)
             style == IconStyle.Mono || (style == IconStyle.Pack && art?.icon == null) ->
                 if (glyph != null) PathIcon(glyph, 24f, 0f, LocalLook.current.text, (width * 0.22f).dp) else Monogram(app.label)

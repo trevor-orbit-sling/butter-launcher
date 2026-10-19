@@ -1,0 +1,50 @@
+Butter Launcher: bundled Arcticons and Lawnicons artwork
+
+ARCTICONS
+Artwork by Arcticons Team and contributors.
+Source: https://github.com/Arcticons-Team/Arcticons
+Pinned revision: 917baa2b8b1c304e7a45de48d35e97b7a774c251
+Imported directory: icons/white (40 selected SVG files only)
+License: Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0).
+https://creativecommons.org/licenses/by-sa/4.0/
+The complete legal code is included in arcticons-artwork-CC-BY-SA-4.0.txt.
+Upstream artwork license declaration:
+https://github.com/Arcticons-Team/Arcticons/blob/917baa2b8b1c304e7a45de48d35e97b7a774c251/README.md#license
+
+The bundled Arcticons SVG files are byte-for-byte upstream originals. Butter
+Launcher adds an independent package mapping and tints the rendered artwork to
+the current theme foreground at runtime. No paths, fills, strokes, shapes, CSS,
+or transforms have been edited. Any copyrightable adaptations of this Arcticons
+artwork made for Butter Launcher are offered under the same CC BY-SA 4.0 terms.
+Retain attribution, source and license links, identify changes, and preserve
+the applicable share-alike terms when sharing adapted Arcticons artwork.
+No Arcticons Android application code is included; its separate GPL license
+does not license this imported artwork or Butter Launcher's original code.
+
+LAWNICONS
+Artwork by Lawnchair and Lawnicons contributors.
+Source: https://github.com/LawnchairLauncher/lawnicons
+Pinned revision: fbbdb222d05a203c7405acff80bf5a883d806038
+Imported directory: svgs (37 selected SVG files)
+License: Apache License, Version 2.0.
+The complete upstream license is included in lawnicons-Apache-2.0.txt.
+https://github.com/LawnchairLauncher/lawnicons/blob/fbbdb222d05a203c7405acff80bf5a883d806038/LICENSE
+
+The bundled Lawnicons SVG files are byte-for-byte upstream originals. Butter
+Launcher adds a package mapping and applies theme foreground tint at runtime;
+no SVG drawing instructions have been changed. Preserve the applicable Apache
+license, copyright, attribution and modification notices when redistributing.
+
+PROVENANCE AND FALLBACKS
+The APK includes icons/bundled-sources.json with every original source path,
+pinned revision, bundled asset path, SHA-256 hash, exact package mapping and
+explicit fallback list. The repository mirrors this in icons/bundled/catalog.json
+and docs/icons/bundled-sources.md. All SVGs are self-contained local drawings.
+Unsupported package aliases, absent upstream artwork, and loading/decode errors
+use Butter Launcher's own Line icons, not artwork attributed to either upstream.
+Unknown packages use the original Other app glyph.
+
+The third-party licenses above cover their respective artwork. Importing these
+assets does not select a license for Butter Launcher's own application source
+or original Line icons. Brands and identifying designs remain subject to their
+owners' trademark rights; inclusion does not imply endorsement or affiliation.

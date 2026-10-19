@@ -32,6 +32,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
@@ -49,6 +50,7 @@ import dev.plain.launcher.LauncherSettings
 import dev.plain.launcher.Place
 import dev.plain.launcher.Weather
 import dev.plain.launcher.cycle
+import dev.plain.launcher.changeTheme
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.CancellationException
@@ -69,6 +71,7 @@ fun SettingsPanel(apps: Apps, onChange: (Change) -> Unit, onTutorial: () -> Unit
     val s = LocalSettings.current
     val look = LocalLook.current
     val type = LocalType.current
+    val context = LocalContext.current
     val packs = remember { listOf("" to "None") + apps.iconPacks() }
     val first = remember { FocusRequester() }
     var choosingRemote by remember { mutableStateOf(false) }
@@ -80,8 +83,9 @@ fun SettingsPanel(apps: Apps, onChange: (Change) -> Unit, onTutorial: () -> Unit
     val pack = packs.indexOfFirst { it.first == s.iconPack }.coerceAtLeast(0)
     val sections = listOf(
         "Theme" to listOf(
-            option("Theme", s.theme, onChange) { copy(theme = it) },
+            option("Theme", s.theme, onChange) { changeTheme(it) },
             option("Accent", s.accent, onChange) { copy(accent = it) },
+            option("Background", s.background, onChange) { copy(background = it) },
         ),
         "Text" to listOf(
             option("Font", s.font, onChange) { copy(font = it) },
@@ -115,10 +119,22 @@ fun SettingsPanel(apps: Apps, onChange: (Change) -> Unit, onTutorial: () -> Unit
         LazyColumn(contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             item { MenuButton("Quick tour", onClick = onTutorial) }
             item { MenuButton("Remote & controller") { choosingRemote = true } }
+            item { MenuButton("Screen saver") { openScreenSaverSettings(context) } }
             sections.forEachIndexed { i, (title, options) ->
                 item { Text(title, style = type.caption, color = look.accent, modifier = Modifier.padding(start = 8.dp, top = 14.dp, bottom = 4.dp)) }
                 options.forEachIndexed { j, o ->
                     item(key = o.label) { OptionRow(o, if (i == 0 && j == 0) Modifier.focusRequester(first) else Modifier) }
+                }
+                if (title == "Weather") {
+                    item {
+                        FocusSurface(onClick = {
+                            runCatching {
+                                context.startActivity(android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("https://open-meteo.com/")).addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK))
+                            }
+                        }, zoom = 1.02f) {
+                            Text("Weather by Open-Meteo ↗", style = type.caption, color = look.textDim, modifier = Modifier.padding(8.dp))
+                        }
+                    }
                 }
             }
         }
@@ -266,4 +282,14 @@ private fun PlaceDialog(onChange: (Change) -> Unit, onDismiss: () -> Unit) {
             }
         }
     }
+}
+
+private fun openScreenSaverSettings(context: android.content.Context) {
+    val dream = android.content.Intent(android.provider.Settings.ACTION_DREAM_SETTINGS).addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
+    if (runCatching { context.startActivity(dream) }.isSuccess) return
+    val settings = android.content.Intent(android.provider.Settings.ACTION_SETTINGS).addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
+    val message = if (runCatching { context.startActivity(settings) }.isSuccess) {
+        "Look for Screen saver in your TV settings. Availability depends on the device."
+    } else "Screen saver settings aren't available on this TV."
+    android.widget.Toast.makeText(context, message, android.widget.Toast.LENGTH_LONG).show()
 }

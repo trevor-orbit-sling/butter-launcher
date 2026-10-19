@@ -22,13 +22,28 @@ class Apps(private val context: Context) {
     private val cache = ConcurrentHashMap<String, AppArt>()
     private val packs = IconPacks(context)
 
-    fun load(): List<App> = listOf(Intent.CATEGORY_LEANBACK_LAUNCHER, Intent.CATEGORY_LAUNCHER)
-        .flatMap { pm.queryIntentActivities(Intent(Intent.ACTION_MAIN).addCategory(it), 0) }
-        .map { it.activityInfo }
-        .filter { it.packageName != context.packageName }
-        .distinctBy { it.packageName }
-        .map { App(it.packageName, it.loadLabel(pm).toString(), ComponentName(it.packageName, it.name)) }
-        .sortedBy { it.label.lowercase() }
+    fun load(): List<App> {
+        val homes = pm.queryIntentActivities(Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME), 0)
+            .map { it.activityInfo }
+        val ownLabels = buildSet {
+            add(context.applicationInfo.loadLabel(pm).toString())
+            homes.filter { it.packageName == context.packageName }.forEach { add(it.loadLabel(pm).toString()) }
+            add("Plain") // Previous public display name, before Butter Launcher.
+        }
+        // Other installations of this launcher can have a different application ID.
+        // Match their display name only when the package also offers a HOME activity.
+        val hiddenPackages = homes.filter {
+            it.loadLabel(pm).toString() in ownLabels || it.applicationInfo.loadLabel(pm).toString() in ownLabels
+        }.mapTo(hashSetOf(context.packageName)) { it.packageName }
+
+        return listOf(Intent.CATEGORY_LEANBACK_LAUNCHER, Intent.CATEGORY_LAUNCHER)
+            .flatMap { pm.queryIntentActivities(Intent(Intent.ACTION_MAIN).addCategory(it), 0) }
+            .map { it.activityInfo }
+            .filter { it.packageName !in hiddenPackages }
+            .distinctBy { it.packageName }
+            .map { App(it.packageName, it.loadLabel(pm).toString(), ComponentName(it.packageName, it.name)) }
+            .sortedBy { it.label.lowercase() }
+    }
 
     fun open(app: App) {
         val intent = pm.getLeanbackLaunchIntentForPackage(app.packageName)

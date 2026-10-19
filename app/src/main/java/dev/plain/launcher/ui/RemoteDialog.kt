@@ -57,7 +57,7 @@ fun RemoteDialog(onChange: (Change) -> Unit, onDismiss: () -> Unit) {
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             Text("Remote & controller", style = type.title, color = look.text)
-            Text("Shortcuts work while Plain is open. D-pad, OK and Back stay available. Home and Power are usually handled by your TV.", style = type.body, color = look.textDim)
+            Text("Shortcuts work while Butter Launcher is open. D-pad, OK and Back stay available. Home and Power are usually handled by your TV.", style = type.body, color = look.textDim)
             RemoteAction.entries.forEachIndexed { index, action ->
                 FocusSurface(
                     onClick = { learning = action; message = "Press a button for ${action.label}. Back cancels." },

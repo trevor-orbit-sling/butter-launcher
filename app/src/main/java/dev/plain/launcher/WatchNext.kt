@@ -44,7 +44,7 @@ class WatchNext(private val context: Context) {
     suspend fun load(): WatchState = withContext(Dispatchers.IO) {
         try {
             val cursor = resolver.query(Programs.CONTENT_URI, projection, null, null, null)
-                ?: return@withContext WatchState(message = "This device doesn't share Continue watching with Plain. You can hide this row in Settings.")
+                ?: return@withContext WatchState(message = "This device doesn't share Continue watching with Butter Launcher. You can hide this row in Settings.")
             val items = cursor.use { rows ->
                 buildList {
                     while (rows.moveToNext()) {

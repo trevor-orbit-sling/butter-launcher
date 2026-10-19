@@ -1,12 +1,12 @@
-Plain line icons
+Butter Launcher line icons
 
 The outline drawings exported in LineGlyphs.kt and docs/icons/svg/ are original
-vector artwork made for Plain. Their editable source is icons/line/catalog.json.
+vector artwork made for Butter Launcher. Their editable source is icons/line/catalog.json.
 They were drawn as SVG paths; no artwork or code was imported from Arcticons,
 Simple Icons, or another icon pack for this set.
 
 This notice records provenance; it does not grant a separate redistribution
-license. A license for Plain's own source and original artwork has not yet been
+license. A license for Butter Launcher's own source and original artwork has not yet been
 selected. Third-party license notices apply only to the respective third-party
 assets and dependencies.
 

@@ -17,6 +17,10 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent>
         <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.HOME" />
+        </intent>
+        <intent>
             <action android:name="org.adw.launcher.THEMES" />
         </intent>
         <intent>
@@ -31,10 +35,22 @@
         android:allowBackup="false"
         android:banner="@drawable/banner"
         android:icon="@drawable/ic_plain"
-        android:label="Plain"
+        android:label="Butter Launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.Plain"
         android:usesCleartextTraffic="false">
+
+        <service
+            android:name=".ButterDreamService"
+            android:exported="true"
+            android:icon="@drawable/ic_plain"
+            android:label="Butter bounce"
+            android:permission="android.permission.BIND_DREAM_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.dreams.DreamService" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
 
         <activity
             android:name=".MainActivity"

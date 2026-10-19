@@ -1,0 +1,501 @@
+{
+  "schema": 1,
+  "packageAliases": "icons/line/catalog.json",
+  "packs": [
+    {
+      "id": "arcticons",
+      "label": "Arcticons",
+      "repository": "https://github.com/Arcticons-Team/Arcticons",
+      "revision": "917baa2b8b1c304e7a45de48d35e97b7a774c251",
+      "sourceDirectory": "icons/white",
+      "license": "CC-BY-SA-4.0",
+      "attribution": "Arcticons Team and contributors",
+      "modifications": "SVG files are byte-for-byte upstream originals. Butter Launcher adds package aliases and applies foreground tint at runtime; no paths, strokes, fills or transforms are edited.",
+      "fallbacks": [
+        "app"
+      ],
+      "icons": [
+        {
+          "id": "netflix",
+          "source": "icons/white/netflix.svg",
+          "asset": "icons/arcticons/netflix.svg",
+          "sha256": "c30c03c7abb1538ee894465f881afbe3f972e0231d817671f7e4ba3c865071a9"
+        },
+        {
+          "id": "youtube",
+          "source": "icons/white/youtube.svg",
+          "asset": "icons/arcticons/youtube.svg",
+          "sha256": "1d332bd739fee497a681c6892bc9b4344fce643b814160fc7716fbc60fde0c1c"
+        },
+        {
+          "id": "disney-plus",
+          "source": "icons/white/disney.svg",
+          "asset": "icons/arcticons/disney-plus.svg",
+          "sha256": "95ba5cc853dd6f39506a9a58296ce9a377deb64aa30f08383408566e561a7d31"
+        },
+        {
+          "id": "prime-video",
+          "source": "icons/white/amazon_prime_video.svg",
+          "asset": "icons/arcticons/prime-video.svg",
+          "sha256": "8a356ca427da1b87bf46f073783bcd54ffb24df03339c82c07fd2cb8b58b3fdf"
+        },
+        {
+          "id": "hulu",
+          "source": "icons/white/hulu.svg",
+          "asset": "icons/arcticons/hulu.svg",
+          "sha256": "704ee7836d5a08c5671a0b05059ab44868f92f19c62b46c599b1f539281fe70d"
+        },
+        {
+          "id": "max",
+          "source": "icons/white/max.svg",
+          "asset": "icons/arcticons/max.svg",
+          "sha256": "ef4cdff656a596f8aed3d73e59257ba115ab85df0f7cf164c3f5396cdabc6323"
+        },
+        {
+          "id": "apple-tv",
+          "source": "icons/white/apple_tv.svg",
+          "asset": "icons/arcticons/apple-tv.svg",
+          "sha256": "48bd7b8a0ee0a095883151b84b233a55c0b60e6eb612acf57918779266f6f5b5"
+        },
+        {
+          "id": "peacock",
+          "source": "icons/white/peacock.svg",
+          "asset": "icons/arcticons/peacock.svg",
+          "sha256": "fb22daeba4f9df1abdb9c8741fcd641a22e6a54952350edf97e8dca5e83d1673"
+        },
+        {
+          "id": "paramount-plus",
+          "source": "icons/white/paramount_plus.svg",
+          "asset": "icons/arcticons/paramount-plus.svg",
+          "sha256": "da6e0a054ae2b779cd1b6cf1885fa9ad5c2136f639f74c3c110cd076bcf51b40"
+        },
+        {
+          "id": "tubi",
+          "source": "icons/white/tubi.svg",
+          "asset": "icons/arcticons/tubi.svg",
+          "sha256": "bf00954f8f1598b1a712e39bb45bfaeeb43c4a7f630803d8935abbc83fec1b67"
+        },
+        {
+          "id": "pluto-tv",
+          "source": "icons/white/pluto_tv.svg",
+          "asset": "icons/arcticons/pluto-tv.svg",
+          "sha256": "4ebf812cff5d663cba28a2b3ae3d5559bf8b6d3ab6764a71d348ab3898c44a60"
+        },
+        {
+          "id": "crunchyroll",
+          "source": "icons/white/crunchyroll.svg",
+          "asset": "icons/arcticons/crunchyroll.svg",
+          "sha256": "eb937d01c112e6351c470d1026d926594becc9112e151921da7d3f78c1c26a71"
+        },
+        {
+          "id": "plex",
+          "source": "icons/white/plex.svg",
+          "asset": "icons/arcticons/plex.svg",
+          "sha256": "99575b18fa228bf849072a923107e8146158a68e7f6ec9b5701606c3916cec98"
+        },
+        {
+          "id": "jellyfin",
+          "source": "icons/white/jellyfin.svg",
+          "asset": "icons/arcticons/jellyfin.svg",
+          "sha256": "dc8d2e14f578b55e9b737e0566874c4e197544a59b6fe5ca242e571918ad005b"
+        },
+        {
+          "id": "kodi",
+          "source": "icons/white/kodi.svg",
+          "asset": "icons/arcticons/kodi.svg",
+          "sha256": "259c4e2210ed93264f21bc4142f5596acd30d05cb8ec9f2828cd81fdfdfbcbc6"
+        },
+        {
+          "id": "vlc",
+          "source": "icons/white/vlc.svg",
+          "asset": "icons/arcticons/vlc.svg",
+          "sha256": "0f1490903e9b4b3ae15f1ee4cd768d1d09fa1a081eb008396f2b8f46ca7afe81"
+        },
+        {
+          "id": "spotify",
+          "source": "icons/white/spotify.svg",
+          "asset": "icons/arcticons/spotify.svg",
+          "sha256": "cf49124773d2308334a3b6eede787865af06b375b1be875946dcaaefa31ba1e7"
+        },
+        {
+          "id": "twitch",
+          "source": "icons/white/twitch.svg",
+          "asset": "icons/arcticons/twitch.svg",
+          "sha256": "90581acb18a67b9a515c65de9aa9a408a5b172c51d1fca450307132f7ce778c5"
+        },
+        {
+          "id": "stremio",
+          "source": "icons/white/stremio.svg",
+          "asset": "icons/arcticons/stremio.svg",
+          "sha256": "fdec69d194f0b290d62280a94f88bc7e6f230414fc0b988e9762c60c3c4faab7"
+        },
+        {
+          "id": "bbc-iplayer",
+          "source": "icons/white/bbc_iplayer.svg",
+          "asset": "icons/arcticons/bbc-iplayer.svg",
+          "sha256": "12f9301ad41cf2451d27f5c86a104833d719874407e665f410c5e10deab354ec"
+        },
+        {
+          "id": "itvx",
+          "source": "icons/white/itvx.svg",
+          "asset": "icons/arcticons/itvx.svg",
+          "sha256": "45361c6bffc07efcf707bdb729076c2bf47e372742cab8a63e5eb56a82c22ae5"
+        },
+        {
+          "id": "dazn",
+          "source": "icons/white/dazn.svg",
+          "asset": "icons/arcticons/dazn.svg",
+          "sha256": "853a17dcf604a8a68387d155f8f7c7edc833c62d5808d673e4c2fd96acdc0eab"
+        },
+        {
+          "id": "espn",
+          "source": "icons/white/espn.svg",
+          "asset": "icons/arcticons/espn.svg",
+          "sha256": "020b778a7db9b56443f0f7dd959e8bb0fdf0b7e1ee222c1f0b1c03dde5f39ece"
+        },
+        {
+          "id": "steam-link",
+          "source": "icons/white/steamlink.svg",
+          "asset": "icons/arcticons/steam-link.svg",
+          "sha256": "e897a3528f791d84882cd6d3d5823f8ece683d55a5e92b8d3bd48076ce44e846"
+        },
+        {
+          "id": "youtube-music",
+          "source": "icons/white/youtube_music.svg",
+          "asset": "icons/arcticons/youtube-music.svg",
+          "sha256": "8acce7c80d2bf1efb2b8d895484b1fbb1d8911d1532ca819b88ea15f3193fb14"
+        },
+        {
+          "id": "emby",
+          "source": "icons/white/emby.svg",
+          "asset": "icons/arcticons/emby.svg",
+          "sha256": "dde0df4730f2e64e055d202874a93bfe837f58ce10edc90510ff590d6d835d9c"
+        },
+        {
+          "id": "smarttube",
+          "source": "icons/white/smarttube.svg",
+          "asset": "icons/arcticons/smarttube.svg",
+          "sha256": "52a4846a0bdd0d8486617b12f8e2b945d32f57841e95b9fff4a24be4ab668029"
+        },
+        {
+          "id": "moonlight",
+          "source": "icons/white/moonlight.svg",
+          "asset": "icons/arcticons/moonlight.svg",
+          "sha256": "965da5dedede019c6cad2bf5d64cdb5872d5c621687a7f65451c68a69bada161"
+        },
+        {
+          "id": "retroarch",
+          "source": "icons/white/retroarch.svg",
+          "asset": "icons/arcticons/retroarch.svg",
+          "sha256": "28253f5e443ea9ebf024e67b248ac382756946f9c895eea3c20fcf403e7cc1c9"
+        },
+        {
+          "id": "downloader",
+          "source": "icons/white/downloads.svg",
+          "asset": "icons/arcticons/downloader.svg",
+          "sha256": "efa5baca3da3aaa9924672f3271ba4786090e571d0140c8e8248d7dc5d8293cd"
+        },
+        {
+          "id": "file-manager",
+          "source": "icons/white/folder.svg",
+          "asset": "icons/arcticons/file-manager.svg",
+          "sha256": "73f5527edb369b64e0814727fb2f8dd9682717e43ba1ea704e093afbeceae38a"
+        },
+        {
+          "id": "browser",
+          "source": "icons/white/browser.svg",
+          "asset": "icons/arcticons/browser.svg",
+          "sha256": "f4f180437b6f0fe98a30028ebacc569b8567076d997db5ec72a5506fc8fd3032"
+        },
+        {
+          "id": "play-store",
+          "source": "icons/white/google_play_store.svg",
+          "asset": "icons/arcticons/play-store.svg",
+          "sha256": "34fad4319f4392ddf6289fdc38298d92fd6d48748f2af3c611bb8bf996acf6a4"
+        },
+        {
+          "id": "settings",
+          "source": "icons/white/settings.svg",
+          "asset": "icons/arcticons/settings.svg",
+          "sha256": "69c05dde6933b106fceb13ea4b95ba9657aeaacfa32fca72737efece40ebce5d"
+        },
+        {
+          "id": "google-tv",
+          "source": "icons/white/google_tv.svg",
+          "asset": "icons/arcticons/google-tv.svg",
+          "sha256": "5cf6cd3e367fd49c3f93f09408bc5d4a01e73170808870ce42949658796e29f8"
+        },
+        {
+          "id": "photos",
+          "source": "icons/white/gallery.svg",
+          "asset": "icons/arcticons/photos.svg",
+          "sha256": "9c145f38b1daa73f4b58d945ac1566d303046c2210eafea1da57945294413fa1"
+        },
+        {
+          "id": "music",
+          "source": "icons/white/music.svg",
+          "asset": "icons/arcticons/music.svg",
+          "sha256": "a4d68921bba887a43ffaed057d14d907aa8c081304dcb3a927beddacfba807bb"
+        },
+        {
+          "id": "live-tv",
+          "source": "icons/white/tv.svg",
+          "asset": "icons/arcticons/live-tv.svg",
+          "sha256": "e7f445fd922940d02336d347a7a0b32c9cb7fc7e001ab620b8970ec6b173799b"
+        },
+        {
+          "id": "f-droid",
+          "source": "icons/white/fdroid.svg",
+          "asset": "icons/arcticons/f-droid.svg",
+          "sha256": "aadf37786165b7021505399bb78a744f7002fd4a94e1430f8776695c8a82b476"
+        },
+        {
+          "id": "mx-player",
+          "source": "icons/white/mx.svg",
+          "asset": "icons/arcticons/mx-player.svg",
+          "sha256": "3481c9f4bf7e261b8576696dfd672ccfaa78dd0f4586c5dab176aba887cdc61d"
+        }
+      ]
+    },
+    {
+      "id": "lawnicons",
+      "label": "Lawnicons",
+      "repository": "https://github.com/LawnchairLauncher/lawnicons",
+      "revision": "fbbdb222d05a203c7405acff80bf5a883d806038",
+      "sourceDirectory": "svgs",
+      "license": "Apache-2.0",
+      "attribution": "Lawnchair and Lawnicons contributors",
+      "modifications": "SVG files are byte-for-byte upstream originals. Butter Launcher adds package aliases and applies foreground tint at runtime; no paths, strokes, fills or transforms are edited.",
+      "fallbacks": [
+        "itvx",
+        "smarttube",
+        "live-tv",
+        "app"
+      ],
+      "icons": [
+        {
+          "id": "netflix",
+          "source": "svgs/netflix.svg",
+          "asset": "icons/lawnicons/netflix.svg",
+          "sha256": "235e81024b9ee6bb63900b7759209389ec80cc7043e9638c2c07c3c1fdbcced3"
+        },
+        {
+          "id": "youtube",
+          "source": "svgs/youtube.svg",
+          "asset": "icons/lawnicons/youtube.svg",
+          "sha256": "e7b95cfd55e1da701cf9f146086e57cfc7aece1587d537b3803556fbf768d66e"
+        },
+        {
+          "id": "disney-plus",
+          "source": "svgs/disney_plus.svg",
+          "asset": "icons/lawnicons/disney-plus.svg",
+          "sha256": "6e9091d8fba65bd71d78eed5cf479cbb94e717983a9d73c85a1df87665d4cce3"
+        },
+        {
+          "id": "prime-video",
+          "source": "svgs/amazon_prime_video.svg",
+          "asset": "icons/lawnicons/prime-video.svg",
+          "sha256": "3540fa8f392fd10d93504e3df2cc142c43442cf4095b971f18ffb4aec853301b"
+        },
+        {
+          "id": "hulu",
+          "source": "svgs/hulu.svg",
+          "asset": "icons/lawnicons/hulu.svg",
+          "sha256": "e1285b483b4592d9135417d65a290973ebacd3f0ffdeea197d843e52d60413ae"
+        },
+        {
+          "id": "max",
+          "source": "svgs/hbo_max.svg",
+          "asset": "icons/lawnicons/max.svg",
+          "sha256": "56b534eb0b3e7f98ca271c7839d39f40205c281efdd4102095ca8fe6495d2fc4"
+        },
+        {
+          "id": "apple-tv",
+          "source": "svgs/apple_tv.svg",
+          "asset": "icons/lawnicons/apple-tv.svg",
+          "sha256": "9df55060818098e7bf8b4e426e0649fe7df551ed50c28065f24563e400919d99"
+        },
+        {
+          "id": "peacock",
+          "source": "svgs/peacock_tv.svg",
+          "asset": "icons/lawnicons/peacock.svg",
+          "sha256": "04dd98dc366e8e637cfffd1e435b6b93a58f9145ba5e46ad8f2ae7c574ab2757"
+        },
+        {
+          "id": "paramount-plus",
+          "source": "svgs/paramount_plus.svg",
+          "asset": "icons/lawnicons/paramount-plus.svg",
+          "sha256": "f00dd68dd578201329456fab97552d48dfdfa091177af7e6835a17162f0b7694"
+        },
+        {
+          "id": "tubi",
+          "source": "svgs/tubi.svg",
+          "asset": "icons/lawnicons/tubi.svg",
+          "sha256": "6ef36e1c01539eac2c68b1bcedf50b09cd730595758699e98638720b9d278666"
+        },
+        {
+          "id": "pluto-tv",
+          "source": "svgs/pluto_tv.svg",
+          "asset": "icons/lawnicons/pluto-tv.svg",
+          "sha256": "ef59d1f1f0aabb2ef464ec71a04c53bee9d8391bab87fe6f59039fe40a0adca0"
+        },
+        {
+          "id": "crunchyroll",
+          "source": "svgs/crunchyroll.svg",
+          "asset": "icons/lawnicons/crunchyroll.svg",
+          "sha256": "00250ef6e488ce28e06ce5495566292b637584761f6ba709f16411984b9519d1"
+        },
+        {
+          "id": "plex",
+          "source": "svgs/plex.svg",
+          "asset": "icons/lawnicons/plex.svg",
+          "sha256": "9c7c541d27a33d99313e971217f1471bf1df1489bc71c2d3648d632423e9ac58"
+        },
+        {
+          "id": "jellyfin",
+          "source": "svgs/jellyfin.svg",
+          "asset": "icons/lawnicons/jellyfin.svg",
+          "sha256": "024cc0b88a39f57eb84e2eb953c5550d0e360abfb040fe80919cb9d48c63ca9c"
+        },
+        {
+          "id": "kodi",
+          "source": "svgs/kodi.svg",
+          "asset": "icons/lawnicons/kodi.svg",
+          "sha256": "8c082fc16309439a30f58e9b58b617831ccc0de2ac46c4164eec1b081c7c2c0e"
+        },
+        {
+          "id": "vlc",
+          "source": "svgs/vlc.svg",
+          "asset": "icons/lawnicons/vlc.svg",
+          "sha256": "9c33945cc52147230e01a4b8b48bf131411767430680e8e57654293e14c796ab"
+        },
+        {
+          "id": "spotify",
+          "source": "svgs/spotify.svg",
+          "asset": "icons/lawnicons/spotify.svg",
+          "sha256": "2defe07dea583cac4a85e035c81eff859e0ef045ee639dd26c20ca11619aab41"
+        },
+        {
+          "id": "twitch",
+          "source": "svgs/twitch.svg",
+          "asset": "icons/lawnicons/twitch.svg",
+          "sha256": "e591f2c7b9f67a19d47f2ad53e7c707c7d75041222d098c8e56fb0b4db4b37e5"
+        },
+        {
+          "id": "stremio",
+          "source": "svgs/stremio.svg",
+          "asset": "icons/lawnicons/stremio.svg",
+          "sha256": "b8c1dcc0c39ce576672ec99d63d705a1bfe9434f236025ce51f7f31bffca0f19"
+        },
+        {
+          "id": "bbc-iplayer",
+          "source": "svgs/bbc_iplayer.svg",
+          "asset": "icons/lawnicons/bbc-iplayer.svg",
+          "sha256": "3c5442821b4c9b7e1b4de792a2846e78e9de59b334145b104763ec1296e2ef2c"
+        },
+        {
+          "id": "dazn",
+          "source": "svgs/dazn.svg",
+          "asset": "icons/lawnicons/dazn.svg",
+          "sha256": "7d015dabccff3a0778304bc1b0d10fbce9129d7c705c54dc16c52d796f167565"
+        },
+        {
+          "id": "espn",
+          "source": "svgs/espn.svg",
+          "asset": "icons/lawnicons/espn.svg",
+          "sha256": "ed103956a2b9d7f5ab5282163c6c5b872ccad51e5ceaabfbcb3a355dc65066b5"
+        },
+        {
+          "id": "steam-link",
+          "source": "svgs/steam_link.svg",
+          "asset": "icons/lawnicons/steam-link.svg",
+          "sha256": "861a48a274d04d30244b76974fc0175abd97d0bb6c0974740e46897fc0eb49e9"
+        },
+        {
+          "id": "youtube-music",
+          "source": "svgs/generic_player.svg",
+          "asset": "icons/lawnicons/youtube-music.svg",
+          "sha256": "59dc3d6046c6f99d8c626bd067403c6fdaa5a043269a04834bcecde4ebaa8fca"
+        },
+        {
+          "id": "emby",
+          "source": "svgs/emby.svg",
+          "asset": "icons/lawnicons/emby.svg",
+          "sha256": "0e8334e4c31fccd4db34c4bb9bec788ea8cd459657ec8c614f9ad80235434615"
+        },
+        {
+          "id": "moonlight",
+          "source": "svgs/moonlight.svg",
+          "asset": "icons/lawnicons/moonlight.svg",
+          "sha256": "1c6e67ec456001c3a6bbce77b442c1eb37da851ec2f0515a9d9d2790bba5ad33"
+        },
+        {
+          "id": "retroarch",
+          "source": "svgs/retroarch.svg",
+          "asset": "icons/lawnicons/retroarch.svg",
+          "sha256": "16b470f0fbf3a23cda10688516b62aee147957bd84e9848c226f4e288980b3c1"
+        },
+        {
+          "id": "downloader",
+          "source": "svgs/downloader.svg",
+          "asset": "icons/lawnicons/downloader.svg",
+          "sha256": "74105f6a3cde51c98b839c5f4f2b1985973aa20e2e087a0725ce3cc378bb02ca"
+        },
+        {
+          "id": "file-manager",
+          "source": "svgs/generic_files.svg",
+          "asset": "icons/lawnicons/file-manager.svg",
+          "sha256": "2c2f34e65c1ff3d6b748194cb93fca1ecc825b296c2c0827c9656db2fe81621d"
+        },
+        {
+          "id": "browser",
+          "source": "svgs/generic_browser.svg",
+          "asset": "icons/lawnicons/browser.svg",
+          "sha256": "a91cda3761ad0ac2207d7f75a088b452bb3e2c1fe2cf97a48e5fb3917375aa38"
+        },
+        {
+          "id": "play-store",
+          "source": "svgs/google_play_store.svg",
+          "asset": "icons/lawnicons/play-store.svg",
+          "sha256": "f41c8c2859dcef9db999c7d4526ff8af32791fcac7c6a51f227f249bb7351644"
+        },
+        {
+          "id": "settings",
+          "source": "svgs/generic_settings.svg",
+          "asset": "icons/lawnicons/settings.svg",
+          "sha256": "73adfed10d5a99d798a618985cf71b1cfbd0b4ea98cbb75bce8e13f1ba4ab384"
+        },
+        {
+          "id": "google-tv",
+          "source": "svgs/google_tv.svg",
+          "asset": "icons/lawnicons/google-tv.svg",
+          "sha256": "ba782022fb4cb3a0b2d720dda929fe94ec91b22b147ace2c5505b93569e1be15"
+        },
+        {
+          "id": "photos",
+          "source": "svgs/generic_gallery.svg",
+          "asset": "icons/lawnicons/photos.svg",
+          "sha256": "88055b4e2efd9a1ee75522bc7f657b07cffa917dcdd400f1e48f3ed85a318d73"
+        },
+        {
+          "id": "music",
+          "source": "svgs/lineageos_music_11.svg",
+          "asset": "icons/lawnicons/music.svg",
+          "sha256": "b406d057ffd2f81b5f4c7e55b986c3675dd3fef76fa0eef0dfa84328837c8b34"
+        },
+        {
+          "id": "f-droid",
+          "source": "svgs/f_droid.svg",
+          "asset": "icons/lawnicons/f-droid.svg",
+          "sha256": "1c205758dee28bf7f35a1b35a2668260f059d7daaac8753ab220d1c79da109c1"
+        },
+        {
+          "id": "mx-player",
+          "source": "svgs/generic_player.svg",
+          "asset": "icons/lawnicons/mx-player.svg",
+          "sha256": "59dc3d6046c6f99d8c626bd067403c6fdaa5a043269a04834bcecde4ebaa8fca"
+        }
+      ]
+    }
+  ]
+}

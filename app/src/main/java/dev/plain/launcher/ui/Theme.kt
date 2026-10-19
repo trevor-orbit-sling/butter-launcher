@@ -1,15 +1,10 @@
 package dev.plain.launcher.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.toArgb
@@ -58,15 +53,6 @@ fun PlainTheme(settings: LauncherSettings, content: @Composable () -> Unit) {
     CompositionLocalProvider(LocalLook provides look, LocalType provides type, LocalSettings provides settings, content = content)
 }
 
-// Android 11 can't blur live, so "glass" is soft colour blobs behind translucent surfaces.
-fun Modifier.backdrop(look: Look) = background(Brush.verticalGradient(listOf(look.top, look.bottom))).drawBehind {
-    val spots = listOf(Offset(0.15f, 0.2f), Offset(0.85f, 0.35f), Offset(0.45f, 0.95f))
-    look.blobs.zip(spots).forEach { (color, spot) ->
-        val center = Offset(size.width * spot.x, size.height * spot.y)
-        val radius = size.maxDimension * 0.55f
-        drawCircle(Brush.radialGradient(listOf(color, color.copy(alpha = 0f)), center, radius), radius, center)
-    }
-}
 
 fun tileShape(settings: LauncherSettings, look: Look): Shape = when (settings.tileShape) {
     TileShape.Rounded -> RoundedCornerShape(look.corner)
@@ -74,7 +60,7 @@ fun tileShape(settings: LauncherSettings, look: Look): Shape = when (settings.ti
     TileShape.Pill -> RoundedCornerShape(percent = 50)
 }
 
-private fun tone(seed: Color, saturation: Float, lightness: Float, hueShift: Float = 0f): Color {
+internal fun tone(seed: Color, saturation: Float, lightness: Float, hueShift: Float = 0f): Color {
     val hsl = FloatArray(3)
     ColorUtils.colorToHSL(seed.toArgb(), hsl)
     hsl[0] = (hsl[0] + hueShift + 360f) % 360f
@@ -130,6 +116,24 @@ private fun look(theme: Theme, accent: Color): Look = when (theme) {
     Theme.Paper -> flat(Color(0xFFF3F1EC), Color(0xFFE2DED6), Color.White, Color.White, tone(accent, 0.7f, 0.35f), Color(0xFF1C1C1C), Color(0xFF5F5F5F), accent, 12.dp, Color(0x1A000000))
     Theme.Slate -> flat(Color(0xFF1C2230), Color(0xFF0D1017), Color(0xFF252D3D), Color(0xFF33405A), accent, Color(0xFFE8ECF4), Color(0xFFA7B0C2), accent, 12.dp)
     Theme.Sand -> flat(Color(0xFF2B2520), Color(0xFF161210), Color(0xFF3A322B), Color(0xFF4A4037), accent, Color(0xFFF3EAE0), Color(0xFFC2B4A4), accent, 14.dp)
+    // Published MIT base/surface/text palettes; pinned sources and full notices ship with the app.
+    // Native palette focus colours stay recognisable; the user's accent still colours setting values.
+    Theme.CatppuccinMocha -> flat(
+        Color(0xFF1E1E2E), Color(0xFF181825), Color(0xFF313244), Color(0xFF45475A),
+        Color(0xFFCBA6F7), Color(0xFFCDD6F4), Color(0xFFBAC2DE), tone(accent, 0.65f, 0.82f), 16.dp,
+    )
+    Theme.CatppuccinLatte -> flat(
+        Color(0xFFEFF1F5), Color(0xFFE6E9EF), Color(0xFFE6E9EF), Color(0xFFDCE0E8),
+        Color(0xFF8839EF), Color(0xFF4C4F69), Color(0xFF5C5F77), tone(accent, 0.70f, 0.32f), 16.dp,
+    )
+    Theme.Dracula -> flat(
+        Color(0xFF282A36), Color(0xFF282A36), Color(0xFF44475A), Color(0xFF44475A),
+        Color(0xFFBD93F9), Color(0xFFF8F8F2), Color(0xFFF8F8F2).copy(alpha = 0.72f), tone(accent, 0.65f, 0.82f), 12.dp,
+    )
+    Theme.Nord -> flat(
+        Color(0xFF2E3440), Color(0xFF2E3440), Color(0xFF3B4252), Color(0xFF434C5E),
+        Color(0xFF88C0D0), Color(0xFFECEFF4), Color(0xFFD8DEE9), tone(accent, 0.65f, 0.82f), 12.dp,
+    )
 }
 
 private fun flat(

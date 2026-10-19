@@ -162,7 +162,7 @@ fun HomeScreen(
         }
     }
 
-    Box(Modifier.fillMaxSize().backdrop(look).onPreviewKeyEvent { event ->
+    Box(Modifier.fillMaxSize().backdrop(look, settings.background, settings.accent.color).onPreviewKeyEvent { event ->
         if (settingsOpen || tutorialOpen || !settings.tutorialComplete || menuApp != null) return@onPreviewKeyEvent false
         val action = settings.remoteBindings.action(event.nativeKeyEvent.keyCode) ?: return@onPreviewKeyEvent false
         val key = event.nativeKeyEvent
@@ -356,13 +356,7 @@ private fun Header(edge: Dp, weather: WeatherNow?, customiseFocus: FocusRequeste
                 }
             }
         }
-        if (weather != null) {
-            FocusSurface(onClick = {
-                runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, android.net.Uri.parse("https://open-meteo.com/")).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
-            }, zoom = 1.02f) {
-                Text("Weather by Open-Meteo ↗", style = type.caption, color = look.textDim, modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp))
-            }
-        }
+
     }
 }
 

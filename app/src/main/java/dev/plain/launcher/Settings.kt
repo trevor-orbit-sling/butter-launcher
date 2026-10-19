@@ -17,6 +17,12 @@ interface Choice {
 enum class Theme(override val label: String) : Choice {
     Glass("Frosted glass"), MaterialYou("Material You"), Ink("Minimal ink"),
     Paper("Minimal paper"), Slate("Minimal slate"), Sand("Minimal sand"),
+    CatppuccinMocha("Catppuccin Mocha"), CatppuccinLatte("Catppuccin Latte"),
+    Dracula("Dracula"), Nord("Nord"),
+}
+
+enum class BackgroundStyle(override val label: String) : Choice {
+    Theme("Theme"), Blobs("Gradient blobs"), Moving("Moving blobs"),
 }
 
 enum class Accent(override val label: String, val color: Color) : Choice {
@@ -54,7 +60,8 @@ enum class RowOrder(override val label: String) : Choice {
 }
 
 enum class IconStyle(override val label: String) : Choice {
-    Original("Original"), Mono("Minimal mono"), Line("Line icons"), Desaturated("Desaturated"), Pack("Icon pack"),
+    Original("Original"), Mono("Minimal mono"), Line("Line icons"), Arcticons("Arcticons"), Lawnicons("Lawnicons"),
+    Desaturated("Desaturated"), Pack("Icon pack"),
 }
 
 enum class TempUnit(override val label: String) : Choice {
@@ -72,6 +79,7 @@ data class LauncherSettings(
     val remoteBindings: RemoteBindings = RemoteBindings(),
     val tutorialComplete: Boolean = false,
     val theme: Theme = Theme.Glass,
+    val background: BackgroundStyle = BackgroundStyle.Theme,
     val accent: Accent = Accent.Blue,
     val font: FontFace = FontFace.Inter,
     val textSize: TextSize = TextSize.Normal,
@@ -118,4 +126,15 @@ internal fun validCoordinates(lat: String, lon: String): Boolean {
     val latitude = lat.toDoubleOrNull() ?: return false
     val longitude = lon.toDoubleOrNull() ?: return false
     return latitude.isFinite() && longitude.isFinite() && latitude in -90.0..90.0 && longitude in -180.0..180.0
+}
+
+/** Apply palette defaults only for an explicit theme change, preserving all other preferences. */
+internal fun LauncherSettings.changeTheme(theme: Theme): LauncherSettings =
+    if (theme == this.theme) this else copy(theme = theme, accent = theme.defaultAccent)
+
+internal val Theme.defaultAccent: Accent get() = when (this) {
+    Theme.Glass, Theme.Ink, Theme.Slate -> Accent.Blue
+    Theme.MaterialYou, Theme.CatppuccinMocha, Theme.CatppuccinLatte, Theme.Dracula -> Accent.Lavender
+    Theme.Paper, Theme.Nord -> Accent.Teal
+    Theme.Sand -> Accent.Amber
 }

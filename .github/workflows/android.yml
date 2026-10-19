@@ -19,5 +19,5 @@ jobs:
       - run: ./gradlew assembleDebug testDebugUnitTest lintDebug assembleRelease --console=plain
       - uses: actions/upload-artifact@v4
         with:
-          name: plain-debug
+          name: butter-debug
           path: app/build/outputs/apk/debug/app-debug.apk
