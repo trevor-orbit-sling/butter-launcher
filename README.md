@@ -81,7 +81,7 @@ In **Customise**, choose **Theme**, **Gradient blobs** or **Moving blobs** for t
 
 **Cyberpunk** adds near-black panels, neon yellow focus, cyan and magenta details, and cut-corner tiles with a faint static grid. Movement remains optional through Background. It is original styling, with no game artwork, fonts or logos.
 
-The six new presets add their own static details, from Phosphor's amber terminal lines to Canopy's fern leaves. Compare them in the [theme gallery](docs/theme-gallery.html), or see the [appearance guide](wiki/Appearance.md) for their font and accent defaults. Loading saved settings preserves your choices.
+The six new presets add their own static details, from Phosphor's amber terminal lines to Canopy's fern leaves and subtly veined tiles. Compare them in the [theme gallery](docs/theme-gallery.html), or see the [appearance guide](wiki/Appearance.md) for their font and accent defaults. Loading saved settings preserves your choices.
 
 | Phosphor | Orbital |
 | --- | --- |
@@ -93,7 +93,7 @@ The six new presets add their own static details, from Phosphor's amber terminal
 
 | Butter | Canopy |
 | --- | --- |
-| ![Cream, gold and cocoa with soft melting curves](docs/screenshots/24-butter.png) | ![Sage and moss greens with a branching fern](docs/screenshots/25-canopy.png) |
+| ![Cream, gold and cocoa with soft melting curves](docs/screenshots/24-butter.png) | ![Sage and moss greens with fern leaves, veined tiles and short stems](docs/screenshots/25-canopy.png) |
 
 ## Optional screen saver
 
@@ -182,7 +182,7 @@ adb uninstall dev.plain.launcher
 
 ## Weather and privacy
 
-Open **Customise → Location**, type a city and choose Search. Use the D-pad and OK to select a result; choosing it enables weather. Search moves focus into the results, and Down lets you leave the text field.
+Open **Customise → Location**, type a city and choose Search. With no saved location, **Weather → Choose a city** opens the same picker. Use the D-pad and OK to select a result; choosing it enables weather. Search moves focus into the results, and Down lets you leave the text field.
 
 ![The weather location picker with a London search result focused](docs/screenshots/10-weather-location.png)
 

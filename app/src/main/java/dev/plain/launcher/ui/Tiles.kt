@@ -46,6 +46,7 @@ import dev.plain.launcher.App
 import dev.plain.launcher.AppArt
 import dev.plain.launcher.Apps
 import dev.plain.launcher.IconStyle
+import dev.plain.launcher.Theme
 import dev.plain.launcher.TileShape
 import dev.plain.launcher.WatchItem
 import dev.plain.launcher.brandGlyphs
@@ -110,6 +111,7 @@ fun AppTile(
             selected = selected,
             modifier = modifier.width(width.dp).height((width * 9 / 16).dp).semantics { contentDescription = app.label },
         ) {
+            if (settings.theme == Theme.Canopy) CanopyTileDecoration(look.accent, settings.tileShape)
             TileArt(app, art, settings.iconStyle, width)
             if (held) {
                 Box(Modifier.fillMaxSize().background(Color.Black.copy(alpha = 0.35f)).padding(horizontal = 10.dp)) {

@@ -106,7 +106,8 @@ data class LauncherSettings(
     val lat: String = "",
     val lon: String = "",
 ) {
-    val weatherQuery get() = if (showWeather.on && validCoordinates(lat, lon)) WeatherQuery(lat, lon, tempUnit) else null
+    val hasWeatherLocation get() = validCoordinates(lat, lon)
+    val weatherQuery get() = if (showWeather.on && hasWeatherLocation) WeatherQuery(lat, lon, tempUnit) else null
 
 }
 
@@ -125,7 +126,11 @@ class SettingsStore(private val context: Context) {
 
 internal fun decodeSettings(text: String?) =
     (text?.let { runCatching { settingsJson.decodeFromString<LauncherSettings>(it) }.getOrNull() } ?: LauncherSettings())
-        .let { if (it.iconStyle == IconStyle.Line) it.copy(iconStyle = IconStyle.Lawnicons) else it }
+        .let { it.copy(
+            iconStyle = if (it.iconStyle == IconStyle.Line) IconStyle.Lawnicons else it.iconStyle,
+            favourites = it.favourites.filter(String::isNotBlank).distinct(),
+            hiddenApps = it.hiddenApps.filter(String::isNotBlank).distinct(),
+        ) }
 
 inline fun <reified E : Enum<E>> E.cycle(step: Int): E = enumValues<E>().let { it[(ordinal + step).mod(it.size)] }
 
@@ -141,6 +146,9 @@ internal fun LauncherSettings.changeTheme(theme: Theme): LauncherSettings =
 
 internal fun LauncherSettings.hideApp(packageName: String): LauncherSettings =
     if (packageName in hiddenApps) this else copy(hiddenApps = hiddenApps + packageName)
+
+internal fun LauncherSettings.addFavourite(packageName: String): LauncherSettings =
+    if (packageName in favourites) this else copy(favourites = favourites + packageName)
 
 internal fun LauncherSettings.restoreApp(packageName: String): LauncherSettings =
     copy(hiddenApps = hiddenApps.filterNot { it == packageName })

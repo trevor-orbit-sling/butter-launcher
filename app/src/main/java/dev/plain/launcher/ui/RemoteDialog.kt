@@ -16,6 +16,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -27,6 +28,8 @@ import androidx.compose.ui.window.Dialog
 import androidx.tv.material3.Text
 import dev.plain.launcher.RemoteAction
 import dev.plain.launcher.RemoteBindings
+import dev.plain.launcher.assignment
+import kotlinx.coroutines.launch
 
 @Composable
 fun RemoteDialog(onChange: (Change) -> Unit, onDismiss: () -> Unit) {
@@ -34,6 +37,8 @@ fun RemoteDialog(onChange: (Change) -> Unit, onDismiss: () -> Unit) {
     val type = LocalType.current
     val bindings = LocalSettings.current.remoteBindings
     var learning by remember { mutableStateOf<RemoteAction?>(null) }
+    var saving by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
     var message by remember { mutableStateOf("Choose an action, then press the button you want to use.") }
     val first = remember { FocusRequester() }
     val maxHeight = (LocalConfiguration.current.screenHeightDp * 0.9f).dp
@@ -50,12 +55,18 @@ fun RemoteDialog(onChange: (Change) -> Unit, onDismiss: () -> Unit) {
                         return@onPreviewKeyEvent true
                     }
                     if (key.action == KeyEvent.ACTION_DOWN && key.repeatCount == 0) {
-                        val problem = bindings.problem(action, key.keyCode)
-                        if (problem != null) message = problem
-                        else {
-                            onChange { it.copy(remoteBindings = it.remoteBindings.assign(action, key.keyCode)) }
-                            message = "${action.label} mapped to ${buttonLabel(key.keyCode)}."
-                            learning = null
+                        val code = key.keyCode
+                        saving = true
+                        learning = null
+                        message = "Saving mapping…"
+                        onChange { settings ->
+                            val result = settings.remoteBindings.assignment(action, code)
+                            scope.launch {
+                                saving = false
+                                message = result.problem ?: "${action.label} mapped to ${buttonLabel(code)}."
+                                if (result.problem != null) learning = action
+                            }
+                            settings.copy(remoteBindings = result.bindings)
                         }
                     }
                     true
@@ -66,7 +77,7 @@ fun RemoteDialog(onChange: (Change) -> Unit, onDismiss: () -> Unit) {
             Text("Shortcuts work while Butter Launcher is open. D-pad, OK and Back stay available. Home, Power and Input/Source may be handled by your TV before Butter receives them.", style = type.body, color = look.textDim)
             RemoteAction.entries.forEachIndexed { index, action ->
                 FocusSurface(
-                    onClick = { learning = action; message = "Press a button for ${action.label}. Back cancels." },
+                    onClick = { if (!saving) { learning = action; message = "Press a button for ${action.label}. Back cancels." } },
                     modifier = if (index == 0) Modifier.focusRequester(first) else Modifier,
                     zoom = 1.02f,
                 ) {
@@ -75,7 +86,7 @@ fun RemoteDialog(onChange: (Change) -> Unit, onDismiss: () -> Unit) {
             }
             Text(message, style = type.caption, color = look.accent)
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                FocusSurface(onClick = { learning = null; onChange { it.copy(remoteBindings = RemoteBindings()) }; message = "Default buttons restored." }, zoom = 1.02f) {
+                FocusSurface(onClick = { if (!saving) { learning = null; onChange { it.copy(remoteBindings = RemoteBindings()) }; message = "Default buttons restored." } }, zoom = 1.02f) {
                     Text("Reset defaults", style = type.label, color = look.text, modifier = Modifier.padding(14.dp))
                 }
                 FocusSurface(onClick = onDismiss, zoom = 1.02f) {

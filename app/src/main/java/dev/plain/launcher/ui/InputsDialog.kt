@@ -49,7 +49,10 @@ internal fun InputsDialog(onDismiss: () -> Unit) {
     var refresh by remember { mutableIntStateOf(0) }
     var snapshot by remember { mutableStateOf(TvInputsState(message = "Loading inputs…")) }
     var error by remember { mutableStateOf("") }
-    LaunchedEffect(refresh) { snapshot = withContext(Dispatchers.IO) { inputs.load() } }
+    LaunchedEffect(refresh) {
+        snapshot = withContext(Dispatchers.IO) { inputs.load() }
+        if (snapshot.sources.isNotEmpty()) error = ""
+    }
     DisposableEffect(inputs, lifecycle) {
         val stop = inputs.listen { refresh++ }
         val observer = LifecycleEventObserver { _, event -> if (event == Lifecycle.Event.ON_RESUME) refresh++ }
@@ -73,6 +76,7 @@ internal fun InputsDialog(onDismiss: () -> Unit) {
             LazyColumn(Modifier.weight(1f, fill = false), state = list, verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 itemsIndexed(snapshot.sources, key = { _, input -> input.id }) { index, input ->
                     FocusSurface(onClick = {
+                        error = ""
                         if (inputs.open(input)) onDismiss()
                         else error = "Couldn't open that input. Try your TV's Input/Source button or TV settings."
                     }, zoom = 1.02f, modifier = Modifier.fillMaxWidth().then(if (index == 0) Modifier.focusRequester(first) else Modifier)) {
@@ -86,6 +90,7 @@ internal fun InputsDialog(onDismiss: () -> Unit) {
             if (error.isNotEmpty()) Text(error, style = type.caption, color = look.textDim)
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 FocusSurface(onClick = {
+                    error = ""
                     if (inputs.openSettings()) onDismiss() else error = "TV settings aren't available on this device."
                 }, zoom = 1.02f, modifier = Modifier.weight(1f).then(if (snapshot.sources.isEmpty()) Modifier.focusRequester(first) else Modifier)) {
                     Text("TV settings", style = type.label, color = look.text, modifier = Modifier.padding(12.dp))

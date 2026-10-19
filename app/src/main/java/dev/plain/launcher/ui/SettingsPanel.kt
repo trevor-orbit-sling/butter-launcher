@@ -4,9 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -26,13 +27,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
@@ -41,6 +42,7 @@ import androidx.compose.ui.input.key.type
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.tv.material3.Text
 import dev.plain.launcher.App
 import dev.plain.launcher.Apps
@@ -52,20 +54,31 @@ import dev.plain.launcher.Weather
 import dev.plain.launcher.cycle
 import dev.plain.launcher.changeTheme
 import dev.plain.launcher.restoreApp
+import dev.plain.launcher.addFavourite
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.CancellationException
 
 typealias Change = (LauncherSettings) -> LauncherSettings
+internal val SettingsPanelWidth = 440.dp
 
-private class Option(val label: String, val value: String, val open: (() -> Unit)? = null, val step: (Int) -> Unit = {})
+internal class Option(val label: String, val value: String, val open: (() -> Unit)? = null, val step: (Int) -> Unit = {}) {
+    fun adjust(direction: Int) { open?.invoke() ?: step(direction) }
+}
 
-private inline fun <reified E> option(
+internal inline fun <reified E> option(
     label: String,
-    value: E,
+    settings: LauncherSettings,
+    crossinline read: (LauncherSettings) -> E,
     noinline onChange: (Change) -> Unit,
     crossinline set: LauncherSettings.(E) -> LauncherSettings,
-): Option where E : Enum<E>, E : Choice = Option(label, value.label) { step -> onChange { it.set(value.cycle(step)) } }
+): Option where E : Enum<E>, E : Choice = Option(label, read(settings).label) { step ->
+    onChange { current -> current.set(read(current).cycle(step)) }
+}
+
+internal fun weatherOption(settings: LauncherSettings, onChange: (Change) -> Unit, onLocation: () -> Unit): Option =
+    if (!settings.hasWeatherLocation) Option("Weather", "Choose a city", open = onLocation)
+    else option("Weather", settings, LauncherSettings::showWeather, onChange) { copy(showWeather = it) }
 
 @Composable
 fun SettingsPanel(apps: Apps, installed: List<App>, onChange: (Change) -> Unit, onTutorial: () -> Unit) {
@@ -90,27 +103,27 @@ fun SettingsPanel(apps: Apps, installed: List<App>, onChange: (Change) -> Unit, 
 
     val sections = listOf(
         "Theme" to listOf(
-            option("Theme", s.theme, onChange) { changeTheme(it) },
-            option("Accent", s.accent, onChange) { copy(accent = it) },
-            option("Background", s.background, onChange) { copy(background = it) },
+            option("Theme", s, LauncherSettings::theme, onChange) { changeTheme(it) },
+            option("Accent", s, LauncherSettings::accent, onChange) { copy(accent = it) },
+            option("Background", s, LauncherSettings::background, onChange) { copy(background = it) },
         ),
         "Text" to listOf(
-            option("Font", s.font, onChange) { copy(font = it) },
-            option("Text size", s.textSize, onChange) { copy(textSize = it) },
+            option("Font", s, LauncherSettings::font, onChange) { copy(font = it) },
+            option("Text size", s, LauncherSettings::textSize, onChange) { copy(textSize = it) },
         ),
         "Layout" to listOf(
-            option("Tile size", s.tileSize, onChange) { copy(tileSize = it) },
-            option("Tile shape", s.tileShape, onChange) { copy(tileShape = it) },
-            option("Spacing", s.spacing, onChange) { copy(spacing = it) },
-            option("App names", s.showNames, onChange) { copy(showNames = it) },
-            option("Clock", s.clock, onChange) { copy(clock = it) },
-            option("Row order", s.rowOrder, onChange) { copy(rowOrder = it) },
-            option("Continue watching", s.showWatching, onChange) { copy(showWatching = it) },
-            option("All apps row", s.showAllApps, onChange) { copy(showAllApps = it) },
+            option("Tile size", s, LauncherSettings::tileSize, onChange) { copy(tileSize = it) },
+            option("Tile shape", s, LauncherSettings::tileShape, onChange) { copy(tileShape = it) },
+            option("Spacing", s, LauncherSettings::spacing, onChange) { copy(spacing = it) },
+            option("App names", s, LauncherSettings::showNames, onChange) { copy(showNames = it) },
+            option("Clock", s, LauncherSettings::clock, onChange) { copy(clock = it) },
+            option("Row order", s, LauncherSettings::rowOrder, onChange) { copy(rowOrder = it) },
+            option("Continue watching", s, LauncherSettings::showWatching, onChange) { copy(showWatching = it) },
+            option("All apps row", s, LauncherSettings::showAllApps, onChange) { copy(showAllApps = it) },
         ),
         "Weather" to listOf(
-            option("Weather", s.showWeather, onChange) { copy(showWeather = it) },
-            option("Units", s.tempUnit, onChange) { copy(tempUnit = it) },
+            weatherOption(s, onChange) { choosingPlace = true },
+            option("Units", s, LauncherSettings::tempUnit, onChange) { copy(tempUnit = it) },
             Option("Location", s.place.ifBlank { "Choose a city" }, open = { choosingPlace = true }),
         ),
         "Icons" to listOf(
@@ -119,7 +132,7 @@ fun SettingsPanel(apps: Apps, installed: List<App>, onChange: (Change) -> Unit, 
         ),
     )
 
-    Column(Modifier.fillMaxHeight().width(440.dp).background(look.panel).padding(vertical = 28.dp)) {
+    Column(Modifier.fillMaxHeight().width(SettingsPanelWidth).background(look.panel).padding(vertical = 28.dp)) {
         Text("Settings", style = type.title, color = look.text, modifier = Modifier.padding(horizontal = 28.dp))
         Text("◀ ▶ to change · OK to open · Back to close", style = type.caption, color = look.textDim, modifier = Modifier.padding(start = 28.dp, top = 4.dp, bottom = 12.dp))
         LazyColumn(contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -153,30 +166,30 @@ private fun OptionRow(o: Option, modifier: Modifier) {
     val look = LocalLook.current
     val type = LocalType.current
     FocusSurface(
-        onClick = { o.open?.invoke() ?: o.step(1) },
+        onClick = { o.adjust(1) },
         zoom = 1.02f,
         modifier = modifier.fillMaxWidth().onPreviewKeyEvent { e ->
             when {
                 e.type != KeyEventType.KeyDown -> false
-                e.key == Key.DirectionLeft -> { o.step(-1); true }
-                e.key == Key.DirectionRight -> { o.step(1); true }
+                e.key == Key.DirectionLeft -> { o.adjust(-1); true }
+                e.key == Key.DirectionRight -> { o.adjust(1); true }
                 else -> false
             }
         },
     ) {
-        Row(Modifier.padding(horizontal = 16.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
+        Column(Modifier.padding(horizontal = 16.dp, vertical = 10.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text(o.label, style = type.body, color = look.text)
-            Spacer(Modifier.weight(1f))
-            Text(if (o.open != null) "${o.value}  ›" else "‹  ${o.value}  ›", style = type.label, color = look.accent)
+            Text(if (o.open != null) "${o.value}  ›" else "‹  ${o.value}  ›", style = type.label, color = look.accent, maxLines = 2, overflow = TextOverflow.Ellipsis)
         }
     }
 }
 
 @Composable
-private fun PopupCard(width: Int, content: @Composable () -> Unit) {
+private fun PopupCard(width: Int, content: @Composable ColumnScope.() -> Unit) {
     val look = LocalLook.current
+    val maxHeight = (LocalConfiguration.current.screenHeightDp * 0.9f).dp
     Column(
-        Modifier.width(width.dp).background(look.panel, RoundedCornerShape(look.corner)).padding(22.dp),
+        Modifier.width(width.dp).heightIn(max = maxHeight).background(look.panel, RoundedCornerShape(look.corner)).padding(22.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) { content() }
 }
@@ -197,9 +210,9 @@ fun AppMenu(app: App, favourite: Boolean, canMove: Boolean, onMove: () -> Unit, 
             Text(app.label, style = LocalType.current.title, color = LocalLook.current.text, modifier = Modifier.padding(start = 6.dp, bottom = 6.dp))
             if (favourite) {
                 if (canMove) MenuButton("Move", Modifier.focusRequester(first), onMove)
-                MenuButton("Remove from favourites", if (!canMove) Modifier.focusRequester(first) else Modifier) { onChange { it.copy(favourites = it.favourites - app.packageName) }; onDismiss() }
+                MenuButton("Remove from favourites", if (!canMove) Modifier.focusRequester(first) else Modifier) { onChange { it.copy(favourites = it.favourites.filterNot { pkg -> pkg == app.packageName }) }; onDismiss() }
             } else {
-                MenuButton("Add to favourites", Modifier.focusRequester(first)) { onChange { it.copy(favourites = it.favourites + app.packageName) }; onDismiss() }
+                MenuButton("Add to favourites", Modifier.focusRequester(first)) { onChange { it.addFavourite(app.packageName) }; onDismiss() }
             }
             if (onHide != null) MenuButton("Hide from All apps", onClick = onHide)
             MenuButton("App info", onClick = onInfo)
@@ -227,7 +240,7 @@ private fun HiddenAppsDialog(installed: List<App>, onChange: (Change) -> Unit, o
             Text("Hidden apps", style = type.title, color = look.text)
             Text("Hidden apps stay in your favourites. Restore an app to show it in All apps again.", style = type.caption, color = look.textDim)
             if (hidden.isEmpty()) Text("No hidden apps.", style = type.body, color = look.textDim, modifier = Modifier.padding(vertical = 12.dp))
-            LazyColumn(state = list, modifier = Modifier.heightIn(max = 300.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            LazyColumn(state = list, modifier = Modifier.weight(1f, fill = false), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 itemsIndexed(hidden, key = { _, pkg -> pkg }) { index, pkg ->
                     Column {
                         MenuButton("Restore ${labels[pkg] ?: pkg}", if (index == 0) Modifier.focusRequester(first) else Modifier) {
@@ -254,6 +267,7 @@ private fun PlaceDialog(onChange: (Change) -> Unit, onDismiss: () -> Unit) {
     val field = remember { FocusRequester() }
     val searchButton = remember { FocusRequester() }
     val firstResult = remember { FocusRequester() }
+    val resultList = rememberLazyListState()
     val keyboard = LocalSoftwareKeyboardController.current
 
     fun pick(place: Place) {
@@ -273,8 +287,9 @@ private fun PlaceDialog(onChange: (Change) -> Unit, onDismiss: () -> Unit) {
             try {
                 places = Weather.search(name)
                 status = if (places.isEmpty()) "Nothing found for \"$name\"." else "Pick a place:"
+                resultList.scrollToItem(0)
                 androidx.compose.runtime.withFrameNanos { }
-                if (places.isNotEmpty()) firstResult.requestFocus() else searchButton.requestFocus()
+                runCatching { if (places.isNotEmpty()) firstResult.requestFocus() else searchButton.requestFocus() }
             } catch (cancelled: CancellationException) {
                 throw cancelled
             } catch (_: Exception) {
@@ -300,7 +315,11 @@ private fun PlaceDialog(onChange: (Change) -> Unit, onDismiss: () -> Unit) {
                     if (event.key != Key.DirectionDown) return@onPreviewKeyEvent false
                     if (event.type == KeyEventType.KeyDown) {
                         keyboard?.hide()
-                        if (places.isNotEmpty()) firstResult.requestFocus() else searchButton.requestFocus()
+                        scope.launch {
+                            resultList.scrollToItem(0)
+                            androidx.compose.runtime.withFrameNanos { }
+                            runCatching { if (places.isNotEmpty()) firstResult.requestFocus() else searchButton.requestFocus() }
+                        }
                     }
                     true
                 },
@@ -315,7 +334,7 @@ private fun PlaceDialog(onChange: (Change) -> Unit, onDismiss: () -> Unit) {
                 MenuButton("Search", Modifier.weight(1f).focusRequester(searchButton)) { search() }
             }
             Text(status, style = type.caption, color = look.textDim)
-            LazyColumn(Modifier.heightIn(max = 300.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            LazyColumn(Modifier.weight(1f, fill = false), state = resultList, verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 itemsIndexed(places) { index, place ->
                     MenuButton(
                         listOf(place.name, place.detail).filter { it.isNotEmpty() }.joinToString(" · "),

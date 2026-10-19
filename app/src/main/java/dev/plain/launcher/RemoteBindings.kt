@@ -19,7 +19,7 @@ data class RemoteBindings(
         RemoteAction.Inputs -> inputs
     }
 
-    fun action(key: Int) = RemoteAction.entries.firstOrNull { key != KeyEvent.KEYCODE_UNKNOWN && key(it) == key }
+    fun action(key: Int) = RemoteAction.entries.firstOrNull { key in assignableKeys && key(it) == key }
 
     fun problem(action: RemoteAction, key: Int): String? {
         if (key !in assignableKeys) return "Keep navigation, OK, Back, Home, Power and volume available. Try a menu, coloured, media or gamepad button."
@@ -49,4 +49,12 @@ data class RemoteBindings(
             KeyEvent.KEYCODE_BUTTON_THUMBL, KeyEvent.KEYCODE_BUTTON_THUMBR,
         )
     }
+}
+
+/** The settings transaction calls this with its latest bindings, not a potentially stale UI snapshot. */
+internal data class RemoteAssignment(val bindings: RemoteBindings, val problem: String?)
+
+internal fun RemoteBindings.assignment(action: RemoteAction, key: Int): RemoteAssignment {
+    val problem = problem(action, key)
+    return RemoteAssignment(if (problem == null) assign(action, key) else this, problem)
 }

@@ -13,14 +13,15 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
@@ -52,9 +53,13 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.PlatformTextStyle
+import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.tv.material3.Text
 import dev.plain.launcher.App
 import dev.plain.launcher.Apps
@@ -221,7 +226,9 @@ fun HomeScreen(
             verticalArrangement = Arrangement.spacedBy(gap * 1.6f),
             modifier = Modifier.fillMaxSize(),
         ) {
-            item { Header(edge, weather, customiseFocus, inputsFocus, onInputs = { openInputs() }, onCustomise = { settingsOpen = true }) }
+            item { Header(edge, weather, customiseFocus, inputsFocus,
+                coveredWidth = if (settingsOpen) SettingsPanelWidth else 0.dp,
+                onInputs = { openInputs() }, onCustomise = { settingsOpen = true }) }
 
             fun watchingRow() {
                 if (!settings.showWatching.on) return
@@ -347,8 +354,9 @@ private fun Shelf(title: String, edge: Dp, gap: Dp, state: LazyListState = remem
 }
 
 @Composable
-private fun Header(edge: Dp, weather: WeatherNow?, customiseFocus: FocusRequester, inputsFocus: FocusRequester, onInputs: () -> Unit, onCustomise: () -> Unit) {
+private fun Header(edge: Dp, weather: WeatherNow?, customiseFocus: FocusRequester, inputsFocus: FocusRequester, coveredWidth: Dp, onInputs: () -> Unit, onCustomise: () -> Unit) {
     val settings = LocalSettings.current
+    val currentWeather = weather?.takeIf { it.query == settings.weatherQuery }
     val look = LocalLook.current
     val type = LocalType.current
     val context = LocalContext.current
@@ -361,35 +369,39 @@ private fun Header(edge: Dp, weather: WeatherNow?, customiseFocus: FocusRequeste
     val time = DateFormat.getTimeFormat(context).format(now)
     val date = DateFormat.format("EEEE d MMMM", now).toString()
 
-    Column(Modifier.fillMaxWidth().padding(horizontal = edge), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.Top) {
+    BoxWithConstraints(Modifier.fillMaxWidth().padding(horizontal = edge)) {
+        val visibleWidth = (maxWidth - coveredWidth).coerceAtLeast(0.dp)
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp), verticalAlignment = Alignment.Top) {
             if (settings.clock == Clock.Large) {
-                Column {
-                    Text(time, style = type.hero, color = look.text)
-                    Text(date, style = type.body, color = look.textDim)
-                    weather?.let { w ->
-                        Row(Modifier.padding(top = 14.dp), Arrangement.spacedBy(10.dp), Alignment.CenterVertically) {
-                            PathIcon(w.glyph.path, 960f, 960f, look.accent, 30.dp)
-                            Text("${w.temp}°", style = type.title, color = look.text)
-                            Text("${w.condition} · H ${w.high}°  L ${w.low}° · ${settings.place}", style = type.body, color = look.textDim)
+                Column(Modifier.weight(1f)) {
+                    Column(Modifier.widthIn(max = visibleWidth)) {
+                        LargeClock(time)
+                        Text(date, style = type.body, color = look.textDim, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        currentWeather?.let { w ->
+                            Row(Modifier.fillMaxWidth().padding(top = 14.dp), Arrangement.spacedBy(10.dp), Alignment.CenterVertically) {
+                                PathIcon(w.glyph.path, 960f, 960f, look.accent, 30.dp)
+                                Text("${w.temp}°", style = type.title, color = look.text, maxLines = 1)
+                                Text("${w.condition} · H ${w.high}°  L ${w.low}° · ${settings.place}", style = type.body, color = look.textDim,
+                                    modifier = Modifier.weight(1f), maxLines = 2, overflow = TextOverflow.Ellipsis)
+                            }
                         }
                     }
                 }
             } else {
-                Row(horizontalArrangement = Arrangement.spacedBy(14.dp), verticalAlignment = Alignment.CenterVertically) {
+                Row(Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(14.dp), verticalAlignment = Alignment.CenterVertically) {
                     if (settings.clock == Clock.Corner) {
-                        Text(time, style = type.title, color = look.text)
-                        Text(date, style = type.caption, color = look.textDim)
+                        Text(time, style = type.title, color = look.text, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                        Text(date, style = type.caption, color = look.textDim, maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
-                    weather?.let { w ->
+                    currentWeather?.let { w ->
                         if (settings.clock == Clock.Corner) Text("·", style = type.caption, color = look.textDim)
                         PathIcon(w.glyph.path, 960f, 960f, look.accent, 22.dp)
-                        Text("${w.temp}°", style = type.label, color = look.text)
-                        Text("${w.condition} · ${w.high}° / ${w.low}°", style = type.caption, color = look.textDim)
+                        Text("${w.temp}°", style = type.label, color = look.text, maxLines = 1)
+                        Text("${w.condition} · ${w.high}° / ${w.low}°", style = type.caption, color = look.textDim,
+                            modifier = Modifier.weight(1f), maxLines = 1, overflow = TextOverflow.Ellipsis)
                     }
                 }
             }
-            Spacer(Modifier.weight(1f))
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 FocusSurface(onClick = onInputs, shape = CircleShape, modifier = Modifier.focusRequester(inputsFocus).size(44.dp)) {
                     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -402,7 +414,38 @@ private fun Header(edge: Dp, weather: WeatherNow?, customiseFocus: FocusRequeste
                 }
             }
         }
+    }
+}
 
+@Composable
+private fun LargeClock(time: String) {
+    val hero = LocalType.current.hero
+    val color = LocalLook.current.text
+    val measurer = rememberTextMeasurer()
+    // Font padding and a little drawing room protect tall glyphs and side bearings.
+    BoxWithConstraints(Modifier.fillMaxWidth().padding(horizontal = 2.dp, vertical = 4.dp)) {
+        val width = constraints.maxWidth
+        val fitted = remember(time, hero, width, measurer) {
+            fun style(scale: Float) = hero.copy(
+                fontSize = (hero.fontSize.value * scale).sp,
+                lineHeight = (hero.fontSize.value * scale * 1.25f).sp,
+                platformStyle = PlatformTextStyle(includeFontPadding = true),
+            )
+            fun fits(scale: Float) = measurer.measure(
+                text = time, style = style(scale), softWrap = false, maxLines = 1,
+                overflow = TextOverflow.Visible,
+            ).size.width <= (width - 1).coerceAtLeast(1)
+            if (fits(1f)) style(1f) else {
+                var low = 0.01f
+                var high = 1f
+                repeat(14) {
+                    val mid = (low + high) / 2f
+                    if (fits(mid)) low = mid else high = mid
+                }
+                style(low)
+            }
+        }
+        Text(time, style = fitted, color = color, softWrap = false, maxLines = 1, overflow = TextOverflow.Visible)
     }
 }
 

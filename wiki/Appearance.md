@@ -13,7 +13,7 @@ The six new presets also apply a matching font when you switch to them. You can 
 | After Hours | Purple, pink and blue with a striped sunset | Outfit | Hot pink |
 | Deep Sea | Dark teal contours and bioluminescent dots | Manrope | Teal |
 | Butter | Cream, gold and cocoa with melting curves | Outfit | Amber |
-| Canopy | Sage and moss with fern leaves | Manrope | Lime |
+| Canopy | Sage and moss with fern leaves, tile veins and short stems | Manrope | Lime |
 
 Their details are static. Background movement stays optional through **Background → Moving blobs**.
 
@@ -27,11 +27,15 @@ Their details are static. Background movement stays optional through **Backgroun
 
 | Butter | Canopy |
 | --- | --- |
-| ![Cream, gold and cocoa with soft melting curves](images/24-butter.png) | ![Sage and moss greens with a branching fern](images/25-canopy.png) |
+| ![Cream, gold and cocoa with soft melting curves](images/24-butter.png) | ![Sage and moss greens with fern leaves, veined tiles and short stems](images/25-canopy.png) |
 
 ![Dracula with a matching Lavender accent](images/07-appearance.png)
 
 Adjust fonts, text size, tile size and shape, spacing, app names and row order in the same panel.
+
+The **Large** clock fits its complete time to the available space, including while Settings is open. Its font stays the one you selected; the time scales down when needed. Canopy adds subtle veins and a short stem to app tiles while keeping their icons clear.
+
+![The full large clock at 130% Plex Mono beside the open Settings panel](images/26-large-clock-settings.png)
 
 For **Background**, choose:
 
@@ -47,7 +51,7 @@ This is an original preset inspired by neon sci-fi styling. It contains no game 
 
 ![Cyberpunk on the TV with neon accents and cut-corner tiles](images/19-cyberpunk.png)
 
-Weather starts off. Open **Location**, search for a city and select a result with the D-pad and OK. Choosing a location enables weather; disable **Weather** to stop forecast refreshes. The Weather section includes the Open-Meteo attribution.
+Weather starts off. Open **Location**, or **Weather → Choose a city** when no location is saved, then search and select a result with the D-pad and OK. Choosing a location enables weather; disable **Weather** to stop forecast refreshes. The Weather section includes the Open-Meteo attribution.
 
 ![Choosing a weather location](images/10-weather-location.png)
 
