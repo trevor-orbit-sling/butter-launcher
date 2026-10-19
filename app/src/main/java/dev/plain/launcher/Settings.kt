@@ -54,7 +54,7 @@ enum class RowOrder(override val label: String) : Choice {
 }
 
 enum class IconStyle(override val label: String) : Choice {
-    Original("Original"), Mono("Minimal mono"), Desaturated("Desaturated"), Pack("Icon pack"),
+    Original("Original"), Mono("Minimal mono"), Line("Line icons"), Desaturated("Desaturated"), Pack("Icon pack"),
 }
 
 enum class TempUnit(override val label: String) : Choice {

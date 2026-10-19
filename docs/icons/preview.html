@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Plain · Line icons</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font:14px/1.5 system-ui,sans-serif;background:#111419;color:#f3f4f6}
+main{--tile:#20252e;--ink:#f3f4f6;--muted:#aeb6c4;--line:#394150;background:#111419;color:#f3f4f6}
+main[data-mode=light]{--tile:#fff;--ink:#202124;--muted:#626773;--line:#ccd0d8;background:#edf0f4;color:#202124}
+main[data-mode=tint]{--ink:var(--tint,#c3b4fa)}
+h1{font-size:23px;letter-spacing:-.6px;margin:0 0 4px}header>p{margin:0 0 18px;color:var(--muted)}
+.controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 22px}
+button,input{font:inherit;border:1px solid var(--line);border-radius:7px;color:inherit;background:transparent;padding:7px 10px}
+button{cursor:pointer}button[aria-pressed=true]{background:var(--ink);color:var(--tile);border-color:var(--ink)}
+input[type=search]{min-width:140px;flex:1}input[type=color]{padding:2px;width:36px;height:36px;cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:20px 14px}
+article{text-align:center;min-width:0}.tile{aspect-ratio:16/9;background:var(--tile);border:1px solid var(--line);border-radius:12px;display:grid;place-items:center;color:var(--ink)}
+svg{display:block;width:61px;height:61px}article p{font-size:12px;margin:7px 0 0;color:var(--muted)}
+article[hidden]{display:none}footer{border-top:1px solid var(--line);margin-top:24px;padding-top:12px;font-size:12px;color:var(--muted)}
+@media(max-width:440px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 10px}}
+</style>
+<main data-mode="dark"><header><h1>Line icons</h1><p>41 original outline drawings for Plain · 48 × 48 · 1.7-unit rounded strokes</p></header>
+<div class="controls" aria-label="Preview controls">
+<button type="button" data-mode="dark" aria-pressed="true">Dark</button>
+<button type="button" data-mode="light" aria-pressed="false">Light</button>
+<button type="button" data-mode="tint" aria-pressed="false">Tint</button>
+<input type="color" value="#c3b4fa" aria-label="Preview tint">
+<input type="search" placeholder="Find app or package…" aria-label="Find app or package">
+</div><section class="grid" aria-label="Icon gallery"><article data-search="netflix netflix com.netflix.ninja com.netflix.mediaclient" title="com.netflix.ninja
+com.netflix.mediaclient"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Netflix">  <path d="M14 38V10H19L34 38H29L14 10 M34 10V38 M14 38L19 37V21 M29 27V11L34 10"/></svg></div><p>Netflix</p></article>
+<article data-search="youtube youtube com.google.android.youtube.tv com.google.android.youtube" title="com.google.android.youtube.tv
+com.google.android.youtube"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="YouTube">  <path d="M11 12H37Q42 12 42 18V30Q42 36 37 36H11Q6 36 6 30V18Q6 12 11 12Z"/>
+  <path d="M20 18L31 24L20 30Z"/></svg></div><p>YouTube</p></article>
+<article data-search="disney+ disney-plus com.disney.disneyplus" title="com.disney.disneyplus"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Disney+">  <path d="M8 16C14 5 31 4 39 14 M13 20V37 M11 20C24 17 31 23 28 30C26 35 18 38 11 36 M17 24C20 25 22 28 21 31"/>
+  <path d="M36 23V35 M30 29H42"/></svg></div><p>Disney+</p></article>
+<article data-search="prime video prime-video com.amazon.amazonvideo.livingroom com.amazon.avod.thirdpartyclient" title="com.amazon.amazonvideo.livingroom
+com.amazon.avod.thirdpartyclient"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Prime Video">  <path d="M17 9L34 19L17 29Z"/>
+  <path d="M7 34Q23 44 40 33 M33 32L40 33L38 40"/></svg></div><p>Prime Video</p></article>
+<article data-search="hulu hulu com.hulu.livingroomplus com.hulu.plus" title="com.hulu.livingroomplus
+com.hulu.plus"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Hulu">  <path d="M6 13V34 M6 23Q13 18 13 26V34 M18 21V29Q18 37 25 33V21 M30 13V34 M35 21V29Q35 37 42 33V21"/></svg></div><p>Hulu</p></article>
+<article data-search="max / hbo max max com.wbd.stream com.hbo.hbomax com.hbo.hbonow" title="com.wbd.stream
+com.hbo.hbomax
+com.hbo.hbonow"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Max / HBO Max">  <path d="M5 33V21Q5 15 10 20Q15 15 15 21V33 M30 24C30 15 20 15 20 24C20 33 30 33 30 24Z M30 19V32 M35 19L43 32 M43 19L35 32"/>
+  <path d="M25 22A3 3 0 1 0 25 28A3 3 0 1 0 25 22"/></svg></div><p>Max / HBO Max</p></article>
+<article data-search="apple tv apple-tv com.apple.atve.androidtv com.apple.atve.sony.appletv com.apple.atve.android" title="com.apple.atve.androidtv
+com.apple.atve.sony.appletv
+com.apple.atve.android"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Apple TV">  <path d="M17 16C12 12 6 16 6 23C6 30 10 36 13 35Q17 33 20 35C22 36 25 32 26 29C20 27 20 20 25 18Q22 13 17 16Z"/>
+  <path d="M16 12Q16 7 22 6Q22 11 16 12Z M31 17V30Q31 34 35 34 M28 22H35 M36 22L40 34L44 22"/></svg></div><p>Apple TV</p></article>
+<article data-search="peacock peacock com.peacocktv.peacockandroid" title="com.peacocktv.peacockandroid"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Peacock">  <path d="M21 32C7 36 3 27 8 24C12 22 17 27 21 32Z M21 29C7 25 7 14 12 14C17 13 19 22 21 29Z M23 28C16 16 19 8 24 8C29 8 30 17 25 28"/>
+  <path d="M27 29C30 15 36 11 39 15C43 20 35 26 27 29Z M28 32C37 23 43 23 43 28C43 34 34 35 28 32Z M21 38Q24 31 27 38"/></svg></div><p>Peacock</p></article>
+<article data-search="paramount+ paramount-plus com.cbs.ott com.cbs.app com.cbs.ca" title="com.cbs.ott
+com.cbs.app
+com.cbs.ca"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Paramount+">  <path d="M7 30A18 18 0 0 1 41 19 M10 35L24 15L38 35Z M18 24L23 25L26 21L31 30 M35 35H41 M38 32V38"/>
+  <path d="M10 16L11 13 M17 9L18 8 M26 6H27 M34 9L35 10"/></svg></div><p>Paramount+</p></article>
+<article data-search="tubi tubi com.tubitv" title="com.tubitv"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Tubi">  <path d="M8 14V29Q8 34 13 33 M5 21H13 M17 21V29Q17 37 24 33V21 M29 13V33 M29 24Q37 18 37 27Q37 36 29 32 M42 21V33 M42 15V16"/></svg></div><p>Tubi</p></article>
+<article data-search="pluto tv pluto-tv tv.pluto.android" title="tv.pluto.android"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Pluto TV">  <path d="M12 38V12H23C36 12 36 28 23 28H17"/>
+  <path d="M9 28C2 26 3 21 10 17 M36 17C47 16 46 24 33 30Q22 35 9 33"/></svg></div><p>Pluto TV</p></article>
+<article data-search="crunchyroll crunchyroll com.crunchyroll.crunchyroid" title="com.crunchyroll.crunchyroid"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Crunchyroll">  <path d="M41 22A17 17 0 1 0 26 41C15 38 13 29 18 22C23 15 35 15 41 22Z"/>
+  <path d="M34 21A9 9 0 1 0 35 35 M30 26A4 4 0 1 0 30 34A4 4 0 1 0 30 26"/></svg></div><p>Crunchyroll</p></article>
+<article data-search="plex plex com.plexapp.android" title="com.plexapp.android"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Plex">  <path d="M14 8H23L35 24L23 40H14L26 24Z"/></svg></div><p>Plex</p></article>
+<article data-search="jellyfin jellyfin org.jellyfin.androidtv org.jellyfin.mobile" title="org.jellyfin.androidtv
+org.jellyfin.mobile"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Jellyfin">  <path d="M24 7C20 7 6 32 8 37C10 42 38 42 40 37C42 32 28 7 24 7Z"/>
+  <path d="M24 20L16 34H32Z"/></svg></div><p>Jellyfin</p></article>
+<article data-search="kodi kodi org.xbmc.kodi" title="org.xbmc.kodi"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Kodi">  <path d="M24 5L32 13L24 21L16 13Z M35 16L43 24L35 32L27 24Z M24 27L32 35L24 43L16 35Z M13 16L5 24L13 32Z"/></svg></div><p>Kodi</p></article>
+<article data-search="vlc vlc org.videolan.vlc" title="org.videolan.vlc"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="VLC">  <path d="M21 7H27L36 37H12Z M18 18H30 M15 28H33 M10 37H38L40 42H8Z"/></svg></div><p>VLC</p></article>
+<article data-search="spotify spotify com.spotify.tv.android com.spotify.music" title="com.spotify.tv.android
+com.spotify.music"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Spotify">  <path d="M24 6A18 18 0 1 0 24 42A18 18 0 1 0 24 6Z"/>
+  <path d="M13 19Q25 14 36 21 M15 25Q25 21 33 27 M17 31Q25 28 31 32"/></svg></div><p>Spotify</p></article>
+<article data-search="twitch twitch tv.twitch.android.viewer tv.twitch.android.app" title="tv.twitch.android.viewer
+tv.twitch.android.app"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Twitch">  <path d="M9 7H41V28L31 38H23L16 44V38H9Z M21 16V26 M31 16V26"/></svg></div><p>Twitch</p></article>
+<article data-search="stremio stremio com.stremio.one com.stremio.two" title="com.stremio.one
+com.stremio.two"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Stremio">  <path d="M24 5L43 24L24 43L5 24Z"/>
+  <path d="M20 16L31 24L20 32Z"/></svg></div><p>Stremio</p></article>
+<article data-search="bbc iplayer bbc-iplayer bbc.iplayer.android bbc.mobile.iplayer.android" title="bbc.iplayer.android
+bbc.mobile.iplayer.android"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="BBC iPlayer">  <path d="M6 7H16V17H6Z M19 7H29V17H19Z M32 7H42V17H32Z"/>
+  <path d="M9 10H11Q15 11 11 12Q15 14 11 14H9Z M22 10H24Q28 11 24 12Q28 14 24 14H22Z M39 10H36V14H39"/>
+  <path d="M16 24L32 33L16 42Z"/></svg></div><p>BBC iPlayer</p></article>
+<article data-search="itvx itvx com.itv.tv air.itvmobileplayer" title="com.itv.tv
+air.ITVMobilePlayer"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="ITVX">  <path d="M6 22V34 M6 15V16 M14 16V29Q14 34 19 33 M11 22H19 M21 22L26 34L30 22 M34 22L43 34 M43 22L34 34"/></svg></div><p>ITVX</p></article>
+<article data-search="dazn dazn com.dazn" title="com.dazn"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="DAZN">  <path d="M9 6H39Q42 6 42 9V39Q42 42 39 42H9Q6 42 6 39V9Q6 6 9 6Z"/>
+  <path d="M13 13V22H16Q21 22 21 17.5Q21 13 16 13Z M26 22L30 13L34 22 M28 19H32 M13 28H21L13 36H21 M27 36V28L35 36V28"/></svg></div><p>DAZN</p></article>
+<article data-search="espn espn com.espn.score_center com.espn.gtv" title="com.espn.score_center
+com.espn.gtv"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="ESPN">  <path d="M5 15H44 M5 21H13 M5 21V33H13 M5 27H12 M24 21H18V27H24V33H17 M29 33V21H35V27H29 M40 33V21L45 33V21"/></svg></div><p>ESPN</p></article>
+<article data-search="steam link steam-link com.valvesoftware.steamlink" title="com.valvesoftware.steamlink"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Steam Link">  <path d="M32 7A10 10 0 1 0 32 27A10 10 0 1 0 32 7Z M32 12A5 5 0 1 0 32 22A5 5 0 1 0 32 12Z"/>
+  <path d="M17 30L24 20 M23 35L33 27 M14 27A8 8 0 1 0 14 43A8 8 0 1 0 14 27Z M6 32L14 36Q17 38 19 35 M5 39L12 42"/></svg></div><p>Steam Link</p></article>
+<article data-search="youtube music youtube-music com.google.android.youtube.tvmusic com.google.android.apps.youtube.music" title="com.google.android.youtube.tvmusic
+com.google.android.apps.youtube.music"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="YouTube Music">  <path d="M24 6A18 18 0 1 0 24 42A18 18 0 1 0 24 6Z M24 11A13 13 0 1 0 24 37A13 13 0 1 0 24 11Z M21 17L31 24L21 31Z"/></svg></div><p>YouTube Music</p></article>
+<article data-search="emby emby com.mb.android.tv com.mb.android" title="com.mb.android.tv
+com.mb.android"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Emby">  <path d="M24 5L43 24L24 43L5 24Z M17 14L34 24L17 34Z M17 21H25 M17 27H25"/></svg></div><p>Emby</p></article>
+<article data-search="smarttube smarttube com.teamsmart.videomanager.tv com.teamsmart.videomanager.tv.beta" title="com.teamsmart.videomanager.tv
+com.teamsmart.videomanager.tv.beta"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="SmartTube">  <path d="M10 12H38Q42 12 42 16V33Q42 37 38 37H10Q6 37 6 33V16Q6 12 10 12Z M18 5L24 12L30 5 M20 18L31 24.5L20 31Z"/></svg></div><p>SmartTube</p></article>
+<article data-search="moonlight moonlight com.limelight" title="com.limelight"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Moonlight">  <path d="M32 7C15 7 5 19 11 33C17 46 36 43 41 29C28 37 18 22 32 7Z"/></svg></div><p>Moonlight</p></article>
+<article data-search="retroarch retroarch com.retroarch com.retroarch.aarch64 com.retroarch.ra32" title="com.retroarch
+com.retroarch.aarch64
+com.retroarch.ra32"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="RetroArch">  <path d="M10 17H38L43 35L35 39L29 31H19L13 39L5 35Z M16 8L20 17 M32 8L28 17 M12 24H20 M16 20V28 M31 23V24 M36 28V29"/></svg></div><p>RetroArch</p></article>
+<article data-search="downloader downloader com.esaba.downloader" title="com.esaba.downloader"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Downloader">  <path d="M24 6V30 M15 21L24 30L33 21 M10 30V40H38V30"/></svg></div><p>Downloader</p></article>
+<article data-search="files file-manager com.google.android.documentsui com.android.documentsui com.lonelycatgames.xplore com.estrongs.android.pop" title="com.google.android.documentsui
+com.android.documentsui
+com.lonelycatgames.Xplore
+com.estrongs.android.pop"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Files">  <path d="M6 15V37Q6 40 9 40H39Q42 40 42 37V17Q42 14 39 14H23L18 8H9Q6 8 6 11V15Z M6 19H42"/></svg></div><p>Files</p></article>
+<article data-search="browser browser com.android.chrome com.google.android.apps.chrome com.amazon.cloud9 org.mozilla.tv.firefox com.tcl.browser" title="com.android.chrome
+com.google.android.apps.chrome
+com.amazon.cloud9
+org.mozilla.tv.firefox
+com.tcl.browser"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Browser">  <path d="M24 6A18 18 0 1 0 24 42A18 18 0 1 0 24 6Z M6 24H42 M24 6C13 16 13 32 24 42C35 32 35 16 24 6Z M9 15H39 M9 33H39"/></svg></div><p>Browser</p></article>
+<article data-search="play store play-store com.android.vending" title="com.android.vending"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Play Store">  <path d="M10 6L39 23Q41 24 39 25L10 42Z M10 6L29 24L10 42 M10 6L35 20 M10 42L35 28 M29 24L35 20 M29 24L35 28"/></svg></div><p>Play Store</p></article>
+<article data-search="settings settings com.android.tv.settings com.android.settings com.google.android.tv.settings" title="com.android.tv.settings
+com.android.settings
+com.google.android.tv.settings"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Settings">  <path d="M20 6H28L29 12L34 15L40 13L44 20L39 24L39 29L43 33L39 40L33 38L28 41L27 45H20L19 40L14 37L8 39L4 32L9 28V22L4 18L8 11L14 13L19 10Z"/>
+  <path d="M24 17A8 8 0 1 0 24 33A8 8 0 1 0 24 17Z"/></svg></div><p>Settings</p></article>
+<article data-search="google tv google-tv com.google.android.videos com.google.android.tv" title="com.google.android.videos
+com.google.android.tv"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Google TV">  <path d="M8 10H40Q43 10 43 13V34Q43 37 40 37H8Q5 37 5 34V13Q5 10 8 10Z M18 42H30 M24 37V42 M20 17L31 23.5L20 30Z"/></svg></div><p>Google TV</p></article>
+<article data-search="photos photos com.google.android.apps.photos com.google.android.apps.tv.gallery com.android.gallery3d" title="com.google.android.apps.photos
+com.google.android.apps.tv.gallery
+com.android.gallery3d"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Photos">  <path d="M10 7H38Q41 7 41 10V38Q41 41 38 41H10Q7 41 7 38V10Q7 7 10 7Z M7 33L18 21L28 32L34 26L41 34"/>
+  <path d="M31 13A4 4 0 1 0 31 21A4 4 0 1 0 31 13Z"/></svg></div><p>Photos</p></article>
+<article data-search="music music com.google.android.music org.lineageos.eleven" title="com.google.android.music
+org.lineageos.eleven"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Music">  <path d="M20 33V12L39 7V28 M20 19L39 14 M14 29C6 29 6 39 14 39C20 39 20 33 20 33 M33 24C25 24 25 34 33 34C39 34 39 28 39 28"/></svg></div><p>Music</p></article>
+<article data-search="live tv live-tv com.google.android.tv.livechannels com.android.tv" title="com.google.android.tv.livechannels
+com.android.tv"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Live TV">  <path d="M8 13H40Q43 13 43 16V36Q43 39 40 39H8Q5 39 5 36V16Q5 13 8 13Z M17 5L24 13L31 5 M19 44H29 M34 23V24 M34 30V31 M11 19H28V33H11Z"/></svg></div><p>Live TV</p></article>
+<article data-search="f-droid f-droid org.fdroid.fdroid" title="org.fdroid.fdroid"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="F-Droid">  <path d="M12 13H36L40 40H8Z M17 15V11Q17 4 24 4Q31 4 31 11V15 M17 26V27 M31 26V27 M17 33Q24 37 31 33"/></svg></div><p>F-Droid</p></article>
+<article data-search="mx player mx-player com.mxtech.videoplayer.ad com.mxtech.videoplayer.pro" title="com.mxtech.videoplayer.ad
+com.mxtech.videoplayer.pro"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="MX Player">  <path d="M24 6A18 18 0 1 0 24 42A18 18 0 1 0 24 6Z"/>
+  <path d="M20 15L34 24L20 33Z"/></svg></div><p>MX Player</p></article>
+<article data-search="other app app" title="Fallback for unmapped apps"><div class="tile"><svg viewBox="0 0 48 48" fill="none" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor" role="img" aria-label="Other app">  <path d="M11 9H37Q41 9 41 13V35Q41 39 37 39H11Q7 39 7 35V13Q7 9 11 9Z M15 18H20V23H15Z M28 18H33V23H28Z M15 28H20V33H15Z M28 28H33V33H28Z"/></svg></div><p>Other app</p></article></section>
+<footer>Transparent white SVG masters. The app applies the active theme's foreground. Hover a tile to inspect its exact package aliases. Unmapped packages use the “Other app” glyph. Original vector artwork, drawn for Plain; no Arcticons paths or code. Brand names identify their owners and do not imply endorsement.</footer></main>
+<script>
+const main=document.querySelector('main'),buttons=[...document.querySelectorAll('button[data-mode]')];
+function mode(value){main.dataset.mode=value;buttons.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===value)))}
+buttons.forEach(b=>b.addEventListener('click',()=>mode(b.dataset.mode)));
+document.querySelector('input[type=color]').addEventListener('input',e=>{main.style.setProperty('--tint',e.target.value);mode('tint')});
+document.querySelector('input[type=search]').addEventListener('input',e=>{const q=e.target.value.trim().toLowerCase();document.querySelectorAll('article').forEach(a=>a.hidden=!a.dataset.search.includes(q))});
+</script></html>

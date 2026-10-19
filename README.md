@@ -10,13 +10,15 @@ This is a local project under development. The application ID is `dev.plain.laun
 
 ## Make the TV feel like yours
 
-- **Favourites you arrange.** Hold OK on an app to open its menu. Add or remove a favourite, choose Move to reorder it, or open Android's App info.
+- **Favourites you arrange.** Hold OK on an app, then release to open its menu. Add or remove a favourite, choose Move to reorder it, or open Android's App info.
 - **All your apps in one place.** Browse the full installed app list, including favourites, with a menu on every tile.
 - **Six looks.** Frosted Glass, Material You, Ink, Paper, Slate and Sand, with accent colours, six fonts, text sizes, spacing and tile shapes.
-- **Your choice of icons.** Keep app artwork, desaturate it, use minimal monochrome glyphs, or select a compatible installed icon pack.
+- **Your choice of icons.** Switch between **Original** app artwork and our **Line icons** set: 41 original [outline drawings](docs/icons.md) that follow your theme. **Minimal mono**, **Desaturated** and compatible installed **Icon pack** options are also available.
 - **A clock and optional weather.** Weather starts off. Choose a city to enable it; there is no location permission or automatic IP lookup.
 - **Remote shortcuts.** Map buttons for Customise, App options and the first row while Plain is open.
 - **A quick tour.** First launch explains the basics. Replay it from Settings whenever you like.
+
+![Plain on Android TV with original line icons tinted to match the purple theme](docs/screenshots/11-line-icons.png)
 
 ![The Customise panel with appearance options](docs/screenshots/07-appearance.png)
 
@@ -28,7 +30,7 @@ This is a local project under development. The application ID is `dev.plain.laun
 | --- | --- |
 | D-pad / controller directions | Move between tiles and controls |
 | OK / Select | Open an app or select a control |
-| Hold OK on an app | Open that app's menu |
+| Hold OK on an app, then release | Open that app's menu |
 | Move in the Favourites menu | Reorder with Left/Right; OK finishes, Back stops moving |
 | Menu | Open Customise with the default mapping |
 | Back | Close the current panel, menu or move mode |
@@ -61,7 +63,7 @@ Set `ANDROID_HOME` to your SDK directory, or create an ignored `local.properties
 ./gradlew assembleDebug testDebugUnitTest lintDebug
 ```
 
-The debug APK is at `app/build/outputs/apk/debug/app-debug.apk`. Unit tests cover settings recovery, remote mapping rules, Watch Next row parsing and program-link restrictions. Lint reports are under `app/build/reports/`.
+The debug APK is at `app/build/outputs/apk/debug/app-debug.apk`. Unit tests cover settings recovery, remote mapping rules, line icon package coverage and path parsing, Watch Next row parsing and program-link restrictions. Lint reports are under `app/build/reports/`.
 
 ```bash
 ./gradlew assembleRelease
@@ -132,6 +134,6 @@ Weather data is attributed to [Open-Meteo](https://open-meteo.com/) in the inter
 
 ## Project notes
 
-Read the [review and verification record](REVIEW.md), [icon-pack recommendation](docs/icons.md), and [third-party notices](THIRD_PARTY_NOTICES.md).
+Read the [review and verification record](REVIEW.md), [line icon guide and preview](docs/icons.md), and [third-party notices](THIRD_PARTY_NOTICES.md).
 
-A license for Plain's own source has not been selected. The included third-party licenses cover their respective assets and dependencies; they do not license the whole application.
+A license for Plain's own source and original line artwork has not been selected. The included third-party licenses cover their respective assets and dependencies; they do not license the whole application.
