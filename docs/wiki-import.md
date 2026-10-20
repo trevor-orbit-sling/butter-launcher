@@ -8,7 +8,7 @@ Nothing has been published. When you choose to publish it:
 2. Clone the separate wiki repository:
 
    ```bash
-   git clone https://github.com/YOUR-USERNAME/YOUR-REPOSITORY.wiki.git /path/to/butter-wiki
+   git clone https://github.com/trevor-orbit-sling/butter-launcher.wiki.git /path/to/butter-wiki
    ```
 
 3. From the Butter Launcher source checkout, copy the guide into that clone:
