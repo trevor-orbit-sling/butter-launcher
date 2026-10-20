@@ -6,11 +6,11 @@ Butter Launcher puts the apps you use within easy reach, with a clean layout you
 
 ![Butter Launcher on the TV with its Cyberpunk theme](docs/screenshots/19-cyberpunk.png)
 
-This is a local project under development, previously named Plain. The application ID stays `dev.plain.launcher`, so installing an update preserves existing preferences. Earlier builds with a different application ID remain separate installations.
+This project is under development and was previously named Plain. The application ID stays `dev.plain.launcher`, so installing an update preserves existing preferences. Earlier builds with a different application ID remain separate installations.
 
 Some earlier screenshots retain Plain branding; the current app uses Butter Launcher.
 
-Browse the [screenshot guide](wiki/Home.md) for setup, controls, appearance, apps and troubleshooting. The [wiki import notes](docs/wiki-import.md) explain how to move this local guide into a GitHub wiki later.
+Browse the [screenshot wiki](https://github.com/trevor-orbit-sling/butter-launcher/wiki) for setup, controls, appearance, apps and troubleshooting. The guide is also included [in this repository](wiki/Home.md); see the [wiki maintenance notes](docs/wiki-import.md) to update it.
 
 ## Why I made Butter Launcher for Android TV
 
@@ -127,7 +127,7 @@ The debug APK is at `app/build/outputs/apk/debug/app-debug.apk`. Unit tests cove
 ./gradlew assembleRelease
 ```
 
-Release builds shrink code and resources and produce an **unsigned** APK under `app/build/outputs/apk/release/`. Configure your own release signing before distributing it. The debug key is used only for debug builds. An Android checks workflow is included for a future repository connection.
+Release builds shrink code and resources and produce an **unsigned** APK under `app/build/outputs/apk/release/`. Configure your own release signing before distributing it. The debug key is used only for debug builds. The Android checks workflow builds debug and unsigned release APKs, runs unit tests and lint, and uploads the debug APK for testing.
 
 ## Try it with ADB
 

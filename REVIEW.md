@@ -65,7 +65,7 @@ The settings audit exercised all fifteen enum controls on the TV: each changed t
 
 The disabled manufacturer Display → Screen control remains unresolved vendor UI behavior. It is separate from Butter's Screen saver shortcut; no claim is made that Butter fixes or enables that control.
 
-The local `wiki/` guide contains its own 21 screenshot copies and sidebar for a future GitHub wiki import. It has not been published; README/wiki image references, wiki page links and all six HTML gallery image paths were checked locally. The interactive theme gallery was also previewed with the actual TV captures, with no missing images or browser console errors.
+The local `wiki/` guide contains its own 21 screenshot copies and sidebar for a future GitHub wiki import. At the time of that local validation, it had not been published; README/wiki image references, wiki page links and all six HTML gallery image paths were checked locally. The interactive theme gallery was also previewed with the actual TV captures, with no missing images or browser console errors.
 
 Butter bounce was exercised as a normal system dream on the same TV: Android reported the service bound with `isTest=false`, and two captures showed the wordmark moving across an otherwise black screen. Waking the dream succeeded. The test temporarily selected the service and restored the exact previous screen saver component setting in a cleanup step; the app itself does not select or enable it. The TV's test-preview path rejected the dream before app attachment because of a platform dream-activity check, so this verification used the normal dream path instead.
 

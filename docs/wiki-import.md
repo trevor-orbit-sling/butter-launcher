@@ -2,7 +2,7 @@
 
 The `wiki/` directory contains the complete guide: Markdown pages, `Home.md`, a custom `_Sidebar.md`, and its own `images/` directory. It does not depend on images in the main repository. Internal page links use GitHub wiki syntax.
 
-Nothing has been published. When you choose to publish it:
+The live guide is at [Butter Launcher Wiki](https://github.com/trevor-orbit-sling/butter-launcher/wiki). To publish or update the guide:
 
 1. Enable the repository's Wiki and create its initial page on GitHub.
 2. Clone the separate wiki repository:
