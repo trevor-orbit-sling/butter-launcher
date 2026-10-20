@@ -9,7 +9,7 @@ This local version makes Butter Launcher usable without the original author's se
 | Continue Watching depended on one media server and stored credentials | Replaced with a read-only native Android TV Watch Next reader. No provider credentials, server settings or provisioning extras remain. |
 | Exported launcher activity accepted configuration from arbitrary callers | It now handles normal lifecycle/home launches without accepting configuration extras. The activity remains exported because Android must be able to launch the home screen. |
 | Programs could supply arbitrary launch intents | Program links are parsed, limited to VIEW and pinned to the publisher package. Foreign explicit packages/components and local/unsafe URI schemes are rejected. A verified publisher component and scalar item extras can be retained; selectors, URI grants and routing flags are discarded. Open failures show a message. |
-| Device/provider availability was assumed | Provider absence, denied access, empty results and unopenable programs have visible fallback behavior. The row can be hidden. No privileged permission or permission-grant workaround is requested. |
+| Device/provider availability was assumed | Provider absence, denied access, empty results and unopenable programs have visible fallback behavior. The row can be hidden. The standard Read TV listings permission is offered; no privileged permission or workaround is requested. |
 | Defaults included a fixed location and a preferred app stack | Fresh installs have no favourites or location, and weather is off. The full app list remains accessible when favourites are empty. |
 | Rapid option changes could reuse an old displayed value | Each option applies its step to the latest stored settings within the update transaction, so consecutive presses advance from the current value. |
 | Stored remote bindings could contain reserved keys | Shortcut dispatch checks the allowed-key set even for loaded bindings. Learning validates against the current bindings and reports the same outcome used for the update. |
@@ -28,7 +28,7 @@ This local version makes Butter Launcher usable without the original author's se
 | Large text and long values could crowd controls | Header space is reserved for Inputs, Customise and system settings. Clock/weather text and settings values are bounded, while action popups limit their height and scroll their lists. |
 | Settings could cover part of the large clock | The large clock measures its complete time string in the selected font and scales to fit. While Settings is open, the clock/date/weather block is bounded to the visible area before the panel; toolbar positions are preserved. Font padding and drawing room protect glyph edges. |
 | An old input error could remain after retrying | Selecting an input or settings clears the previous error before retrying; a refreshed usable input list clears stale errors too. |
-| Automatic IP location lookup and cleartext traffic were enabled | Automatic lookup was removed; weather uses explicit city selection over HTTPS. Cleartext network traffic is disabled. Artwork is restricted to HTTPS. |
+| Automatic IP location lookup and cleartext traffic were enabled | Automatic lookup was removed; weather uses explicit city selection over HTTPS. Cleartext network traffic is disabled. Artwork is limited to HTTPS or an exported content provider owned by the program's publishing app. File URIs and foreign providers are rejected. |
 | Release builds used a debug signing key | Release APKs are unsigned; only debug builds use the debug key. |
 | Bundled fonts had no license notices | The six font families' OFL notices and icon license texts are included in APK assets and referenced in the third-party notices. |
 | A held select key could choose the first menu action when released | App options open only after the original key is released. D-pad Center, Enter, numpad Enter and gamepad A share gesture ownership; repeats, cancelled releases and orphan key events cannot activate the new menu. Configured shortcuts also wait for release. |
@@ -39,7 +39,9 @@ This local version makes Butter Launcher usable without the original author's se
 
 ## Platform limits
 
-The normal AOSP TV Provider restricts queries to the calling package's rows unless the caller has `ACCESS_ALL_EPG_DATA`. That permission is `signature|privileged`, so selecting Butter Launcher as the home app does not provide it. Butter Launcher does not publish its own Watch Next entries: on standard implementations, the Continue Watching row therefore remains empty. Some device providers may expose more data, but that behavior needs device-specific validation.
+Android TV's provider limits ordinary queries to the calling package's entries. The standard dangerous permission `android.permission.READ_TV_LISTINGS` additionally exposes searchable entries, including Watch Next programs. Butter declares this permission and offers **Allow TV listings** in the row. Android controls the permission prompt; previously denied access can be changed through app settings. The feed refreshes after permission changes and when returning to the foreground.
+
+The separate `ACCESS_ALL_EPG_DATA` permission is `signature|privileged` and would expose non-searchable entries too. Butter does not request it. Selecting Butter as the home app does not replace the standard read permission. On the checked MiTV, a separate diagnostic app saw zero Watch Next rows before the standard grant and nineteen Jellyfin rows afterward, thirteen of which were Continue or Next entries. This corrects the earlier review's overly broad claim that third-party launchers normally cannot read any shared entries.
 
 Sources: [AOSP TV Provider query filtering](https://android.googlesource.com/platform/packages/providers/TvProvider/+/refs/heads/main/src/com/android/providers/tv/TvProvider.java), [AOSP permission declarations](https://android.googlesource.com/platform/packages/providers/TvProvider/+/refs/heads/main/AndroidManifest.xml), [Android Watch Next attributes](https://developer.android.com/training/tv/discovery/watch-next-programs).
 
@@ -78,3 +80,12 @@ Cloud scan not run: local-only repository, no connected Cloud environment. The r
 ## Before distribution
 
 Choose a source license for Butter Launcher, configure a release signing key, and test on the target device family. Review current weather-service terms for the intended distribution. The icon modes use curated package catalogues and fallback; see the [icon notes](docs/icons.md) and [third-party notices](THIRD_PARTY_NOTICES.md) for provenance, licenses and package coverage.
+
+
+## Continue watching repair validation
+
+Version 0.1.1 adds the standard Read TV listings runtime permission and publisher-owned content artwork. Debug and unsigned release builds, all 66 unit tests, and lint pass with no errors and eleven warnings. Regression tests cover permission denial, grant and revocation, publisher content-provider ownership, foreign-provider rejection and existing intent routing restrictions.
+
+On the MiTV with Jellyfin Android TV 0.19.10, a separate test installation displayed real Jellyfin titles, progress bars and artwork after the normal Android permission dialog. Denying access preserved the access action; retrying and allowing it loaded the row. Revoking access restored the explanation and button. Selecting a program opened its Jellyfin episode details with the correct Resume position, without starting playback. Private viewing-history screenshots remain outside this repository. The original installation and its preferences were preserved during this validation.
+
+The approved update was then installed as the actual `dev.plain.launcher` v0.1.1 application. The previous APK and preferences were backed up privately; the restored preferences matched byte for byte, Butter remained the selected Home app, and the Jellyfin row loaded after granting the standard permission. Temporary probe and validation apps were removed.

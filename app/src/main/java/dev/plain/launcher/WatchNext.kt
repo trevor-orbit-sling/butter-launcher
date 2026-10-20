@@ -2,6 +2,7 @@ package dev.plain.launcher
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.database.ContentObserver
 import android.database.Cursor
 import android.media.tv.TvContract.WatchNextPrograms as Programs
@@ -9,6 +10,7 @@ import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.conflate
@@ -26,7 +28,13 @@ data class WatchItem(
     val lastEngagement: Long,
 )
 
-data class WatchState(val items: List<WatchItem> = emptyList(), val message: String = "Looking for shared programs…")
+data class WatchState(
+    val items: List<WatchItem> = emptyList(),
+    val message: String = "Looking for shared programs…",
+    val needsPermission: Boolean = false,
+)
+
+internal const val READ_TV_LISTINGS = "android.permission.READ_TV_LISTINGS"
 
 class WatchNext(private val context: Context) {
     private val resolver = context.contentResolver
@@ -42,19 +50,30 @@ class WatchNext(private val context: Context) {
     }.conflate()
 
     suspend fun load(): WatchState = withContext(Dispatchers.IO) {
+        if (context.checkSelfPermission(READ_TV_LISTINGS) != PackageManager.PERMISSION_GRANTED) {
+            return@withContext WatchState(
+                message = "Allow TV listings to see programs shared by apps such as Jellyfin.",
+                needsPermission = true,
+            )
+        }
         try {
             val cursor = resolver.query(Programs.CONTENT_URI, projection, null, null, null)
                 ?: return@withContext WatchState(message = "This device doesn't share Continue watching with Butter Launcher. You can hide this row in Settings.")
             val items = cursor.use { rows ->
                 buildList {
                     while (rows.moveToNext()) {
-                        val item = readWatchItem(rows) ?: continue
+                        val item = readWatchItem(rows) { authority ->
+                            context.packageManager.resolveContentProvider(authority, 0)
+                                ?.takeIf { it.exported }?.packageName
+                        } ?: continue
                         val intent = safeWatchIntent(item.intentUri, item.packageName) ?: continue
                         if (intent.resolveActivity(context.packageManager) != null) add(item)
                     }
                 }
             }.sortedByDescending { it.lastEngagement }.take(20)
-            WatchState(items, "No shared programs yet. Play something in a participating TV app. Some devices only share this row with their built-in home screen.")
+            WatchState(items, "No shared programs yet. Play something in a participating TV app and enable its home-screen integration, if available.")
+        } catch (cancelled: CancellationException) {
+            throw cancelled
         } catch (_: SecurityException) {
             WatchState(message = "This device keeps Continue watching private to its built-in home screen. Open your apps directly, or hide this row in Settings.")
         } catch (_: Exception) {
@@ -77,7 +96,7 @@ class WatchNext(private val context: Context) {
     }
 }
 
-internal fun readWatchItem(cursor: Cursor): WatchItem? {
+internal fun readWatchItem(cursor: Cursor, contentProviderOwner: (String) -> String? = { null }): WatchItem? {
     fun text(column: String) = cursor.getColumnIndex(column).takeIf { it >= 0 }?.let { cursor.getString(it) }.orEmpty()
     fun number(column: String) = cursor.getColumnIndex(column).takeIf { it >= 0 }?.let { cursor.getLong(it) } ?: 0L
     if (number(Programs.COLUMN_BROWSABLE) != 1L) return null
@@ -90,7 +109,8 @@ internal fun readWatchItem(cursor: Cursor): WatchItem? {
     val position = number(Programs.COLUMN_LAST_PLAYBACK_POSITION_MILLIS)
     return WatchItem(
         id = "$pkg:${number(Programs._ID)}", packageName = pkg, title = title,
-        subtitle = text(Programs.COLUMN_EPISODE_TITLE), image = safeArtwork(text(Programs.COLUMN_POSTER_ART_URI)),
+        subtitle = text(Programs.COLUMN_EPISODE_TITLE),
+        image = safeArtwork(text(Programs.COLUMN_POSTER_ART_URI), pkg, contentProviderOwner),
         progress = if (duration > 0) (position.toDouble() / duration).toFloat().coerceIn(0f, 1f) else 0f,
         intentUri = uri, lastEngagement = number(Programs.COLUMN_LAST_ENGAGEMENT_TIME_UTC_MILLIS),
     )
@@ -117,8 +137,20 @@ internal fun safeWatchIntent(value: String, publisher: String): Intent? = runCat
     }
 }.getOrNull()
 
-internal fun safeArtwork(value: String): String? = runCatching {
+internal fun safeArtwork(
+    value: String,
+    publisher: String? = null,
+    contentProviderOwner: (String) -> String? = { null },
+): String? = runCatching {
     val uri = Uri.parse(value)
-    // No local files or arbitrary content providers. HTTPS artwork can be loaded without URI grants.
-    value.takeIf { uri.scheme == "https" && !uri.host.isNullOrBlank() && uri.userInfo == null }
+    if (uri.host.isNullOrBlank() || uri.userInfo != null) return null
+    when (uri.scheme) {
+        "https" -> value
+        // Apps such as Jellyfin proxy artwork through their own exported provider.
+        // Never let a publisher name a different app's provider or a local file.
+        "content" -> value.takeIf {
+            !publisher.isNullOrBlank() && contentProviderOwner(uri.authority.orEmpty()) == publisher
+        }
+        else -> null
+    }
 }.getOrNull()

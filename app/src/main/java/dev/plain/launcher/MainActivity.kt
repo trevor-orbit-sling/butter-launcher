@@ -1,10 +1,14 @@
 package dev.plain.launcher
 
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.KeyEvent
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableIntStateOf
@@ -20,8 +24,10 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -34,6 +40,10 @@ class MainActivity : ComponentActivity() {
     private var weather by mutableStateOf<WeatherNow?>(null)
     private var homePresses by mutableIntStateOf(0)
     private var menuPresses by mutableIntStateOf(0)
+    private val listingsPermission = MutableStateFlow(false)
+    private val requestListings = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+        listingsPermission.value = it
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +51,10 @@ class MainActivity : ComponentActivity() {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 launch { installed = withContext(Dispatchers.IO) { apps.load() } }
                 launch {
-                    store.settings.map { it.showWatching.on }.distinctUntilChanged().collectLatest { enabled ->
+                    combine(
+                        store.settings.map { it.showWatching.on }.distinctUntilChanged(),
+                        listingsPermission,
+                    ) { enabled, _ -> enabled }.collectLatest { enabled ->
                         if (enabled) watchNext.changes().collectLatest { watching = watchNext.load() }
                         else watching = WatchState()
                     }
@@ -68,9 +81,29 @@ class MainActivity : ComponentActivity() {
                 HomeScreen(
                     apps, installed, watching, weather, homePresses, menuPresses,
                     onWatch = { if (!watchNext.open(it)) Toast.makeText(this, "This program can no longer be opened. Try its app directly.", Toast.LENGTH_LONG).show() },
+                    onWatchingAccess = { requestWatchingAccess() },
                     onChange = { change -> lifecycleScope.launch { store.update(change) } },
                 )
             }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        listingsPermission.value = checkSelfPermission(READ_TV_LISTINGS) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestWatchingAccess() {
+        val prompts = getSharedPreferences("permission_prompts", MODE_PRIVATE)
+        if (prompts.getBoolean("tv_listings", false) && !shouldShowRequestPermissionRationale(READ_TV_LISTINGS)) {
+            runCatching {
+                startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:$packageName")))
+            }.onFailure {
+                Toast.makeText(this, "Enable TV listings in Android's app permissions for Butter Launcher.", Toast.LENGTH_LONG).show()
+            }
+        } else {
+            prompts.edit().putBoolean("tv_listings", true).apply()
+            requestListings.launch(READ_TV_LISTINGS)
         }
     }
 

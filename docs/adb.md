@@ -8,11 +8,11 @@ Download the APK from [Releases](https://github.com/trevor-orbit-sling/butter-la
 
 ```bash
 adb devices
-adb install -r butter-launcher-0.1.0-debug-test-only.apk
+adb install -r butter-launcher-0.1.1-debug-test-only.apk
 adb shell am start -n dev.plain.launcher/.MainActivity
 ```
 
-The v0.1.0 APK is debug-signed for testing. If you built the app yourself, use your APK's path instead. With multiple devices connected, add `-s DEVICE_SERIAL` after `adb` in each command.
+The v0.1.1 APK is debug-signed for testing. If you built the app yourself, use your APK's path instead. With multiple devices connected, add `-s DEVICE_SERIAL` after `adb` in each command.
 
 Updating preserves settings when the application ID and signing certificate match. If Android reports an incompatible update, the installed app may use a different key. Uninstalling it removes its saved settings.
 

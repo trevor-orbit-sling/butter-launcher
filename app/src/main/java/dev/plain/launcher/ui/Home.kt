@@ -84,6 +84,7 @@ fun HomeScreen(
     homePresses: Int,
     menuPresses: Int,
     onWatch: (WatchItem) -> Unit,
+    onWatchingAccess: () -> Unit,
     onChange: (Change) -> Unit,
 ) {
     val settings = LocalSettings.current
@@ -237,6 +238,12 @@ fun HomeScreen(
                         Column(Modifier.padding(horizontal = edge), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                             Text("Continue watching", style = LocalType.current.label, color = look.textDim)
                             Text(watching.message, style = LocalType.current.body, color = look.textDim)
+                            if (watching.needsPermission) {
+                                FocusSurface(onClick = onWatchingAccess, zoom = 1.02f) {
+                                    Text("Allow TV listings", style = LocalType.current.body, color = look.text,
+                                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp))
+                                }
+                            }
                         }
                     }
                     return

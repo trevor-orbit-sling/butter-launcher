@@ -107,9 +107,11 @@ Open **Customise → Screen saver**, then select **Butter bounce** in your TV's 
 
 Butter Launcher reads Android TV's native Watch Next feed and opens programs in the app that published them. There are no service logins or hard-coded provider integrations.
 
-**This is device dependent.** On standard AOSP TV Provider implementations, third-party apps are restricted to their own rows; Butter Launcher doesn't publish programs, so its row will normally be empty. Some devices expose shared programs to alternative home screens. Even there, only participating apps with an openable program link can appear. This is not a universal streaming watch-history aggregator.
+Choose **Allow TV listings** in the Continue watching row and approve Android's permission prompt. This read-only permission lets Butter read searchable programs shared by participating apps, including Jellyfin's resume and next-up items. Artwork can come from HTTPS or the publishing app's own exported image provider.
 
-When the device doesn't share programs, Butter Launcher explains the limitation. You can turn the row off in Customise. It never asks for privileged access, notification access or accessibility access. See the [review](REVIEW.md) for the platform evidence and implementation details.
+**Availability depends on your TV and apps.** Apps must publish their programs to Android TV, and non-searchable/private entries remain unavailable. This is not a universal streaming watch-history aggregator.
+
+When the device doesn't share programs, Butter Launcher explains the limitation. You can turn the row off in Customise. It requests the standard Read TV listings permission, with no privileged, notification or accessibility access. See the [review](REVIEW.md) for the platform evidence and implementation details.
 
 ## Build locally
 
@@ -131,12 +133,12 @@ Release builds shrink code and resources and produce an **unsigned** APK under `
 
 ## Try it on your TV
 
-Download the APK from [Releases](https://github.com/trevor-orbit-sling/butter-launcher/releases). The current [v0.1.0 testing preview](https://github.com/trevor-orbit-sling/butter-launcher/releases/tag/v0.1.0) is debug-signed.
+Download the APK from [Releases](https://github.com/trevor-orbit-sling/butter-launcher/releases). The current [v0.1.1 testing preview](https://github.com/trevor-orbit-sling/butter-launcher/releases/tag/v0.1.1) is debug-signed.
 
 With ADB connected to your TV, run these commands from your download folder:
 
 ```bash
-adb install -r butter-launcher-0.1.0-debug-test-only.apk
+adb install -r butter-launcher-0.1.1-debug-test-only.apk
 adb shell am start -n dev.plain.launcher/.MainActivity
 ```
 

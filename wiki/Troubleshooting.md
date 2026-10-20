@@ -14,7 +14,9 @@ Open **Customise → Icons → Choose icons**. The five included styles remain a
 
 ## Continue watching is empty
 
-Android TV's native feed is device dependent. Standard AOSP providers normally restrict third-party launchers to their own entries, and Butter does not publish shows. Other TVs may share programs from participating apps. You can hide **Continue watching** in Customise.
+Choose **Allow TV listings** in the row and approve the Android permission prompt. If you denied access previously, the button can take you to Butter's Android app permissions instead.
+
+Apps must publish searchable programs to Android TV. Jellyfin's TV app can share resume and next-up items without a separate server login in Butter. If the row is still empty, play something in the app and check its home-screen integration settings. Private/non-searchable entries and devices without a compatible provider remain unsupported. You can hide **Continue watching** in Customise.
 
 ## A remote button does not work
 
