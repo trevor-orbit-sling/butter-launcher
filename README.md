@@ -129,56 +129,22 @@ The debug APK is at `app/build/outputs/apk/debug/app-debug.apk`. Unit tests cove
 
 Release builds shrink code and resources and produce an **unsigned** APK under `app/build/outputs/apk/release/`. Configure your own release signing before distributing it. The debug key is used only for debug builds. The Android checks workflow builds debug and unsigned release APKs, runs unit tests and lint, and uploads the debug APK for testing.
 
-## Try it with ADB
+## Try it on your TV
 
-Enable developer options and ADB debugging on a test TV, then approve your computer on the TV. Pair/connect using the method your device provides. Android's [ADB guide](https://developer.android.com/tools/adb) covers USB and wireless debugging.
+Download the APK from [Releases](https://github.com/trevor-orbit-sling/butter-launcher/releases). The current [v0.1.0 testing preview](https://github.com/trevor-orbit-sling/butter-launcher/releases/tag/v0.1.0) is debug-signed.
 
-Check the connected devices:
-
-```bash
-adb devices
-```
-
-When exactly one device is connected:
+With ADB connected to your TV, run these commands from your download folder:
 
 ```bash
-adb install -r app/build/outputs/apk/debug/app-debug.apk
+adb install -r butter-launcher-0.1.0-debug-test-only.apk
 adb shell am start -n dev.plain.launcher/.MainActivity
 ```
 
-With several devices, add `-s DEVICE_SERIAL` after `adb` for each command. On first launch, follow the quick tour or choose Skip tour. Reopen it through **Customise → Quick tour**.
+Follow the quick tour. To use Butter as your home screen, choose **Home app settings** on the last page and select **Butter Launcher**, if your TV supports it.
 
 ![The first-run tour introduces Butter Launcher](docs/screenshots/01-welcome.png)
 
-The tour walks through app menus, reordering and remote controls:
-
-![The quick tour explains adding and moving favourites](docs/screenshots/02-tour-controls.png)
-
-To use Butter Launcher as your regular home screen, the final tour page opens the TV's Home app settings, with a fallback to system settings. Choose Butter Launcher yourself if the device offers that option. Some manufacturers don't support changing the home app. Opening or installing Butter Launcher does not automatically replace your current home screen.
-
-![The final tour page offers a Home app settings button](docs/screenshots/03-home-setup.png)
-
-To capture the current screen for your own notes:
-
-```bash
-mkdir -p captures
-adb shell screencap -p /sdcard/butter-screen.png
-adb pull /sdcard/butter-screen.png captures/butter-screen.png
-adb shell rm /sdcard/butter-screen.png
-```
-
-This file-and-pull method also works on devices that print diagnostic text before screenshot bytes. `captures/` is ignored by Git. Check captures for private app names, titles, account details and network information before sharing. For troubleshooting, inspect only this app's logs:
-
-```bash
-adb shell pidof dev.plain.launcher
-adb logcat --pid=APP_PID
-```
-
-Replace `APP_PID` with the value from the first command. To remove the local test installation:
-
-```bash
-adb uninstall dev.plain.launcher
-```
+Need help connecting, updating or troubleshooting? See the [ADB guide](docs/adb.md).
 
 ## Weather and privacy
 

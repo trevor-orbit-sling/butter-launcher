@@ -1,13 +1,15 @@
 # Set up Butter Launcher
 
-Install a debug APK you built or a signed APK from a source you trust. Butter Launcher supports Android TV devices running Android 9 or later.
+Download the APK from [Releases](https://github.com/trevor-orbit-sling/butter-launcher/releases). The current v0.1.0 preview is debug-signed for testing. Butter Launcher supports Android TV devices running Android 9 or later.
 
-For an ADB-connected test TV:
+With ADB connected to your TV, run these commands from your download folder:
 
 ```bash
-adb install -r app-debug.apk
+adb install -r butter-launcher-0.1.0-debug-test-only.apk
 adb shell am start -n dev.plain.launcher/.MainActivity
 ```
+
+For connection help and troubleshooting commands, see the [ADB guide](https://github.com/trevor-orbit-sling/butter-launcher/blob/main/docs/adb.md).
 
 The application ID remains `dev.plain.launcher`, so an update to the same installation preserves its settings.
 
